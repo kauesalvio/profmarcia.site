@@ -32,10 +32,9 @@
 - Formulário com:
   - Título da atividade.
   - Descrição.
-  - Tipo de dinâmica (Quiz, Formulário, etc.).
   - Seleção dos anos/classes para distribuição (checkboxes).
-  - Configuração específica do tipo selecionado.
-- Renderização dinâmica do formulário de configuração conforme o tipo.
+  - Perguntas com tipos mistos (quiz, formulário, cruzadinha, caça-palavra, etc.) na mesma atividade.
+- Renderização dinâmica do formulário de configuração por pergunta.
 
 ### 5. `/professor/atividades` - Lista de Atividades
 - Lista todas as atividades criadas.
@@ -53,8 +52,7 @@
 - Lista atividades disponíveis para aquele ano.
 
 ### 8. `/atividade/[id]` - Realização da Atividade
-- Aluno informa o nome antes de iniciar.
-- Renderiza o componente da atividade conforme o tipo (`Quiz`, `Form`, etc.).
+- Renderiza as perguntas conforme o tipo de cada uma (`quiz`, `text`, etc.).
 - Coleta respostas e envia para a API.
 - Exibe confirmação ao final.
 
@@ -69,15 +67,13 @@ Localizados em `components/activities/`:
 
 - `Form.tsx` - formulário de texto livre.
 - `Quiz.tsx` - quiz com alternativas.
-- `Crossword.tsx` - cruzadinha (futuro).
-- `WordSearch.tsx` - caça-palavra (futuro).
+- `Crossword.tsx` - cruzadinha.
+- `WordSearch.tsx` - caça-palavra.
 - `Memory.tsx` - jogo da memória (futuro).
 
 ### Componentes de Formulário de Criação
-- `ActivityTypeSelector.tsx` - seleciona o tipo de atividade.
 - `YearClassSelector.tsx` - seleciona anos/classes de distribuição.
-- `QuizBuilder.tsx` - construtor de quiz.
-- `FormBuilder.tsx` - construtor de formulário.
+- `QuestionBuilder.tsx` - construtor de perguntas com suporte a quiz, formulário, cruzadinha e caça-palavra na mesma atividade.
 
 ## Fluxo do Usuário
 
@@ -86,16 +82,15 @@ Localizados em `components/activities/`:
 2. Vai para `/professor`.
 3. Cria classes/anos em `/professor/classes`.
 4. Cria atividade em `/professor/atividades/nova`.
-5. Seleciona tipo, configura e escolhe anos/classes de distribuição.
+5. Configura perguntas (podendo misturar quiz, formulário, cruzadinha e caça-palavra) e escolhe anos/classes de distribuição.
 6. Analisa respostas em `/professor/analise/[id]`.
 
 ### Aluno
 1. Acessa `/aluno`.
 2. Escolhe o ano/classe.
 3. Seleciona uma atividade disponível.
-4. Preenche o nome.
-5. Responde a atividade.
-6. Envia e recebe confirmação.
+4. Responde a atividade.
+5. Envia e recebe confirmação.
 
 ## Segurança no Frontend
 - Rotas de professor protegidas por sessão (NextAuth.js).

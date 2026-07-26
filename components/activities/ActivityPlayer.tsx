@@ -1,24 +1,150 @@
 "use client";
 
+import { useState } from "react";
+import { ComingSoon } from "@/components/activities/ComingSoon";
 import { Crossword } from "@/components/activities/Crossword";
 import { Form } from "@/components/activities/Form";
-import { Memory } from "@/components/activities/Memory";
 import { Quiz } from "@/components/activities/Quiz";
 import { WordSearch } from "@/components/activities/WordSearch";
-import type { ActivityPlayerProps } from "@/components/activities/types";
+import type { QuestionViewProps } from "@/components/activities/types";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Alert } from "@/components/ui/Feedback";
+import type { Activity, Answer, Question } from "@/lib/types";
 
-/** Renderiza o componente da atividade conforme o tipo escolhido pela professora. */
-export function ActivityPlayer(props: ActivityPlayerProps) {
-  switch (props.activity.type) {
+/** Renderiza a pergunta conforme o tipo escolhido pela professora. */
+function QuestionView(props: QuestionViewProps) {
+  const { question } = props;
+  switch (question.type) {
     case "quiz":
-      return <Quiz {...props} />;
-    case "form":
-      return <Form {...props} />;
+      return <Quiz {...props} question={question} />;
     case "crossword":
-      return <Crossword />;
+      return <Crossword {...props} question={question} />;
     case "wordsearch":
-      return <WordSearch />;
+      return <WordSearch {...props} question={question} />;
     case "memory":
-      return <Memory />;
+      return <ComingSoon type={question.type} />;
+    default:
+      return <Form {...props} question={question} />;
   }
+}
+
+/** Perguntas em desenvolvimento ou mal configuradas não geram resposta. */
+function isAnswerable(question: Question) {
+  if (question.type === "memory") return false;
+  if (question.type === "quiz") return question.options.length > 0;
+  if (question.type === "crossword" || question.type === "wordsearch")
+    return question.words.length > 0;
+  return true;
+}
+
+/**
+ * Cruzadinha e caça-palavra são enviados mesmo incompletos: travar o envio por
+ * causa de um puzzle deixaria o aluno preso com o resto da atividade pronta.
+ */
+function isRequired(question: Question) {
+  if (!isAnswerable(question)) return false;
+  return question.type !== "crossword" && question.type !== "wordsearch";
+}
+
+export function ActivityPlayer({
+  activity,
+  submitting,
+  onSubmit,
+}: {
+  activity: Activity;
+  submitting: boolean;
+  onSubmit: (answers: Answer[]) => void;
+}) {
+  const questions = activity.config?.questions ?? [];
+  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [error, setError] = useState<string | null>(null);
+
+  const answerable = questions.filter(isAnswerable);
+  const answered = questions.filter(
+    (question, index) => isAnswerable(question) && answers[index]?.trim(),
+  ).length;
+  const progress = answerable.length ? (answered / answerable.length) * 100 : 100;
+
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const missing = questions.findIndex(
+      (question, index) => isRequired(question) && !answers[index]?.trim(),
+    );
+    if (missing >= 0) {
+      setError(`Responda a pergunta ${missing + 1} antes de enviar.`);
+      return;
+    }
+
+    setError(null);
+    onSubmit(
+      questions
+        .map((question, index) => ({
+          question: question.label,
+          answer: answers[index]?.trim() ?? "",
+          answerable: isAnswerable(question),
+        }))
+        .filter((item) => item.answerable)
+        .map(({ question, answer }) => ({ question, answer })),
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-center justify-between text-sm font-medium text-gray-500">
+          <span>Seu progresso</span>
+          <span className="font-bold text-student-dark">
+            {answered} de {answerable.length}
+          </span>
+        </div>
+        <div
+          role="progressbar"
+          aria-valuenow={answered}
+          aria-valuemin={0}
+          aria-valuemax={answerable.length}
+          aria-label="Perguntas respondidas"
+          className="h-2.5 overflow-hidden rounded-full bg-gray-200"
+        >
+          <div
+            className="h-full rounded-full bg-gradient-to-r from-student to-student-dark transition-all duration-300"
+            style={{ width: `${progress}%` }}
+          />
+        </div>
+      </div>
+
+      {error && <Alert tone="error">{error}</Alert>}
+
+      {questions.map((question, index) => {
+        const value = answers[index] ?? "";
+        const done = value.trim().length > 0;
+        return (
+          <Card key={index} className="flex flex-col gap-4 p-5 sm:p-6">
+            <h2 className="flex items-start gap-3 text-lg font-semibold text-gray-900">
+              <span
+                aria-hidden
+                className={`grid size-8 shrink-0 place-items-center rounded-lg text-sm font-bold transition-colors duration-200 ${
+                  done ? "bg-student text-white" : "bg-student-light text-student-dark"
+                }`}
+              >
+                {index + 1}
+              </span>
+              {question.label}
+            </h2>
+
+            <QuestionView
+              question={question}
+              index={index}
+              value={value}
+              onChange={(next) => setAnswers({ ...answers, [index]: next })}
+            />
+          </Card>
+        );
+      })}
+
+      <Button type="submit" variant="student" size="lg" disabled={submitting}>
+        {submitting ? "Enviando..." : "Enviar resposta"}
+      </Button>
+    </form>
+  );
 }

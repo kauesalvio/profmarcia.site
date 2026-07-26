@@ -4,6 +4,8 @@ import { requireAuth } from "@/lib/session";
 import { serializeActivity } from "@/lib/server/mongo";
 import type { ActivityInput } from "@/lib/types";
 
+const INVALID_ACTIVITY = "Informe título, ao menos uma turma e ao menos uma pergunta.";
+
 type Params = { params: Promise<{ id: string }> };
 
 export async function GET(_request: Request, { params }: Params) {
@@ -36,19 +38,16 @@ export async function PUT(request: Request, { params }: Params) {
   try {
     body = (await request.json()) as Partial<ActivityInput>;
   } catch {
-    return Response.json({ error: "Informe título, tipo e ao menos uma turma." }, { status: 400 });
+    return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 
   const title = body.title?.trim();
-  const type = body.type;
   const classIds = body.classIds;
   const description = body.description?.trim() ?? "";
+  const config = body.config ?? { questions: [], settings: {} };
 
-  if (!title || !type || !classIds?.length) {
-    return Response.json(
-      { error: "Informe título, tipo e ao menos uma turma." },
-      { status: 400 },
-    );
+  if (!title || !classIds?.length || !config.questions?.length) {
+    return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 
   try {
@@ -59,11 +58,12 @@ export async function PUT(request: Request, { params }: Params) {
         $set: {
           title,
           description,
-          type,
           classIds: classIds.map((id) => new ObjectId(id)),
-          config: body.config ?? { questions: [], settings: {} },
+          config,
           updatedAt: new Date(),
         },
+        // Atividades antigas guardavam o tipo no nível da atividade.
+        $unset: { type: "" },
       },
       { returnDocument: "after" },
     );

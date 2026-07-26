@@ -51,12 +51,33 @@ Todas as rotas estão em `app/api/`.
   {
     "title": "Atividade de Word",
     "description": "...",
-    "type": "quiz",
     "classIds": ["id1", "id2"],
-    "config": { ... }
+    "config": {
+      "questions": [
+        { "label": "Pergunta 1", "type": "text" },
+        { "label": "Pergunta 2", "type": "quiz", "options": ["A", "B", "C"], "correctAnswer": "A" },
+        {
+          "label": "Cruzadinha",
+          "type": "crossword",
+          "words": [
+            { "word": "MOUSE", "clue": "Periférico usado para apontar" },
+            { "word": "TECLA" }
+          ]
+        },
+        {
+          "label": "Caça-palavras",
+          "type": "wordsearch",
+          "words": [
+            { "word": "MOUSE", "clue": "Periférico usado para apontar" },
+            { "word": "TECLADO" }
+          ],
+          "gridSize": 10
+        }
+      ]
+    }
   }
   ```
-- Validação: título, tipo e ao menos um `classId`.
+- Validação: título, ao menos um `classId` e ao menos uma pergunta. Cada pergunta pode ser de tipos mistos (`text`, `quiz`, `crossword`, `wordsearch`, etc.). Para `crossword` e `wordsearch`, a professora define as palavras (`word`) e as dicas (`clue`) são opcionais.
 
 #### `GET /api/atividades/[id]`
 - Retorna detalhes de uma atividade específica.
@@ -76,11 +97,10 @@ Todas as rotas estão em `app/api/`.
   {
     "activityId": "...",
     "classIds": ["..."],
-    "studentName": "Maria Silva",
     "answers": [ ... ]
   }
   ```
-- Valida nome e respostas.
+- Valida respostas.
 - Salva no MongoDB.
 
 #### `GET /api/respostas`

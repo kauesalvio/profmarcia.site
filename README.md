@@ -1,7 +1,8 @@
 # Aulas de Informática
 
-Site de apoio às aulas de informática: a professora cria atividades (quiz e formulário) e os
-alunos do 1º ao 9º ano respondem sem precisar de login.
+Site de apoio às aulas de informática: a professora cria atividades com perguntas de tipos
+mistos (quiz, formulário, cruzadinha e caça-palavra) e os alunos do 1º ao 9º ano respondem
+sem precisar de login.
 
 Especificações em [`specs/`](./specs). Este repositório contém, por enquanto, **apenas o
 frontend** (Next.js App Router + TypeScript + Tailwind CSS).
@@ -22,10 +23,10 @@ app/
 ├── page.tsx                          login da professora
 ├── professor/                        área protegida (painel, turmas, atividades, análise)
 ├── aluno/                            escolha do ano + atividades disponíveis
-└── atividade/[id]/                   nome do aluno, atividade e confirmação
+└── atividade/[id]/                   atividade e confirmação de envio
 components/
-├── activities/                       Quiz, Form (MVP) e stubs de Cruzadinha, Caça-palavra, Memória
-├── builders/                         ActivityTypeSelector, YearClassSelector, QuizBuilder, FormBuilder
+├── activities/                       Quiz, Form, Crossword, WordSearch (MVP) e stub de Memória
+├── builders/                         QuestionBuilder, YearClassSelector
 ├── layout/                           Header, LayoutProfessor
 ├── professor/                        formulários de turma e de atividade
 └── ui/                               botões, campos, cards e estados de feedback
@@ -34,6 +35,7 @@ lib/
 ├── auth.ts                           sessão da professora no cliente (substituir por NextAuth.js)
 ├── browserStore.ts                   leitura reativa de local/sessionStorage
 ├── labels.ts                         labels em português e anos escolares
+├── puzzle.ts                         geração das grades de cruzadinha e caça-palavra
 ├── types.ts                          tipos das entidades (Class, Activity, Response)
 └── useResource.ts                    hook de carregamento com loading/erro/recarga
 ```

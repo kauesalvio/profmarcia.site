@@ -4,6 +4,8 @@ import { requireAuth } from "@/lib/session";
 import { serializeActivity } from "@/lib/server/mongo";
 import type { ActivityInput } from "@/lib/types";
 
+const INVALID_ACTIVITY = "Informe título, ao menos uma turma e ao menos uma pergunta.";
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const classId = searchParams.get("classId");
@@ -33,46 +35,33 @@ export async function POST(request: Request) {
   try {
     body = (await request.json()) as Partial<ActivityInput>;
   } catch {
-    return Response.json({ error: "Informe título, tipo e ao menos uma turma." }, { status: 400 });
+    return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 
   const title = body.title?.trim();
-  const type = body.type;
   const classIds = body.classIds;
   const description = body.description?.trim() ?? "";
+  const config = body.config ?? { questions: [], settings: {} };
 
-  if (!title || !type || !classIds?.length) {
-    return Response.json(
-      { error: "Informe título, tipo e ao menos uma turma." },
-      { status: 400 },
-    );
+  if (!title || !classIds?.length || !config.questions?.length) {
+    return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 
   try {
     const db = await getDatabase("escola");
-    const inserted = await db.collection("activities").insertOne({
+    const document = {
       title,
       description,
-      type,
       classIds: classIds.map((id) => new ObjectId(id)),
-      config: body.config ?? { questions: [], settings: {} },
+      config,
       createdAt: new Date(),
       updatedAt: new Date(),
-    });
+    };
+    const inserted = await db.collection("activities").insertOne(document);
 
-    return Response.json(
-      serializeActivity({
-        _id: inserted.insertedId,
-        title,
-        description,
-        type,
-        classIds: classIds.map((id) => new ObjectId(id)),
-        config: body.config ?? { questions: [], settings: {} },
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }),
-      { status: 201 },
-    );
+    return Response.json(serializeActivity({ ...document, _id: inserted.insertedId }), {
+      status: 201,
+    });
   } catch {
     return Response.json({ error: "Não foi possível criar a atividade." }, { status: 500 });
   }

@@ -24,17 +24,16 @@ Site para apoio às aulas de informática de uma professora.
 ### 3.1 Área da Professora
 - Login com e-mail e senha armazenados no MongoDB (senha com hash).
 - Painel para criar/editar/excluir classes do 1º ao 9º ano.
-- Criar atividades com título, descrição, tipo de dinâmica e seleção dos anos/classes de distribuição.
-- Tipos de atividades previstos: **Quiz**, **Formulário**, **Cruzadinha**, **Caça-palavra**, **Memória**.
-- Configurar cada atividade de acordo com o tipo selecionado.
-- Selecionar uma atividade e visualizar a situação dos alunos (quem respondeu e as respostas).
+- Criar atividades com título, descrição, perguntas de tipos mistos (quiz, formulário, cruzadinha, caça-palavra) e seleção dos anos/classes de distribuição.
+- Tipos de perguntas previstos: **Quiz**, **Formulário**, **Cruzadinha**, **Caça-palavra** (MVP) e **Memória** (futuro).
+- Configurar cada pergunta de acordo com o tipo selecionado, permitindo misturar tipos dentro de uma mesma atividade.
+- Selecionar uma atividade e visualizar as respostas enviadas.
 
 ### 3.2 Área dos Alunos
 - Acessar sem login.
 - Escolher a classe (1º ao 9º ano).
 - Ver atividades disponíveis para aquela classe.
-- Preencher o nome antes de iniciar uma atividade.
-- Participar da dinâmica escolhida pela professora (quiz, formulário, jogo da memória, etc.).
+- Participar das atividades disponíveis (quiz, formulário, cruzadinha, caça-palavra, jogo da memória, etc.).
 - Enviar respostas sem necessidade de login.
 
 ## 4. Estrutura do Projeto
@@ -105,7 +104,6 @@ informatic-class/
   "classIds": ["ObjectId"],
   "title": "Atividade de Word",
   "description": "Crie um documento com título e parágrafo.",
-  "type": "quiz",
   "config": {
     "questions": [
       {
@@ -113,6 +111,30 @@ informatic-class/
         "type": "text",
         "options": [],
         "correctAnswer": null
+      },
+      {
+        "label": "Qual é a capital do Brasil?",
+        "type": "quiz",
+        "options": ["São Paulo", "Rio de Janeiro", "Brasília"],
+        "correctAnswer": "Brasília"
+      },
+      {
+        "label": "Cruzadinha de informática",
+        "type": "crossword",
+        "words": [
+          { "word": "MOUSE", "clue": "Periférico usado para apontar" },
+          { "word": "TECLA" }
+        ]
+      },
+      {
+        "label": "Caça-palavras de informática",
+        "type": "wordsearch",
+        "words": [
+          { "word": "MOUSE", "clue": "Periférico usado para apontar" },
+          { "word": "TECLADO" },
+          { "word": "MONITOR" }
+        ],
+        "gridSize": 10
       }
     ],
     "settings": {}
@@ -121,17 +143,17 @@ informatic-class/
 }
 ```
 
-#### Tipos de atividades
+#### Tipos de perguntas
 
 | Tipo | Descrição | Complexidade |
 |------|-----------|--------------|
-| **Formulário** | Campos de texto livre para resposta. | Baixa (MVP) |
+| **Formulário (text)** | Campos de texto livre para resposta. | Baixa (MVP) |
 | **Quiz** | Perguntas com alternativas e resposta correta. | Baixa (MVP) |
-| **Cruzadinha** | Palavras cruzadas geradas a partir de dicas. | Média (futuro) |
-| **Caça-palavra** | Grade com palavras a serem encontradas. | Média (futuro) |
+| **Cruzadinha** | Palavras cruzadas geradas a partir de dicas. | Média (MVP) |
+| **Caça-palavra** | Grade com palavras a serem encontradas. | Média (MVP) |
 | **Memória** | Jogo de cartas com pares. | Média (futuro) |
 
-A estrutura do campo `config` varia conforme o `type` da atividade.
+Cada pergunta dentro de `config.questions` possui seu próprio `type`, permitindo misturar tipos dentro da mesma atividade. Nas perguntas `crossword` e `wordsearch`, o campo `clue` de cada palavra é opcional: a professora define as palavras e pode ou não adicionar dicas.
 
 ### Response
 ```json
@@ -139,7 +161,6 @@ A estrutura do campo `config` varia conforme o `type` da atividade.
   "_id": "ObjectId",
   "activityId": "ObjectId",
   "classIds": ["ObjectId"],
-  "studentName": "Maria Silva",
   "answers": [
     { "question": "Qual foi o tema escolhido?", "answer": "Meu animal favorito" }
   ],
@@ -151,14 +172,13 @@ A estrutura do campo `config` varia conforme o `type` da atividade.
 
 1. Professora acessa o site e faz login com e-mail e senha.
 2. Cria as classes do 1º ao 9º ano.
-3. Cria atividades vinculadas às classes/anos e escolhe o tipo de dinâmica (quiz, formulário, etc.).
-4. Seleciona para quais anos/classes a atividade será distribuída.
-5. Configura a atividade de acordo com o tipo selecionado.
+3. Cria atividades vinculadas às classes/anos.
+4. Configura as perguntas da atividade, podendo misturar quiz, formulário, cruzadinha e caça-palavra.
+5. Seleciona para quais anos/classes a atividade será distribuída.
 6. Compartilha o link da área do aluno.
 7. Aluno escolhe a classe/ano e visualiza as atividades disponíveis para aquele ano.
-8. Aluno preenche o nome antes de iniciar uma atividade.
-9. Aluno participa da dinâmica e envia a resposta.
-10. Professora acessa a tela de análise, seleciona uma atividade e visualiza a situação dos alunos.
+8. Aluno participa da dinâmica e envia a resposta.
+9. Professora acessa a tela de análise, seleciona uma atividade e visualiza as respostas enviadas.
 
 ## 7. Hospedagem
 
@@ -187,12 +207,12 @@ NEXTAUTH_SECRET=chave_secreta_para_sessao
 ### MVP (versão inicial)
 - Login da professora com MongoDB.
 - CRUD de classes do 1º ao 9º ano.
-- Criação de atividades do tipo **Formulário** e **Quiz**.
-- Aluno acessa sem login, preenche o nome e responde.
+- Criação de atividades com perguntas do tipo **Formulário**, **Quiz**, **Cruzadinha** e **Caça-palavra** (podendo misturar na mesma atividade).
+- Aluno acessa sem login e responde.
 - Tela de análise da professora por atividade.
 
 ### Funcionalidades futuras
-- Tipos de atividades: Cruzadinha, Caça-palavra, Memória.
+- Novos tipos de perguntas, como o jogo da memória.
 - Sistema de autenticação mais robusto para a professora.
 - Exportação de notas em planilha.
 - Login opcional para alunos acompanharem histórico.

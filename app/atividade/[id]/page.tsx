@@ -6,16 +6,13 @@ import { ActivityPlayer } from "@/components/activities/ActivityPlayer";
 import { Header } from "@/components/layout/Header";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
-import { Field, Input } from "@/components/ui/Field";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
-import { ACTIVITY_TYPE_ICONS, IconCheck, IconClipboard } from "@/components/ui/Icons";
+import { IconCheck, IconClipboard, QUESTION_TYPE_ICONS } from "@/components/ui/Icons";
 import { activitiesApi, responsesApi } from "@/lib/api";
-import { ACTIVITY_TYPE_LABELS } from "@/lib/labels";
-import { getSelectedClassId, saveStudentName, useStudentName } from "@/lib/student";
+import { QUESTION_TYPE_LABELS, activityQuestionTypes } from "@/lib/labels";
+import { getSelectedClassId } from "@/lib/student";
 import { useResource } from "@/lib/useResource";
 import type { Answer } from "@/lib/types";
-
-type Step = "name" | "activity" | "done";
 
 export default function StudentActivityPage() {
   const { id } = useParams<{ id: string }>();
@@ -24,25 +21,9 @@ export default function StudentActivityPage() {
     id,
   );
 
-  const [step, setStep] = useState<Step>("name");
-  // O nome já usado antes fica salvo no navegador; `typedName` assume ao digitar.
-  const savedName = useStudentName();
-  const [typedName, setTypedName] = useState<string | null>(null);
-  const name = typedName ?? savedName;
-  const [nameError, setNameError] = useState<string | undefined>();
+  const [done, setDone] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
-
-  function startActivity(event: React.FormEvent) {
-    event.preventDefault();
-    if (name.trim().length < 2) {
-      setNameError("Escreva seu nome completo para começar.");
-      return;
-    }
-    setNameError(undefined);
-    saveStudentName(name.trim());
-    setStep("activity");
-  }
 
   async function handleSubmit(answers: Answer[]) {
     if (!activity) return;
@@ -55,10 +36,9 @@ export default function StudentActivityPage() {
         activityId: activity._id,
         // A turma escolhida pelo aluno em /aluno; se não houver, usamos as da atividade.
         classIds: classId ? [classId] : activity.classIds,
-        studentName: name.trim(),
         answers,
       });
-      setStep("done");
+      setDone(true);
     } catch (err) {
       setSubmitError(
         err instanceof Error ? err.message : "Não foi possível enviar sua resposta.",
@@ -68,7 +48,8 @@ export default function StudentActivityPage() {
     }
   }
 
-  const TypeIcon = activity ? ACTIVITY_TYPE_ICONS[activity.type] : null;
+  const types = activity ? activityQuestionTypes(activity) : [];
+  const TypeIcon = types.length > 0 ? QUESTION_TYPE_ICONS[types[0]] : null;
 
   return (
     <div className="ambient-aluno flex flex-1 flex-col">
@@ -101,7 +82,7 @@ export default function StudentActivityPage() {
           />
         )}
 
-        {activity && step !== "done" && (
+        {activity && !done && (
           <div className="flex animate-rise items-start gap-4">
             {TypeIcon && (
               <span
@@ -120,40 +101,18 @@ export default function StudentActivityPage() {
                   {activity.description}
                 </p>
               )}
-              <span>
-                <Badge tone="student">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
-              </span>
+              <div className="flex flex-wrap gap-2">
+                {types.map((type) => (
+                  <Badge key={type} tone="student">
+                    {QUESTION_TYPE_LABELS[type]}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </div>
         )}
 
-        {activity && step === "name" && (
-          <Card className="animate-rise p-6">
-            <form onSubmit={startActivity} className="flex flex-col gap-5" noValidate>
-              <Field
-                label="Seu nome"
-                htmlFor="student-name"
-                hint="A professora vai ver seu nome junto das respostas."
-                error={nameError}
-                required
-              >
-                <Input
-                  id="student-name"
-                  value={name}
-                  autoComplete="name"
-                  placeholder="Maria Silva"
-                  onChange={(e) => setTypedName(e.target.value)}
-                />
-              </Field>
-
-              <Button type="submit" variant="student" size="lg">
-                Começar atividade
-              </Button>
-            </form>
-          </Card>
-        )}
-
-        {activity && step === "activity" && (
+        {activity && !done && (
           <>
             {submitError && <Alert tone="error">{submitError}</Alert>}
             <ActivityPlayer
@@ -164,7 +123,7 @@ export default function StudentActivityPage() {
           </>
         )}
 
-        {step === "done" && (
+        {done && (
           <Card className="dot-grid relative animate-rise overflow-hidden p-10 text-center text-student">
             <div className="relative flex flex-col items-center gap-4 text-gray-700">
               <span
@@ -177,7 +136,7 @@ export default function StudentActivityPage() {
                 Resposta enviada!
               </h1>
               <p className="max-w-sm text-base text-gray-500">
-                Obrigado, {name.trim()}. Sua resposta chegou para a professora.
+                Sua resposta chegou para a professora.
               </p>
               <ButtonLink href="/aluno" variant="student" size="lg" className="mt-2">
                 Voltar para as atividades

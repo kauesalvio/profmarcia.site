@@ -58,7 +58,6 @@ Organizar a estrutura, navegação e fluxos de informação do site de aulas de 
 - Lista de atividades disponíveis.
 
 ### Nível 2 - Atividade do Aluno (`/atividade/[id]`)
-- Tela de preenchimento do nome.
 - Execução da atividade.
 - Confirmação de envio.
 
@@ -81,18 +80,16 @@ Organizar a estrutura, navegação e fluxos de informação do site de aulas de 
 1. Faz login em `/`.
 2. Clica em "Criar atividade" no painel.
 3. Preenche título e descrição.
-4. Seleciona o tipo de atividade (Quiz/Formulário).
-5. Seleciona os anos/classes de distribuição.
-6. Configura as perguntas.
-7. Salva e recebe confirmação.
+4. Seleciona os anos/classes de distribuição.
+5. Configura as perguntas, podendo misturar quiz, formulário, cruzadinha e caça-palavra na mesma atividade.
+6. Salva e recebe confirmação.
 
 ### Fluxo 2 - Aluno responde uma atividade
 1. Acessa `/aluno`.
 2. Seleciona o ano/classe.
 3. Escolhe uma atividade na lista.
-4. Digita o nome.
-5. Responde as perguntas.
-6. Envia e vê confirmação.
+4. Responde as perguntas.
+5. Envia e vê confirmação.
 
 ### Fluxo 3 - Professora analisa respostas
 1. Acessa `/professor/analise`.
@@ -109,13 +106,12 @@ Organizar a estrutura, navegação e fluxos de informação do site de aulas de 
 ### Atividade
 - Título
 - Descrição
-- Tipo (Quiz, Formulário, etc.)
+- Perguntas com tipos mistos (quiz, formulário, cruzadinha, caça-palavra, etc.)
 - Anos/classes de distribuição
 - Data de criação
 - Status (ativo/inativo - futuro)
 
 ### Resposta
-- Nome do aluno
 - Atividade respondida
 - Data e hora de envio
 - Conteúdo das respostas

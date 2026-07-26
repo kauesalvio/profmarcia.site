@@ -61,7 +61,6 @@ Armazena as atividades criadas pela professora.
   "classIds": ["ObjectId"],
   "title": "Atividade de Word",
   "description": "Crie um documento com título e parágrafo.",
-  "type": "quiz",
   "config": {
     "questions": [
       {
@@ -69,6 +68,30 @@ Armazena as atividades criadas pela professora.
         "type": "text",
         "options": [],
         "correctAnswer": null
+      },
+      {
+        "label": "Qual é a capital do Brasil?",
+        "type": "quiz",
+        "options": ["São Paulo", "Rio de Janeiro", "Brasília"],
+        "correctAnswer": "Brasília"
+      },
+      {
+        "label": "Cruzadinha de informática",
+        "type": "crossword",
+        "words": [
+          { "word": "MOUSE", "clue": "Periférico usado para apontar" },
+          { "word": "TECLA" }
+        ]
+      },
+      {
+        "label": "Caça-palavras de informática",
+        "type": "wordsearch",
+        "words": [
+          { "word": "MOUSE", "clue": "Periférico usado para apontar" },
+          { "word": "TECLADO" },
+          { "word": "MONITOR" }
+        ],
+        "gridSize": 10
       }
     ],
     "settings": {}
@@ -80,12 +103,11 @@ Armazena as atividades criadas pela professora.
 
 **Campos importantes:**
 - `classIds`: array de referências para `classes`. Indica para quais anos/classes a atividade será distribuída.
-- `type`: tipo da dinâmica (`quiz`, `form`, `crossword`, `wordsearch`, `memory`).
-- `config`: objeto flexível que varia conforme o tipo.
+- `config.questions`: array de perguntas. Cada pergunta possui seu próprio `type` (`text`, `quiz`, `crossword`, `wordsearch`, etc.), permitindo misturar quiz, formulário, cruzadinha e caça-palavra na mesma atividade.
+- `config`: objeto flexível que varia conforme as perguntas. Nas perguntas `crossword` e `wordsearch`, cada palavra pode ter `word` (obrigatório) e `clue` (opcional).
 
 **Índices:**
 - `classIds` (para consulta por ano/classe)
-- `type` (para filtros futuros)
 - `createdAt` (descendente)
 
 ---
@@ -98,7 +120,6 @@ Armazena as respostas dos alunos.
   "_id": "ObjectId",
   "activityId": "ObjectId",
   "classIds": ["ObjectId"],
-  "studentName": "Maria Silva",
   "answers": [
     { "question": "Qual foi o tema escolhido?", "answer": "Meu animal favorito" }
   ],
@@ -109,12 +130,10 @@ Armazena as respostas dos alunos.
 **Campos importantes:**
 - `activityId`: referência para `activities`.
 - `classIds`: anos/classes do aluno no momento da resposta.
-- `studentName`: nome informado pelo aluno.
 - `answers`: array com as respostas.
 
 **Índices:**
 - `activityId` (essencial para análise)
-- `studentName` (para busca por aluno)
 - `submittedAt` (descendente)
 
 ## Relacionamentos

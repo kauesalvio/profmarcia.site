@@ -4,7 +4,7 @@ Roteiro e material de conversa para apresentar o projeto do site de aulas de inf
 
 ## 1. Elevator Pitch
 
-> "Um site simples e gratuito para professores de informática criarem atividades interativas — como quiz e formulários — para alunos do 1º ao 9º ano, sem exigir login dos estudantes e com painel de análise das respostas."
+> "Um site simples e gratuito para professores de informática criarem atividades interativas — como quiz, formulários, cruzadinhas e caça-palavras — para alunos do 1º ao 9º ano, sem exigir login dos estudantes e com painel de análise das respostas."
 
 ## 2. Público da Conversa
 
@@ -28,24 +28,24 @@ Roteiro e material de conversa para apresentar o projeto do site de aulas de inf
 Um site leve, moderno e de fácil uso:
 - Login apenas para a professora.
 - Alunos acessam pelo link, escolhem o ano e respondem.
-- A professora cria atividades com título, descrição, tipo e distribuição por ano.
-- Painel de análise mostra, por atividade, quem respondeu e as respostas.
+- A professora cria atividades com título, descrição, perguntas mistas (quiz e formulário) e distribuição por ano.
+- Painel de análise mostra, por atividade, as respostas enviadas.
 
 ## 5. Funcionalidades em uma Conversa
 
 "Com esse site, a professora pode:"
 1. Fazer login com e-mail e senha.
 2. Cadastrar as turmas do 1º ao 9º ano.
-3. Criar atividades do tipo quiz ou formulário.
+3. Criar atividades com perguntas de quiz, formulário, cruzadinha e caça-palavra mistas.
 4. Escolher para quais anos aquela atividade será disponibilizada.
 5. Compartilhar o link com os alunos.
-6. Ver, em uma tela simples, quem respondeu e o que respondeu.
+6. Ver, em uma tela simples, o que foi respondido.
 
 "E os alunos:"
 1. Acessam sem senha.
 2. Escolhem o ano.
 3. Veem as atividades disponíveis.
-4. Digitam o nome e respondem.
+4. Respondem.
 
 ## 6. Tecnologia Resumida
 
@@ -57,7 +57,7 @@ Um site leve, moderno e de fácil uso:
 ## 7. Perguntas e Respostas
 
 ### "Os alunos precisam criar conta?"
-Não. Eles acessam pelo link, escolhem o ano, preenchem o nome e respondem.
+Não. Eles acessam pelo link, escolhem o ano e respondem.
 
 ### "É seguro?"
 Sim. Apenas a professora faz login. A senha é armazenada com criptografia. Os dados ficam no MongoDB Atlas, que é seguro e gratuito para projetos pequenos.
@@ -69,10 +69,10 @@ Na versão inicial, não. MongoDB Atlas e Vercel oferecem planos gratuitos que a
 Sim. O site é responsivo e funciona em computadores, tablets e celulares.
 
 ### "Posso criar vários tipos de atividades?"
-Na primeira versão, quiz e formulário. Depois, podemos adicionar cruzadinha, caça-palavra e jogo da memória.
+Na primeira versão, as perguntas podem ser de quiz, formulário, cruzadinha e caça-palavra, podendo ser misturadas dentro da mesma atividade. Depois, podemos adicionar o jogo da memória.
 
-### "A professora consegue ver quem respondeu?"
-Sim. Há uma tela de análise por atividade, com o nome do aluno e as respostas enviadas.
+### "A professora consegue ver as respostas?"
+Sim. Há uma tela de análise por atividade com as respostas enviadas.
 
 ### "E se a professora quiser usar para outras matérias?"
 O sistema é flexível. Basta adaptar o conteúdo das atividades. O foco inicial é informática, mas a estrutura serve para outras áreas.
@@ -85,13 +85,13 @@ O sistema é flexível. Basta adaptar o conteúdo das atividades. O foco inicial
 ### 2 minutos - Demonstração
 Mostrar:
 - Login da professora.
-- Criação rápida de uma atividade quiz.
+- Criação rápida de uma atividade com perguntas mistas (quiz, formulário, cruzadinha, caça-palavra).
 - Seleção do ano de distribuição.
 - Visualização do link para os alunos.
 - Tela do aluno respondendo.
 
 ### 1 minuto - Análise
-Mostrar a tela de análise, com o nome dos alunos e as respostas.
+Mostrar a tela de análise com as respostas enviadas.
 
 ### 1 minuto - Próximos passos
 - Coletar feedback da professora.

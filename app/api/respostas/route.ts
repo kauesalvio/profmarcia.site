@@ -33,19 +33,15 @@ export async function POST(request: Request) {
   try {
     body = (await request.json()) as Partial<ResponseInput>;
   } catch {
-    return Response.json({ error: "Informe o nome do aluno e as respostas." }, { status: 400 });
+    return Response.json({ error: "Informe as respostas da atividade." }, { status: 400 });
   }
 
   const activityId = body.activityId?.trim();
-  const studentName = body.studentName?.trim();
   const answers = body.answers;
   const classIds = body.classIds ?? [];
 
-  if (!activityId || !studentName || !answers?.length) {
-    return Response.json(
-      { error: "Informe o nome do aluno e as respostas." },
-      { status: 400 },
-    );
+  if (!activityId || !answers?.length) {
+    return Response.json({ error: "Informe as respostas da atividade." }, { status: 400 });
   }
 
   try {
@@ -56,25 +52,17 @@ export async function POST(request: Request) {
       return Response.json({ error: "Atividade não encontrada." }, { status: 404 });
     }
 
-    const inserted = await db.collection("responses").insertOne({
+    const document = {
       activityId: new ObjectId(activityId),
       classIds: classIds.map((id) => new ObjectId(id)),
-      studentName,
       answers,
       submittedAt: new Date(),
-    });
+    };
+    const inserted = await db.collection("responses").insertOne(document);
 
-    return Response.json(
-      serializeResponse({
-        _id: inserted.insertedId,
-        activityId: new ObjectId(activityId),
-        classIds: classIds.map((id) => new ObjectId(id)),
-        studentName,
-        answers,
-        submittedAt: new Date(),
-      }),
-      { status: 201 },
-    );
+    return Response.json(serializeResponse({ ...document, _id: inserted.insertedId }), {
+      status: 201,
+    });
   } catch {
     return Response.json({ error: "Não foi possível enviar a resposta." }, { status: 500 });
   }

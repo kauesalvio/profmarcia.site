@@ -7,7 +7,12 @@ import { Badge, Card } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
 import { IconChart, IconChevronDown, IconClock, IconUsers } from "@/components/ui/Icons";
 import { activitiesApi, responsesApi } from "@/lib/api";
-import { ACTIVITY_TYPE_LABELS, formatDateTime } from "@/lib/labels";
+import {
+  QUESTION_TYPE_LABELS,
+  activityQuestionTypes,
+  expectedAnswer,
+  formatDateTime,
+} from "@/lib/labels";
 import { useResource } from "@/lib/useResource";
 import type { Answer } from "@/lib/types";
 
@@ -17,10 +22,11 @@ export default function AnalysisPage() {
   const responses = useResource(() => responsesApi.list(id), id);
 
   const list = responses.data ?? [];
+  const types = activity.data ? activityQuestionTypes(activity.data) : [];
   const correctAnswers = new Map(
     (activity.data?.config?.questions ?? [])
-      .filter((question) => question.correctAnswer)
-      .map((question) => [question.label, question.correctAnswer]),
+      .map((question) => [question.label, expectedAnswer(question)] as const)
+      .filter(([, expected]) => expected),
   );
   const isGraded = correctAnswers.size > 0;
 
@@ -52,13 +58,17 @@ export default function AnalysisPage() {
             >
               <IconChart size={20} />
             </span>
-            <div className="flex flex-col">
+            <div className="flex flex-col gap-1">
               <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
-                Tipo
+                Tipos de pergunta
               </span>
-              <span className="text-lg font-bold text-gray-900">
-                {ACTIVITY_TYPE_LABELS[activity.data.type]}
-              </span>
+              <div className="flex flex-wrap gap-1.5">
+                {types.map((type) => (
+                  <Badge key={type} tone="primary">
+                    {QUESTION_TYPE_LABELS[type]}
+                  </Badge>
+                ))}
+              </div>
             </div>
           </Card>
           <Card className="flex items-center gap-3 p-4">
@@ -73,7 +83,7 @@ export default function AnalysisPage() {
                 Respostas
               </span>
               <span className="text-lg font-bold text-gray-900">
-                {list.length} {list.length === 1 ? "aluno" : "alunos"}
+                {list.length} {list.length === 1 ? "enviada" : "enviadas"}
               </span>
             </div>
           </Card>
@@ -98,13 +108,13 @@ export default function AnalysisPage() {
       {!responses.loading && !responses.error && list.length === 0 && (
         <EmptyState
           icon={<IconUsers size={28} />}
-          message="Nenhum aluno respondeu esta atividade ainda."
+          message="Nenhuma resposta enviada para esta atividade ainda."
         />
       )}
 
       {!responses.loading && !responses.error && list.length > 0 && (
         <ul className="flex flex-col gap-3">
-          {list.map((response) => {
+          {list.map((response, position) => {
             const score = isGraded ? scoreOf(response.answers) : null;
             return (
               <li key={response._id}>
@@ -115,10 +125,10 @@ export default function AnalysisPage() {
                         aria-hidden
                         className="grid size-9 shrink-0 place-items-center rounded-full bg-student-light text-sm font-bold text-student-dark"
                       >
-                        {response.studentName.trim().charAt(0).toUpperCase()}
+                        {position + 1}
                       </span>
                       <span className="text-base font-semibold text-gray-900">
-                        {response.studentName}
+                        Resposta {position + 1}
                       </span>
                       <span className="flex items-center gap-1.5 text-sm text-gray-500">
                         <IconClock size={14} />

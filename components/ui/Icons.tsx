@@ -1,5 +1,5 @@
 import type { ComponentProps } from "react";
-import type { ActivityType } from "@/lib/types";
+import type { QuestionType } from "@/lib/types";
 
 type IconProps = ComponentProps<"svg"> & { size?: number };
 
@@ -161,12 +161,13 @@ export const IconCards = createIcon(
   </>,
 );
 
-export const ACTIVITY_TYPE_ICONS: Record<
-  ActivityType,
+export const QUESTION_TYPE_ICONS: Record<
+  QuestionType,
   ReturnType<typeof createIcon>
 > = {
+  text: IconForm,
+  textarea: IconForm,
   quiz: IconQuiz,
-  form: IconForm,
   crossword: IconGrid,
   wordsearch: IconSearch,
   memory: IconCards,

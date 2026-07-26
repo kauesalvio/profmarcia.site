@@ -6,14 +6,18 @@ import { Button, ButtonLink } from "@/components/ui/Button";
 import { Badge, InteractiveCard } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
 import {
-  ACTIVITY_TYPE_ICONS,
   IconArrowRight,
   IconChart,
   IconClock,
   IconPlus,
+  QUESTION_TYPE_ICONS,
 } from "@/components/ui/Icons";
 import { activitiesApi } from "@/lib/api";
-import { ACTIVITY_TYPE_LABELS, formatDateTime } from "@/lib/labels";
+import {
+  QUESTION_TYPE_LABELS,
+  activityQuestionTypes,
+  formatDateTime,
+} from "@/lib/labels";
 import { useResource } from "@/lib/useResource";
 
 export default function AnalysisIndexPage() {
@@ -25,7 +29,7 @@ export default function AnalysisIndexPage() {
       <PageHeader
         eyebrow="Análise"
         title="Ver respostas"
-        description="Selecione uma atividade para ver a situação dos alunos."
+        description="Selecione uma atividade para ver as respostas enviadas."
       />
 
       {loading && <Spinner label="Carregando atividades..." />}
@@ -59,7 +63,8 @@ export default function AnalysisIndexPage() {
       {!loading && !error && activities.length > 0 && (
         <ul className="flex flex-col gap-3">
           {activities.map((activity) => {
-            const TypeIcon = ACTIVITY_TYPE_ICONS[activity.type];
+            const types = activityQuestionTypes(activity);
+            const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
                 <InteractiveCard className="p-0">
@@ -78,7 +83,11 @@ export default function AnalysisIndexPage() {
                         <span className="text-lg font-semibold text-gray-900">
                           {activity.title}
                         </span>
-                        <Badge tone="primary">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
+                        {types.map((type) => (
+                          <Badge key={type} tone="primary">
+                            {QUESTION_TYPE_LABELS[type]}
+                          </Badge>
+                        ))}
                       </div>
                       <span className="flex items-center gap-1.5 text-xs text-gray-500">
                         <IconClock size={14} />

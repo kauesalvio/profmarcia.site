@@ -1,13 +1,46 @@
-export type ActivityType = "quiz" | "form" | "crossword" | "wordsearch" | "memory";
+/**
+ * Tipos de pergunta suportados. Uma mesma atividade pode misturar vários deles
+ * (specs/tech-spec.md, seção 5 - Activity).
+ */
+export type QuestionType =
+  | "text"
+  | "textarea"
+  | "quiz"
+  | "crossword"
+  | "wordsearch"
+  | "memory";
 
-export type QuestionType = "text" | "textarea" | "single" | "multiple";
+/** Palavra usada em cruzadinha e caça-palavra; a dica é opcional. */
+export interface PuzzleWord {
+  word: string;
+  clue?: string;
+}
 
-export interface Question {
+interface BaseQuestion {
   label: string;
-  type: QuestionType;
+}
+
+export interface TextQuestion extends BaseQuestion {
+  type: "text" | "textarea";
+}
+
+export interface QuizQuestion extends BaseQuestion {
+  type: "quiz";
   options: string[];
   correctAnswer: string | null;
 }
+
+export interface PuzzleQuestion extends BaseQuestion {
+  type: "crossword" | "wordsearch";
+  words: PuzzleWord[];
+  gridSize?: number;
+}
+
+export interface FutureQuestion extends BaseQuestion {
+  type: "memory";
+}
+
+export type Question = TextQuestion | QuizQuestion | PuzzleQuestion | FutureQuestion;
 
 export interface ActivityConfig {
   questions: Question[];
@@ -26,7 +59,6 @@ export interface Activity {
   classIds: string[];
   title: string;
   description: string;
-  type: ActivityType;
   config: ActivityConfig;
   createdAt?: string;
   updatedAt?: string;
@@ -41,7 +73,6 @@ export interface ActivityResponse {
   _id: string;
   activityId: string;
   classIds: string[];
-  studentName: string;
   answers: Answer[];
   submittedAt?: string;
 }
@@ -50,9 +81,9 @@ export interface ActivityResponse {
 export type ClassInput = Pick<SchoolClass, "name" | "year">;
 export type ActivityInput = Pick<
   Activity,
-  "title" | "description" | "type" | "classIds" | "config"
+  "title" | "description" | "classIds" | "config"
 >;
 export type ResponseInput = Pick<
   ActivityResponse,
-  "activityId" | "classIds" | "studentName" | "answers"
+  "activityId" | "classIds" | "answers"
 >;

@@ -2,24 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { ActivityTypeSelector } from "@/components/builders/ActivityTypeSelector";
-import { FormBuilder, emptyFormQuestion } from "@/components/builders/FormBuilder";
-import { QuizBuilder, emptyQuizQuestion } from "@/components/builders/QuizBuilder";
+import { QuestionBuilder, emptyQuestion } from "@/components/builders/QuestionBuilder";
 import { YearClassSelector } from "@/components/builders/YearClassSelector";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field, Input, Textarea } from "@/components/ui/Field";
 import { Alert, Spinner } from "@/components/ui/Feedback";
 import { activitiesApi, classesApi } from "@/lib/api";
+import { normalizeWord } from "@/lib/puzzle";
 import { useResource } from "@/lib/useResource";
-import type { Activity, ActivityType, Question } from "@/lib/types";
-
-function initialQuestions(type: ActivityType, activity?: Activity): Question[] {
-  if (activity?.type === type && activity.config?.questions?.length) {
-    return activity.config.questions;
-  }
-  return [type === "quiz" ? emptyQuizQuestion() : emptyFormQuestion()];
-}
+import type { Activity, Question } from "@/lib/types";
 
 export function ActivityForm({ activity }: { activity?: Activity }) {
   const router = useRouter();
@@ -27,18 +19,14 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
 
   const [title, setTitle] = useState(activity?.title ?? "");
   const [description, setDescription] = useState(activity?.description ?? "");
-  const [type, setType] = useState<ActivityType>(activity?.type ?? "quiz");
   const [classIds, setClassIds] = useState<string[]>(activity?.classIds ?? []);
   const [questions, setQuestions] = useState<Question[]>(
-    initialQuestions(activity?.type ?? "quiz", activity),
+    activity?.config?.questions?.length
+      ? activity.config.questions
+      : [emptyQuestion("quiz")],
   );
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
-
-  function handleTypeChange(nextType: ActivityType) {
-    setType(nextType);
-    setQuestions(initialQuestions(nextType, activity));
-  }
 
   function validate() {
     if (!title.trim()) return "Informe o título da atividade.";
@@ -46,16 +34,46 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
     if (questions.length === 0) return "Adicione ao menos uma pergunta.";
     if (questions.some((question) => !question.label.trim()))
       return "Todas as perguntas precisam de enunciado.";
-    if (type === "quiz") {
-      const invalid = questions.find(
-        (question) =>
+
+    for (const question of questions) {
+      if (question.type === "quiz") {
+        if (
           question.options.filter((option) => option.trim()).length < 2 ||
-          !question.correctAnswer?.trim(),
-      );
-      if (invalid)
-        return "Cada pergunta do quiz precisa de duas alternativas e uma resposta correta.";
+          !question.correctAnswer?.trim()
+        ) {
+          return "Cada pergunta de quiz precisa de duas alternativas e uma resposta correta.";
+        }
+      }
+      if (question.type === "crossword" || question.type === "wordsearch") {
+        const valid = question.words.filter((item) => normalizeWord(item.word).length >= 2);
+        if (valid.length < 2)
+          return "Cruzadinha e caça-palavra precisam de ao menos duas palavras com 2 letras ou mais.";
+      }
     }
     return null;
+  }
+
+  /** Normaliza cada pergunta conforme o tipo antes de enviar para a API. */
+  function serializeQuestion(question: Question): Question {
+    const label = question.label.trim();
+    switch (question.type) {
+      case "quiz": {
+        const options = question.options.map((option) => option.trim()).filter(Boolean);
+        return { ...question, label, options };
+      }
+      case "crossword":
+      case "wordsearch": {
+        const words = question.words
+          .map((item) => ({
+            word: normalizeWord(item.word),
+            ...(item.clue?.trim() ? { clue: item.clue.trim() } : {}),
+          }))
+          .filter((item) => item.word.length >= 2);
+        return { ...question, label, words };
+      }
+      default:
+        return { ...question, label };
+    }
   }
 
   async function handleSubmit(event: React.FormEvent) {
@@ -72,14 +90,9 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       const payload = {
         title: title.trim(),
         description: description.trim(),
-        type,
         classIds,
         config: {
-          questions: questions.map((question) => ({
-            ...question,
-            label: question.label.trim(),
-            options: question.options.map((option) => option.trim()).filter(Boolean),
-          })),
+          questions: questions.map(serializeQuestion),
           settings: activity?.config?.settings ?? {},
         },
       };
@@ -126,14 +139,7 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       </section>
 
       <section className="flex flex-col gap-3">
-        <StepHeading step={2} title="Tipo de dinâmica" />
-        <Card className="p-5 sm:p-6">
-          <ActivityTypeSelector value={type} onChange={handleTypeChange} />
-        </Card>
-      </section>
-
-      <section className="flex flex-col gap-3">
-        <StepHeading step={3} title="Distribuição" />
+        <StepHeading step={2} title="Distribuição" />
         <Card className="p-5 sm:p-6">
           {classes.loading && <Spinner label="Carregando turmas..." />}
           {classes.error && !classes.loading && (
@@ -159,15 +165,12 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       </section>
 
       <section className="flex flex-col gap-3">
-        <StepHeading
-          step={4}
-          title={type === "quiz" ? "Perguntas do quiz" : "Campos do formulário"}
-        />
-        {type === "quiz" ? (
-          <QuizBuilder questions={questions} onChange={setQuestions} />
-        ) : (
-          <FormBuilder questions={questions} onChange={setQuestions} />
-        )}
+        <StepHeading step={3} title="Perguntas" />
+        <p className="-mt-1 text-sm text-gray-500">
+          Você pode misturar quiz, formulário, cruzadinha e caça-palavra na mesma
+          atividade.
+        </p>
+        <QuestionBuilder questions={questions} onChange={setQuestions} />
       </section>
 
       <div className="flex flex-wrap gap-3 border-t border-gray-200 pt-6">

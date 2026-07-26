@@ -6,13 +6,13 @@ import { Button, ButtonLink } from "@/components/ui/Button";
 import { Badge, InteractiveCard } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
 import {
-  ACTIVITY_TYPE_ICONS,
   IconArrowRight,
   IconBackpack,
   IconClipboard,
+  QUESTION_TYPE_ICONS,
 } from "@/components/ui/Icons";
 import { activitiesApi, classesApi } from "@/lib/api";
-import { ACTIVITY_TYPE_LABELS, yearLabel } from "@/lib/labels";
+import { QUESTION_TYPE_LABELS, activityQuestionTypes, yearLabel } from "@/lib/labels";
 import { selectClassId, useSelectedClassId } from "@/lib/student";
 import { useResource } from "@/lib/useResource";
 
@@ -145,7 +145,8 @@ export default function StudentHomePage() {
 
             <ul className="flex flex-col gap-3">
               {list.map((activity) => {
-                const TypeIcon = ACTIVITY_TYPE_ICONS[activity.type];
+                const types = activityQuestionTypes(activity);
+                const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
                 return (
                   <li key={activity._id}>
                     <InteractiveCard className="flex flex-wrap items-center gap-4 p-5">
@@ -164,11 +165,13 @@ export default function StudentHomePage() {
                             {activity.description}
                           </span>
                         )}
-                        <span>
-                          <Badge tone="student">
-                            {ACTIVITY_TYPE_LABELS[activity.type]}
-                          </Badge>
-                        </span>
+                        <div className="flex flex-wrap gap-2">
+                          {types.map((type) => (
+                            <Badge key={type} tone="student">
+                              {QUESTION_TYPE_LABELS[type]}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
                       <ButtonLink
                         className="ml-auto"

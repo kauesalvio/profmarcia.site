@@ -1,36 +1,50 @@
-import type { ActivityType, QuestionType } from "./types";
+import type { Activity, Question, QuestionType } from "./types";
 
 /** Labels do frontend - ver specs/frontend/information-architecture.md (seção 8). */
-export const ACTIVITY_TYPE_LABELS: Record<ActivityType, string> = {
+export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
+  text: "Resposta curta",
+  textarea: "Resposta longa",
   quiz: "Quiz",
-  form: "Formulário",
   crossword: "Cruzadinha",
   wordsearch: "Caça-palavra",
   memory: "Jogo da Memória",
 };
 
-export const ACTIVITY_TYPE_DESCRIPTIONS: Record<ActivityType, string> = {
-  quiz: "Perguntas com alternativas e resposta correta.",
-  form: "Campos de texto livre para o aluno responder.",
-  crossword: "Palavras cruzadas geradas a partir de dicas.",
-  wordsearch: "Grade com palavras a serem encontradas.",
+export const QUESTION_TYPE_DESCRIPTIONS: Record<QuestionType, string> = {
+  text: "Campo de texto curto para o aluno responder.",
+  textarea: "Campo de texto longo para respostas com mais detalhes.",
+  quiz: "Pergunta com alternativas e resposta correta.",
+  crossword: "Palavras cruzadas montadas a partir das palavras e dicas.",
+  wordsearch: "Grade com palavras escondidas para o aluno encontrar.",
   memory: "Jogo de cartas com pares.",
 };
 
 /** Tipos disponíveis no MVP; os demais ficam para versões futuras. */
-export const AVAILABLE_ACTIVITY_TYPES: ActivityType[] = ["quiz", "form"];
-export const FUTURE_ACTIVITY_TYPES: ActivityType[] = [
+export const AVAILABLE_QUESTION_TYPES: QuestionType[] = [
+  "text",
+  "textarea",
+  "quiz",
   "crossword",
   "wordsearch",
-  "memory",
 ];
+export const FUTURE_QUESTION_TYPES: QuestionType[] = ["memory"];
 
-export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
-  text: "Resposta curta",
-  textarea: "Resposta longa",
-  single: "Alternativa única",
-  multiple: "Múltiplas alternativas",
-};
+/** Tipos usados por uma atividade, sem repetição, para exibir nos resumos. */
+export function activityQuestionTypes(activity: Activity): QuestionType[] {
+  const types = (activity.config?.questions ?? [])
+    .map((question) => question.type)
+    .filter((type) => type in QUESTION_TYPE_LABELS);
+  return [...new Set(types)];
+}
+
+/** Resposta esperada de uma pergunta, quando existe gabarito. */
+export function expectedAnswer(question: Question): string | null {
+  if (question.type === "quiz") return question.correctAnswer;
+  if (question.type === "crossword" || question.type === "wordsearch") {
+    return question.words.map((item) => item.word.toUpperCase()).join(", ");
+  }
+  return null;
+}
 
 /** Anos escolares atendidos pelo site: 1º ao 9º ano. */
 export const SCHOOL_YEARS = [1, 2, 3, 4, 5, 6, 7, 8, 9] as const;

@@ -7,16 +7,21 @@ import { Badge, InteractiveCard } from "@/components/ui/Card";
 import { Select } from "@/components/ui/Field";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
 import {
-  ACTIVITY_TYPE_ICONS,
   IconChart,
   IconClipboard,
   IconClock,
   IconPencil,
   IconPlus,
   IconTrash,
+  QUESTION_TYPE_ICONS,
 } from "@/components/ui/Icons";
 import { activitiesApi, classesApi } from "@/lib/api";
-import { ACTIVITY_TYPE_LABELS, formatDateTime, yearLabel } from "@/lib/labels";
+import {
+  QUESTION_TYPE_LABELS,
+  activityQuestionTypes,
+  formatDateTime,
+  yearLabel,
+} from "@/lib/labels";
 import { useResource } from "@/lib/useResource";
 
 export default function ActivitiesPage() {
@@ -117,7 +122,8 @@ export default function ActivitiesPage() {
       {!activities.loading && !activities.error && list.length > 0 && (
         <ul className="flex flex-col gap-3">
           {list.map((activity) => {
-            const TypeIcon = ACTIVITY_TYPE_ICONS[activity.type];
+            const types = activityQuestionTypes(activity);
+            const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
                 <InteractiveCard className="flex flex-col gap-4 p-5">
@@ -133,7 +139,11 @@ export default function ActivitiesPage() {
                         <h2 className="text-lg font-semibold text-gray-900">
                           {activity.title}
                         </h2>
-                        <Badge tone="primary">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
+                        {types.map((type) => (
+                          <Badge key={type} tone="primary">
+                            {QUESTION_TYPE_LABELS[type]}
+                          </Badge>
+                        ))}
                       </div>
                       {activity.description && (
                         <p className="text-sm text-gray-500">{activity.description}</p>

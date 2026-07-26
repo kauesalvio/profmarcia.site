@@ -48,13 +48,19 @@ async function main() {
     method: "POST",
     cookie,
     body: {
-      title: "Quiz Integração",
+      title: "Atividade Integração",
       description: "Teste",
-      type: "quiz",
       classIds: [c4],
       config: {
         questions: [
-          { label: "2+2?", type: "single", options: ["3", "4", "5"], correctAnswer: "4" },
+          { label: "2+2?", type: "quiz", options: ["3", "4", "5"], correctAnswer: "4" },
+          { label: "O que você aprendeu?", type: "text" },
+          {
+            label: "Caça-palavras",
+            type: "wordsearch",
+            words: [{ word: "MOUSE" }, { word: "TECLADO", clue: "Serve para digitar" }],
+            gridSize: 10,
+          },
         ],
         settings: {},
       },
@@ -72,8 +78,11 @@ async function main() {
     body: {
       activityId: activity.body._id,
       classIds: [c4],
-      studentName: "Maria",
-      answers: [{ question: "2+2?", answer: "4" }],
+      answers: [
+        { question: "2+2?", answer: "4" },
+        { question: "O que você aprendeu?", answer: "Sobre o teclado" },
+        { question: "Caça-palavras", answer: "MOUSE, TECLADO" },
+      ],
     },
   });
   console.log("status", response.status, response.body);

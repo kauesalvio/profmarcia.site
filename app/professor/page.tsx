@@ -21,7 +21,7 @@ const ACTIONS = [
   {
     href: "/professor/atividades/nova",
     title: "Criar atividade",
-    description: "Monte um quiz ou formulário e escolha para quais anos enviar.",
+    description: "Misture quiz, formulário, cruzadinha e caça-palavra em uma atividade.",
     icon: IconPlus,
     accent: "bg-student-light text-student-dark",
   },
@@ -35,7 +35,7 @@ const ACTIONS = [
   {
     href: "/professor/analise",
     title: "Ver respostas",
-    description: "Acompanhe quem respondeu e o que cada aluno respondeu.",
+    description: "Acompanhe as respostas enviadas em cada atividade.",
     icon: IconChart,
     accent: "bg-warning-bg text-gray-900",
   },

@@ -19,10 +19,8 @@ async function seed() {
     await classes.createIndex({ year: 1 });
     await classes.createIndex({ name: 1 }, { unique: true });
     await activities.createIndex({ classIds: 1 });
-    await activities.createIndex({ type: 1 });
     await activities.createIndex({ createdAt: -1 });
     await responses.createIndex({ activityId: 1 });
-    await responses.createIndex({ studentName: 1 });
     await responses.createIndex({ submittedAt: -1 });
 
     const existing = await teachers.findOne({ email: process.env.TEACHER_EMAIL ?? "professora@escola.com" });

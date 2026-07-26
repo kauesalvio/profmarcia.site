@@ -35,7 +35,7 @@ try {
   });
 
   // Preencher enunciado
-  await page.type('input[id^="quiz-label-"]', 'Qual a capital do Brasil?');
+  await page.type('input[id^="question-label-"]', 'Qual a capital do Brasil?');
 
   // Preencher alternativas
   const optionInputs = await page.$$('input[placeholder^="Alternativa"]');
