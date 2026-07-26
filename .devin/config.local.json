@@ -2,7 +2,22 @@
   "permissions": {
     "allow": [
       "Exec(git)",
-      "Exec(gh)"
+      "Exec(gh)",
+      "Exec(winget install)",
+      "Exec(Get-ChildItem)",
+      "Exec(\"C:\\Program Files\\GitHub CLI\\gh.exe\" auth)",
+      "Exec(mkdir)",
+      "Exec(Select-Object)",
+      "Exec(node)",
+      "Exec(npm)",
+      "Exec(Get-Command)",
+      "Exec(Format-Table)",
+      "Exec(\"C:\\Program Files\\nodejs;\")",
+      "Exec(npx)",
+      "Exec($env:TEMP\\ic-scaffold)",
+      "Exec(Get-Content)",
+      "Exec(Test-Path)",
+      "Exec(docker)"
     ]
   }
 }

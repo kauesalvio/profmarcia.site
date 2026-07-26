@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+/* Design tokens - ver specs/frontend/design-tokens.md */
+@theme {
+  --font-sans: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+
+  --color-primary: #2563eb;
+  --color-primary-dark: #1d4ed8;
+  --color-primary-light: #dbeafe;
+
+  --color-student: #10b981;
+  --color-student-dark: #059669;
+  --color-student-light: #d1fae5;
+
+  --color-success: #22c55e;
+  --color-success-bg: #dcfce7;
+  --color-warning: #f59e0b;
+  --color-warning-bg: #fef3c7;
+  --color-error: #ef4444;
+  --color-error-bg: #fee2e2;
+  --color-info: #3b82f6;
+  --color-info-bg: #dbeafe;
+
+  --text-3xl: 2rem;
+  --text-3xl--line-height: 1.25;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  --z-index-dropdown: 10;
+  --z-index-sticky: 20;
+  --z-index-modal: 30;
+  --z-index-tooltip: 40;
+}
+
+body {
+  background: var(--color-gray-50);
+  color: var(--color-gray-700);
+  font-family: var(--font-sans);
+  line-height: 1.5;
+}
+
+/* Foco visível em todos os elementos interativos (acessibilidade) */
+@layer base {
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+}
