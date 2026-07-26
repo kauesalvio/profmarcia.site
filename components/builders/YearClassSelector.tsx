@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { IconCheck } from "@/components/ui/Icons";
 import { yearLabel } from "@/lib/labels";
 import type { SchoolClass } from "@/lib/types";
 
@@ -21,7 +22,7 @@ export function YearClassSelector({
 
   if (classes.length === 0) {
     return (
-      <div className="rounded-md border border-dashed border-gray-300 bg-white p-4 text-sm text-gray-500">
+      <div className="rounded-xl border-2 border-dashed border-gray-200 bg-white p-5 text-sm text-gray-500">
         Nenhuma turma cadastrada.{" "}
         <Link href="/professor/classes/nova" className="font-semibold text-primary underline">
           Crie a primeira turma
@@ -46,19 +47,27 @@ export function YearClassSelector({
           return (
             <label
               key={schoolClass._id}
-              className={`flex min-h-11 cursor-pointer items-center gap-3 rounded-md border px-4 py-2 transition-colors duration-200 ${
+              className={`flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-2.5 transition-all duration-200 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${
                 checked
-                  ? "border-primary bg-primary-light"
-                  : "border-gray-300 bg-white hover:bg-gray-100"
+                  ? "border-primary bg-primary-light/50 shadow-sm"
+                  : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
               }`}
             >
               <input
                 type="checkbox"
-                className="size-4 accent-primary"
+                className="sr-only"
                 checked={checked}
                 onChange={() => toggle(schoolClass._id)}
               />
-              <span className="text-base text-gray-900">{schoolClass.name}</span>
+              <span
+                aria-hidden
+                className={`grid size-5 shrink-0 place-items-center rounded-md border-2 text-white transition-colors duration-200 ${
+                  checked ? "border-primary bg-primary" : "border-gray-300 bg-white"
+                }`}
+              >
+                {checked && <IconCheck size={12} strokeWidth={3} />}
+              </span>
+              <span className="text-base font-medium text-gray-900">{schoolClass.name}</span>
               <span className="ml-auto text-sm text-gray-500">
                 {yearLabel(schoolClass.year)}
               </span>

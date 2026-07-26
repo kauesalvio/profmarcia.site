@@ -33,21 +33,29 @@ export function LayoutProfessor({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <>
+    <div className="ambient-professor flex flex-1 flex-col">
       <Header
         variant="professor"
         action={
           <>
-            <span className="hidden text-sm text-gray-500 sm:inline">{session.name}</span>
+            <span className="hidden items-center gap-2 text-sm text-gray-500 sm:flex">
+              <span
+                aria-hidden
+                className="grid size-8 place-items-center rounded-full bg-primary-light text-xs font-bold text-primary-dark"
+              >
+                {session.name.trim().charAt(0).toUpperCase()}
+              </span>
+              {session.name}
+            </span>
             <Button variant="ghost" onClick={handleSignOut}>
               Sair
             </Button>
           </>
         }
       />
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:py-10">
         {children}
       </main>
-    </>
+    </div>
   );
 }

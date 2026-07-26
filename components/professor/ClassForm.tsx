@@ -39,7 +39,7 @@ export function ClassForm({ schoolClass }: { schoolClass?: SchoolClass }) {
   }
 
   return (
-    <Card className="p-5">
+    <Card className="max-w-lg p-6">
       <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
         {error && <Alert tone="error">{error}</Alert>}
 

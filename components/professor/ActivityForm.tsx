@@ -95,10 +95,12 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-8" noValidate>
       {error && <Alert tone="error">{error}</Alert>}
 
-      <Card className="flex flex-col gap-5 p-5">
+      <section className="flex flex-col gap-3">
+        <StepHeading step={1} title="Informações básicas" />
+        <Card className="flex flex-col gap-5 p-5 sm:p-6">
         <Field label="Título" htmlFor="title" required>
           <Input
             id="title"
@@ -120,39 +122,47 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
             onChange={(e) => setDescription(e.target.value)}
           />
         </Field>
-      </Card>
+        </Card>
+      </section>
 
-      <Card className="p-5">
-        <ActivityTypeSelector value={type} onChange={handleTypeChange} />
-      </Card>
+      <section className="flex flex-col gap-3">
+        <StepHeading step={2} title="Tipo de dinâmica" />
+        <Card className="p-5 sm:p-6">
+          <ActivityTypeSelector value={type} onChange={handleTypeChange} />
+        </Card>
+      </section>
 
-      <Card className="p-5">
-        {classes.loading && <Spinner label="Carregando turmas..." />}
-        {classes.error && !classes.loading && (
-          <Alert
-            tone="error"
-            action={
-              <Button variant="secondary" onClick={classes.reload}>
-                Tentar novamente
-              </Button>
-            }
-          >
-            Não foi possível carregar as turmas.
-          </Alert>
-        )}
-        {!classes.loading && !classes.error && (
-          <YearClassSelector
-            classes={classes.data ?? []}
-            selected={classIds}
-            onChange={setClassIds}
-          />
-        )}
-      </Card>
+      <section className="flex flex-col gap-3">
+        <StepHeading step={3} title="Distribuição" />
+        <Card className="p-5 sm:p-6">
+          {classes.loading && <Spinner label="Carregando turmas..." />}
+          {classes.error && !classes.loading && (
+            <Alert
+              tone="error"
+              action={
+                <Button variant="secondary" onClick={classes.reload}>
+                  Tentar novamente
+                </Button>
+              }
+            >
+              Não foi possível carregar as turmas.
+            </Alert>
+          )}
+          {!classes.loading && !classes.error && (
+            <YearClassSelector
+              classes={classes.data ?? []}
+              selected={classIds}
+              onChange={setClassIds}
+            />
+          )}
+        </Card>
+      </section>
 
-      <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold text-gray-900">
-          {type === "quiz" ? "Perguntas do quiz" : "Campos do formulário"}
-        </h2>
+      <section className="flex flex-col gap-3">
+        <StepHeading
+          step={4}
+          title={type === "quiz" ? "Perguntas do quiz" : "Campos do formulário"}
+        />
         {type === "quiz" ? (
           <QuizBuilder questions={questions} onChange={setQuestions} />
         ) : (
@@ -160,7 +170,7 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
         )}
       </section>
 
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-3 border-t border-gray-200 pt-6">
         <Button type="submit" size="lg" disabled={saving}>
           {saving ? "Salvando..." : "Salvar atividade"}
         </Button>
@@ -169,5 +179,19 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
         </ButtonLink>
       </div>
     </form>
+  );
+}
+
+function StepHeading({ step, title }: { step: number; title: string }) {
+  return (
+    <h2 className="flex items-center gap-3 text-xl font-semibold text-gray-900">
+      <span
+        aria-hidden
+        className="grid size-8 shrink-0 place-items-center rounded-full bg-primary text-sm font-bold text-white shadow-sm"
+      >
+        {step}
+      </span>
+      {title}
+    </h2>
   );
 }

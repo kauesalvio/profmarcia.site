@@ -18,7 +18,11 @@ export default function EditClassPage() {
 
   return (
     <>
-      <PageHeader title="Editar turma" description="Atualize o nome ou o ano da turma." />
+      <PageHeader
+        eyebrow="Turmas"
+        title="Editar turma"
+        description="Atualize o nome ou o ano da turma."
+      />
 
       {loading && <Spinner label="Carregando turma..." />}
 

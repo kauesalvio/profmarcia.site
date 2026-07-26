@@ -36,19 +36,30 @@ export function Form({ activity, submitting, onSubmit }: ActivityPlayerProps) {
       {questions.map((question, index) => {
         const id = `answer-${index}`;
         const value = answers[index] ?? "";
+        const filled = value.trim().length > 0;
         const onChange = (
           event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
         ) => setAnswers({ ...answers, [index]: event.target.value });
 
         return (
-          <Card key={index} className="p-5">
-            <Field label={`${index + 1}. ${question.label}`} htmlFor={id} required>
-              {question.type === "textarea" ? (
-                <Textarea id={id} value={value} onChange={onChange} />
-              ) : (
-                <Input id={id} value={value} onChange={onChange} />
-              )}
-            </Field>
+          <Card key={index} className="flex gap-4 p-5 sm:p-6">
+            <span
+              aria-hidden
+              className={`grid size-8 shrink-0 place-items-center rounded-lg text-sm font-bold transition-colors duration-200 ${
+                filled ? "bg-student text-white" : "bg-student-light text-student-dark"
+              }`}
+            >
+              {index + 1}
+            </span>
+            <div className="flex-1">
+              <Field label={question.label} htmlFor={id} required>
+                {question.type === "textarea" ? (
+                  <Textarea id={id} value={value} onChange={onChange} />
+                ) : (
+                  <Input id={id} value={value} onChange={onChange} />
+                )}
+              </Field>
+            </div>
           </Card>
         );
       })}

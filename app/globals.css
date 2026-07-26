@@ -33,10 +33,27 @@
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 
+  /* Sombras suaves derivadas (blur largo, opacidade baixa) para cards elevados */
+  --shadow-soft: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px -12px rgba(17, 24, 39, 0.12);
+  --shadow-soft-lg: 0 2px 4px rgba(17, 24, 39, 0.04), 0 16px 40px -16px rgba(17, 24, 39, 0.18);
+
   --z-index-dropdown: 10;
   --z-index-sticky: 20;
   --z-index-modal: 30;
   --z-index-tooltip: 40;
+
+  --animate-rise: rise 0.4s ease both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 body {
@@ -46,10 +63,66 @@ body {
   line-height: 1.5;
 }
 
+::selection {
+  background: var(--color-primary-light);
+  color: var(--color-gray-900);
+}
+
+/* Fundos ambientais por área: azul (professora) e verde (aluno). */
+.ambient-professor {
+  background-color: var(--color-gray-50);
+  background-image:
+    radial-gradient(
+      48rem 24rem at 85% -8rem,
+      color-mix(in srgb, var(--color-primary) 9%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      36rem 20rem at -10% 0%,
+      color-mix(in srgb, var(--color-primary-light) 45%, transparent),
+      transparent 70%
+    );
+}
+
+.ambient-aluno {
+  background-color: var(--color-gray-50);
+  background-image:
+    radial-gradient(
+      48rem 24rem at 85% -8rem,
+      color-mix(in srgb, var(--color-student) 10%, transparent),
+      transparent 70%
+    ),
+    radial-gradient(
+      36rem 20rem at -10% 0%,
+      color-mix(in srgb, var(--color-student-light) 50%, transparent),
+      transparent 70%
+    );
+}
+
+/* Textura pontilhada sutil para heros e blocos de destaque. */
+.dot-grid {
+  background-image: radial-gradient(
+    color-mix(in srgb, currentColor 14%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 1.125rem 1.125rem;
+}
+
 /* Foco visível em todos os elementos interativos (acessibilidade) */
 @layer base {
-  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }

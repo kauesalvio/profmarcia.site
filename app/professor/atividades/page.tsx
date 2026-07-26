@@ -3,9 +3,18 @@
 import { useState } from "react";
 import { PageHeader } from "@/components/layout/Header";
 import { Button, ButtonLink } from "@/components/ui/Button";
-import { Badge, Card } from "@/components/ui/Card";
-import { Field, Select } from "@/components/ui/Field";
+import { Badge, InteractiveCard } from "@/components/ui/Card";
+import { Select } from "@/components/ui/Field";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
+import {
+  ACTIVITY_TYPE_ICONS,
+  IconChart,
+  IconClipboard,
+  IconClock,
+  IconPencil,
+  IconPlus,
+  IconTrash,
+} from "@/components/ui/Icons";
 import { activitiesApi, classesApi } from "@/lib/api";
 import { ACTIVITY_TYPE_LABELS, formatDateTime, yearLabel } from "@/lib/labels";
 import { useResource } from "@/lib/useResource";
@@ -43,29 +52,39 @@ export default function ActivitiesPage() {
   return (
     <>
       <PageHeader
+        eyebrow="Gerenciamento"
         title="Atividades"
         description="Atividades criadas e os anos em que estão disponíveis."
-        action={<ButtonLink href="/professor/atividades/nova">Nova atividade</ButtonLink>}
+        action={
+          <ButtonLink href="/professor/atividades/nova">
+            <IconPlus size={18} />
+            Nova atividade
+          </ButtonLink>
+        }
       />
 
       {feedback && <Alert tone="success">{feedback}</Alert>}
 
-      <Card className="max-w-sm">
-        <Field label="Filtrar por ano/turma" htmlFor="filter-class">
-          <Select
-            id="filter-class"
-            value={classId}
-            onChange={(e) => setClassId(e.target.value)}
-          >
-            <option value="">Todas as turmas</option>
-            {(classes.data ?? []).map((item) => (
-              <option key={item._id} value={item._id}>
-                {item.name} — {yearLabel(item.year)}
-              </option>
-            ))}
-          </Select>
-        </Field>
-      </Card>
+      <div className="flex max-w-sm items-center gap-3">
+        <label
+          htmlFor="filter-class"
+          className="shrink-0 text-sm font-semibold text-gray-900"
+        >
+          Filtrar por
+        </label>
+        <Select
+          id="filter-class"
+          value={classId}
+          onChange={(e) => setClassId(e.target.value)}
+        >
+          <option value="">Todas as turmas</option>
+          {(classes.data ?? []).map((item) => (
+            <option key={item._id} value={item._id}>
+              {item.name} — {yearLabel(item.year)}
+            </option>
+          ))}
+        </Select>
+      </div>
 
       {activities.loading && <Spinner label="Carregando atividades..." />}
 
@@ -84,61 +103,85 @@ export default function ActivitiesPage() {
 
       {!activities.loading && !activities.error && list.length === 0 && (
         <EmptyState
+          icon={<IconClipboard size={28} />}
           message="Nenhuma atividade criada."
-          action={<ButtonLink href="/professor/atividades/nova">Nova atividade</ButtonLink>}
+          action={
+            <ButtonLink href="/professor/atividades/nova">
+              <IconPlus size={18} />
+              Nova atividade
+            </ButtonLink>
+          }
         />
       )}
 
       {!activities.loading && !activities.error && list.length > 0 && (
         <ul className="flex flex-col gap-3">
-          {list.map((activity) => (
-            <li key={activity._id}>
-              <Card className="flex flex-col gap-4">
-                <div className="flex flex-wrap items-start gap-3">
-                  <div className="flex flex-col gap-1">
-                    <h2 className="text-lg font-semibold text-gray-900">{activity.title}</h2>
-                    {activity.description && (
-                      <p className="text-sm text-gray-500">{activity.description}</p>
-                    )}
-                  </div>
-                  <Badge tone="primary">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-sm text-gray-500">Disponível para:</span>
-                  {activity.classIds.map((id) => (
-                    <Badge key={id}>
-                      {classNames.get(id)?.name ?? "Turma removida"}
-                    </Badge>
-                  ))}
-                </div>
-
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-xs text-gray-500">
-                    Criada em {formatDateTime(activity.createdAt)}
-                  </span>
-                  <div className="ml-auto flex flex-wrap gap-2">
-                    <ButtonLink href={`/professor/analise/${activity._id}`}>
-                      Ver respostas
-                    </ButtonLink>
-                    <ButtonLink
-                      href={`/professor/atividades/${activity._id}/editar`}
-                      variant="secondary"
+          {list.map((activity) => {
+            const TypeIcon = ACTIVITY_TYPE_ICONS[activity.type];
+            return (
+              <li key={activity._id}>
+                <InteractiveCard className="flex flex-col gap-4 p-5">
+                  <div className="flex flex-wrap items-start gap-4">
+                    <span
+                      aria-hidden
+                      className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary-light text-primary-dark"
                     >
-                      Editar
-                    </ButtonLink>
-                    <Button
-                      variant="danger"
-                      disabled={removingId === activity._id}
-                      onClick={() => void handleRemove(activity._id, activity.title)}
-                    >
-                      {removingId === activity._id ? "Excluindo..." : "Excluir"}
-                    </Button>
+                      <TypeIcon size={22} />
+                    </span>
+                    <div className="flex min-w-0 flex-1 flex-col gap-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <h2 className="text-lg font-semibold text-gray-900">
+                          {activity.title}
+                        </h2>
+                        <Badge tone="primary">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
+                      </div>
+                      {activity.description && (
+                        <p className="text-sm text-gray-500">{activity.description}</p>
+                      )}
+                      <div className="mt-1 flex flex-wrap items-center gap-2">
+                        <span className="text-sm text-gray-500">Disponível para:</span>
+                        {activity.classIds.map((id) => (
+                          <Badge key={id}>
+                            {classNames.get(id)?.name ?? "Turma removida"}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </Card>
-            </li>
-          ))}
+
+                  <div className="flex flex-wrap items-center gap-2 border-t border-gray-100 pt-4">
+                    <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                      <IconClock size={14} />
+                      Criada em {formatDateTime(activity.createdAt)}
+                    </span>
+                    <div className="ml-auto flex flex-wrap gap-2">
+                      <ButtonLink href={`/professor/analise/${activity._id}`} size="sm">
+                        <IconChart size={16} />
+                        Ver respostas
+                      </ButtonLink>
+                      <ButtonLink
+                        href={`/professor/atividades/${activity._id}/editar`}
+                        variant="secondary"
+                        size="sm"
+                      >
+                        <IconPencil size={16} />
+                        Editar
+                      </ButtonLink>
+                      <Button
+                        variant="danger"
+                        size="sm"
+                        disabled={removingId === activity._id}
+                        onClick={() => void handleRemove(activity._id, activity.title)}
+                      >
+                        <IconTrash size={16} />
+                        {removingId === activity._id ? "Excluindo..." : "Excluir"}
+                      </Button>
+                    </div>
+                  </div>
+                </InteractiveCard>
+              </li>
+            );
+          })}
         </ul>
       )}
     </>

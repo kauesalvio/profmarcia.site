@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 
 const CONTROL =
-  "w-full min-h-11 rounded-md border border-gray-300 bg-white px-3 py-2 text-base text-gray-900 shadow-sm transition-colors duration-200 placeholder:text-gray-500 disabled:bg-gray-100";
+  "w-full min-h-11 rounded-lg border border-gray-300 bg-white px-3.5 py-2 text-base text-gray-900 shadow-sm transition-colors duration-200 placeholder:text-gray-400 hover:border-gray-400 focus-visible:border-primary disabled:bg-gray-100 disabled:text-gray-500";
 
 export function Field({
   label,
@@ -19,14 +19,18 @@ export function Field({
   children: ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       <label htmlFor={htmlFor} className="text-sm font-semibold text-gray-900">
         {label}
         {required && <span className="text-error"> *</span>}
       </label>
       {hint && <p className="text-sm text-gray-500">{hint}</p>}
       {children}
-      {error && <p className="text-sm font-medium text-error">{error}</p>}
+      {error && (
+        <p className="text-sm font-medium text-error" role="alert">
+          {error}
+        </p>
+      )}
     </div>
   );
 }

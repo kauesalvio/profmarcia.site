@@ -14,7 +14,11 @@ export default function EditActivityPage() {
 
   return (
     <>
-      <PageHeader title="Editar atividade" description="Atualize os dados e as perguntas." />
+      <PageHeader
+        eyebrow="Atividades"
+        title="Editar atividade"
+        description="Atualize os dados e as perguntas."
+      />
 
       {loading && <Spinner label="Carregando atividade..." />}
 

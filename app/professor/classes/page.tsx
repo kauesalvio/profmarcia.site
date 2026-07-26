@@ -3,8 +3,9 @@
 import { useState } from "react";
 import { PageHeader } from "@/components/layout/Header";
 import { Button, ButtonLink } from "@/components/ui/Button";
-import { Badge, Card } from "@/components/ui/Card";
+import { InteractiveCard } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
+import { IconPencil, IconPlus, IconTrash, IconUsers } from "@/components/ui/Icons";
 import { classesApi } from "@/lib/api";
 import { yearLabel } from "@/lib/labels";
 import { useResource } from "@/lib/useResource";
@@ -30,14 +31,22 @@ export default function ClassesPage() {
     }
   }
 
-  const classes = data ?? [];
+  const classes = [...(data ?? [])].sort(
+    (a, b) => a.year - b.year || a.name.localeCompare(b.name),
+  );
 
   return (
     <>
       <PageHeader
+        eyebrow="Gerenciamento"
         title="Turmas"
         description="Turmas do 1º ao 9º ano usadas na distribuição das atividades."
-        action={<ButtonLink href="/professor/classes/nova">Nova turma</ButtonLink>}
+        action={
+          <ButtonLink href="/professor/classes/nova">
+            <IconPlus size={18} />
+            Nova turma
+          </ButtonLink>
+        }
       />
 
       {feedback && <Alert tone="success">{feedback}</Alert>}
@@ -59,38 +68,58 @@ export default function ClassesPage() {
 
       {!loading && !error && classes.length === 0 && (
         <EmptyState
+          icon={<IconUsers size={28} />}
           message="Nenhuma turma cadastrada. Crie a primeira turma."
-          action={<ButtonLink href="/professor/classes/nova">Nova turma</ButtonLink>}
+          action={
+            <ButtonLink href="/professor/classes/nova">
+              <IconPlus size={18} />
+              Nova turma
+            </ButtonLink>
+          }
         />
       )}
 
       {!loading && !error && classes.length > 0 && (
-        <ul className="flex flex-col gap-3">
+        <ul className="grid gap-3 sm:grid-cols-2">
           {classes.map((schoolClass) => (
             <li key={schoolClass._id}>
-              <Card className="flex flex-wrap items-center gap-4">
-                <div className="flex flex-col gap-1">
-                  <span className="text-lg font-semibold text-gray-900">
+              <InteractiveCard className="flex items-center gap-4 p-5">
+                <span
+                  aria-hidden
+                  className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary-light text-lg font-bold text-primary-dark"
+                >
+                  {schoolClass.year}º
+                </span>
+                <div className="flex min-w-0 flex-col">
+                  <span className="truncate text-lg font-semibold text-gray-900">
                     {schoolClass.name}
                   </span>
-                  <Badge tone="primary">{yearLabel(schoolClass.year)}</Badge>
+                  <span className="text-sm text-gray-500">{yearLabel(schoolClass.year)}</span>
                 </div>
-                <div className="ml-auto flex flex-wrap gap-2">
+                <div className="ml-auto flex shrink-0 gap-2">
                   <ButtonLink
                     href={`/professor/classes/${schoolClass._id}/editar`}
                     variant="secondary"
+                    size="sm"
+                    aria-label={`Editar turma ${schoolClass.name}`}
                   >
-                    Editar
+                    <IconPencil size={16} />
+                    <span className="hidden sm:inline">Editar</span>
                   </ButtonLink>
                   <Button
                     variant="danger"
+                    size="sm"
                     disabled={removingId === schoolClass._id}
+                    aria-label={`Excluir turma ${schoolClass.name}`}
                     onClick={() => void handleRemove(schoolClass._id, schoolClass.name)}
                   >
-                    {removingId === schoolClass._id ? "Excluindo..." : "Excluir"}
+                    <IconTrash size={16} />
+                    <span className="hidden sm:inline">
+                      {removingId === schoolClass._id ? "Excluindo..." : "Excluir"}
+                    </span>
                   </Button>
                 </div>
-              </Card>
+              </InteractiveCard>
             </li>
           ))}
         </ul>

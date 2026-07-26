@@ -8,6 +8,7 @@ import { Button, ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
 import { Field, Input } from "@/components/ui/Field";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
+import { ACTIVITY_TYPE_ICONS, IconCheck, IconClipboard } from "@/components/ui/Icons";
 import { activitiesApi, responsesApi } from "@/lib/api";
 import { ACTIVITY_TYPE_LABELS } from "@/lib/labels";
 import { getSelectedClassId, saveStudentName, useStudentName } from "@/lib/student";
@@ -67,10 +68,12 @@ export default function StudentActivityPage() {
     }
   }
 
+  const TypeIcon = activity ? ACTIVITY_TYPE_ICONS[activity.type] : null;
+
   return (
-    <>
+    <div className="ambient-aluno flex flex-1 flex-col">
       <Header variant="aluno" />
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8">
+      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8 sm:py-10">
         {loading && <Spinner label="Carregando atividade..." />}
 
         {error && !loading && (
@@ -88,6 +91,7 @@ export default function StudentActivityPage() {
 
         {!loading && !error && !activity && (
           <EmptyState
+            icon={<IconClipboard size={28} />}
             message="Atividade não encontrada."
             action={
               <ButtonLink href="/aluno" variant="student">
@@ -98,17 +102,33 @@ export default function StudentActivityPage() {
         )}
 
         {activity && step !== "done" && (
-          <div className="flex flex-col gap-2">
-            <h1 className="text-3xl font-bold text-gray-900">{activity.title}</h1>
-            {activity.description && (
-              <p className="text-base leading-relaxed text-gray-700">{activity.description}</p>
+          <div className="flex animate-rise items-start gap-4">
+            {TypeIcon && (
+              <span
+                aria-hidden
+                className="grid size-12 shrink-0 place-items-center rounded-xl bg-student-light text-student-dark"
+              >
+                <TypeIcon size={24} />
+              </span>
             )}
-            <Badge tone="student">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
+            <div className="flex flex-col gap-1.5">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+                {activity.title}
+              </h1>
+              {activity.description && (
+                <p className="text-base leading-relaxed text-gray-700">
+                  {activity.description}
+                </p>
+              )}
+              <span>
+                <Badge tone="student">{ACTIVITY_TYPE_LABELS[activity.type]}</Badge>
+              </span>
+            </div>
           </div>
         )}
 
         {activity && step === "name" && (
-          <Card className="p-5">
+          <Card className="animate-rise p-6">
             <form onSubmit={startActivity} className="flex flex-col gap-5" noValidate>
               <Field
                 label="Seu nome"
@@ -145,23 +165,27 @@ export default function StudentActivityPage() {
         )}
 
         {step === "done" && (
-          <Card className="flex flex-col items-center gap-4 p-8 text-center">
-            <span
-              aria-hidden
-              className="grid size-14 place-items-center rounded-full bg-success-bg text-2xl font-bold text-success"
-            >
-              ✓
-            </span>
-            <h1 className="text-2xl font-semibold text-gray-900">Resposta enviada!</h1>
-            <p className="text-base text-gray-500">
-              Obrigado, {name.trim()}. Sua resposta chegou para a professora.
-            </p>
-            <ButtonLink href="/aluno" variant="student" size="lg">
-              Voltar para as atividades
-            </ButtonLink>
+          <Card className="dot-grid relative animate-rise overflow-hidden p-10 text-center text-student">
+            <div className="relative flex flex-col items-center gap-4 text-gray-700">
+              <span
+                aria-hidden
+                className="grid size-16 place-items-center rounded-full bg-gradient-to-br from-student to-student-dark text-white shadow-soft-lg"
+              >
+                <IconCheck size={32} strokeWidth={2.5} />
+              </span>
+              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+                Resposta enviada!
+              </h1>
+              <p className="max-w-sm text-base text-gray-500">
+                Obrigado, {name.trim()}. Sua resposta chegou para a professora.
+              </p>
+              <ButtonLink href="/aluno" variant="student" size="lg" className="mt-2">
+                Voltar para as atividades
+              </ButtonLink>
+            </div>
           </Card>
         )}
       </main>
-    </>
+    </div>
   );
 }

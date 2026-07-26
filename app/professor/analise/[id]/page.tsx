@@ -5,9 +5,11 @@ import { PageHeader } from "@/components/layout/Header";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
+import { IconChart, IconChevronDown, IconClock, IconUsers } from "@/components/ui/Icons";
 import { activitiesApi, responsesApi } from "@/lib/api";
 import { ACTIVITY_TYPE_LABELS, formatDateTime } from "@/lib/labels";
 import { useResource } from "@/lib/useResource";
+import type { Answer } from "@/lib/types";
 
 export default function AnalysisPage() {
   const { id } = useParams<{ id: string }>();
@@ -20,21 +22,61 @@ export default function AnalysisPage() {
       .filter((question) => question.correctAnswer)
       .map((question) => [question.label, question.correctAnswer]),
   );
+  const isGraded = correctAnswers.size > 0;
+
+  function scoreOf(answers: Answer[]) {
+    return answers.filter(
+      (answer) => correctAnswers.get(answer.question) === answer.answer,
+    ).length;
+  }
 
   return (
     <>
       <PageHeader
+        eyebrow="Análise"
         title={activity.data?.title ?? "Respostas da atividade"}
         description={activity.data?.description || undefined}
-        action={<ButtonLink href="/professor/analise" variant="secondary">Trocar atividade</ButtonLink>}
+        action={
+          <ButtonLink href="/professor/analise" variant="secondary">
+            Trocar atividade
+          </ButtonLink>
+        }
       />
 
       {activity.data && (
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge tone="primary">{ACTIVITY_TYPE_LABELS[activity.data.type]}</Badge>
-          <Badge tone="student">
-            {list.length} {list.length === 1 ? "aluno respondeu" : "alunos responderam"}
-          </Badge>
+        <div className="grid gap-3 sm:grid-cols-2 lg:max-w-xl">
+          <Card className="flex items-center gap-3 p-4">
+            <span
+              aria-hidden
+              className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary-light text-primary-dark"
+            >
+              <IconChart size={20} />
+            </span>
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Tipo
+              </span>
+              <span className="text-lg font-bold text-gray-900">
+                {ACTIVITY_TYPE_LABELS[activity.data.type]}
+              </span>
+            </div>
+          </Card>
+          <Card className="flex items-center gap-3 p-4">
+            <span
+              aria-hidden
+              className="grid size-10 shrink-0 place-items-center rounded-lg bg-student-light text-student-dark"
+            >
+              <IconUsers size={20} />
+            </span>
+            <div className="flex flex-col">
+              <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                Respostas
+              </span>
+              <span className="text-lg font-bold text-gray-900">
+                {list.length} {list.length === 1 ? "aluno" : "alunos"}
+              </span>
+            </div>
+          </Card>
         </div>
       )}
 
@@ -54,52 +96,81 @@ export default function AnalysisPage() {
       )}
 
       {!responses.loading && !responses.error && list.length === 0 && (
-        <EmptyState message="Nenhum aluno respondeu esta atividade ainda." />
+        <EmptyState
+          icon={<IconUsers size={28} />}
+          message="Nenhum aluno respondeu esta atividade ainda."
+        />
       )}
 
       {!responses.loading && !responses.error && list.length > 0 && (
         <ul className="flex flex-col gap-3">
-          {list.map((response) => (
-            <li key={response._id}>
-              <Card className="p-0">
-                <details className="group">
-                  <summary className="flex min-h-11 cursor-pointer flex-wrap items-center gap-3 rounded-md p-4">
-                    <span className="text-base font-semibold text-gray-900">
-                      {response.studentName}
-                    </span>
-                    <span className="text-sm text-gray-500">
-                      {formatDateTime(response.submittedAt)}
-                    </span>
-                    <span className="ml-auto text-sm font-medium text-primary">
-                      Ver detalhes
-                    </span>
-                  </summary>
+          {list.map((response) => {
+            const score = isGraded ? scoreOf(response.answers) : null;
+            return (
+              <li key={response._id}>
+                <Card className="p-0">
+                  <details className="group">
+                    <summary className="flex min-h-11 cursor-pointer flex-wrap items-center gap-3 rounded-xl p-4 transition-colors duration-150 hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
+                      <span
+                        aria-hidden
+                        className="grid size-9 shrink-0 place-items-center rounded-full bg-student-light text-sm font-bold text-student-dark"
+                      >
+                        {response.studentName.trim().charAt(0).toUpperCase()}
+                      </span>
+                      <span className="text-base font-semibold text-gray-900">
+                        {response.studentName}
+                      </span>
+                      <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                        <IconClock size={14} />
+                        {formatDateTime(response.submittedAt)}
+                      </span>
+                      {score !== null && (
+                        <Badge tone={score === correctAnswers.size ? "student" : "warning"}>
+                          {score}/{correctAnswers.size} corretas
+                        </Badge>
+                      )}
+                      <IconChevronDown
+                        size={18}
+                        className="ml-auto text-gray-400 transition-transform duration-200 group-open:rotate-180"
+                      />
+                    </summary>
 
-                  <dl className="flex flex-col gap-3 border-t border-gray-200 p-4">
-                    {response.answers.map((answer, index) => {
-                      const expected = correctAnswers.get(answer.question);
-                      const isCorrect = expected ? expected === answer.answer : null;
-                      return (
-                        <div key={index} className="flex flex-col gap-1">
-                          <dt className="text-sm font-semibold text-gray-900">
-                            {answer.question}
-                          </dt>
-                          <dd className="flex flex-wrap items-center gap-2 text-base text-gray-700">
-                            {answer.answer || <span className="text-gray-500">Sem resposta</span>}
-                            {isCorrect !== null && (
-                              <Badge tone={isCorrect ? "student" : "warning"}>
-                                {isCorrect ? "✓ correta" : `✗ esperado: ${expected}`}
-                              </Badge>
-                            )}
-                          </dd>
-                        </div>
-                      );
-                    })}
-                  </dl>
-                </details>
-              </Card>
-            </li>
-          ))}
+                    <dl className="flex flex-col gap-4 border-t border-gray-100 p-5">
+                      {response.answers.map((answer, index) => {
+                        const expected = correctAnswers.get(answer.question);
+                        const isCorrect = expected ? expected === answer.answer : null;
+                        return (
+                          <div key={index} className="flex gap-3">
+                            <span
+                              aria-hidden
+                              className="grid size-6 shrink-0 place-items-center rounded-full bg-gray-100 text-xs font-bold text-gray-500"
+                            >
+                              {index + 1}
+                            </span>
+                            <div className="flex flex-col gap-1">
+                              <dt className="text-sm font-semibold text-gray-900">
+                                {answer.question}
+                              </dt>
+                              <dd className="flex flex-wrap items-center gap-2 text-base text-gray-700">
+                                {answer.answer || (
+                                  <span className="text-gray-400">Sem resposta</span>
+                                )}
+                                {isCorrect !== null && (
+                                  <Badge tone={isCorrect ? "student" : "warning"}>
+                                    {isCorrect ? "✓ correta" : `✗ esperado: ${expected}`}
+                                  </Badge>
+                                )}
+                              </dd>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </dl>
+                  </details>
+                </Card>
+              </li>
+            );
+          })}
         </ul>
       )}
     </>
