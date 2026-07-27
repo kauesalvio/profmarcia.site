@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { Logo } from "@/components/ui/Logo";
 import {
   IconChart,
   IconClipboard,
@@ -27,32 +28,21 @@ export function Header({
   const isProfessor = variant === "professor";
 
   return (
-    <header className="sticky top-0 z-20 border-b border-gray-200/80 bg-white/85 backdrop-blur-md">
+    <header className="sticky top-0 z-20 border-b-4 border-gray-900 bg-white">
       <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
         <Link
           href={isProfessor ? "/professor" : "/aluno"}
-          className="flex items-center gap-2.5 rounded-md text-lg font-bold tracking-tight text-gray-900"
+          className="flex items-center gap-2.5 rounded-md text-gray-900"
         >
           <span
             aria-hidden
-            className={`grid size-9 place-items-center rounded-lg text-white shadow-sm ${
-              isProfessor
-                ? "bg-gradient-to-br from-primary to-primary-dark"
-                : "bg-gradient-to-br from-student to-student-dark"
+            className={`grid size-10 place-items-center rounded-lg border-2 border-gray-900 text-white shadow-sm ${
+              isProfessor ? "bg-primary" : "bg-student"
             }`}
           >
-            <IconMonitor size={20} />
+            <IconMonitor size={22} />
           </span>
-          <span className="leading-tight">
-            Aulas de Informática
-            <span
-              className={`block text-[0.6875rem] font-semibold uppercase tracking-widest ${
-                isProfessor ? "text-primary" : "text-student-dark"
-              }`}
-            >
-              {isProfessor ? "Área da professora" : "Área do aluno"}
-            </span>
-          </span>
+          <Logo area={isProfessor ? "professor" : "aluno"} />
         </Link>
 
         {isProfessor && (
@@ -68,13 +58,13 @@ export function Header({
                   key={link.href}
                   href={link.href}
                   aria-current={active ? "page" : undefined}
-                  className={`flex min-h-11 items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors duration-150 ${
+                  className={`flex min-h-11 items-center gap-2 rounded-lg border-2 px-3 py-2 text-sm font-extrabold uppercase tracking-wide transition-all duration-150 ${
                     active
-                      ? "bg-primary-light text-primary-dark"
-                      : "text-gray-600 hover:bg-gray-900/5 hover:text-gray-900"
+                      ? "border-primary bg-primary text-white shadow-sm"
+                      : "border-transparent text-gray-700 hover:border-gray-200 hover:bg-gray-100"
                   }`}
                 >
-                  <Icon size={17} className={active ? "text-primary" : "text-gray-400"} />
+                  <Icon size={17} />
                   {link.label}
                 </Link>
               );
@@ -103,12 +93,12 @@ export function PageHeader({
     <div className="flex flex-wrap items-end justify-between gap-4">
       <div className="flex flex-col gap-1.5">
         {eyebrow && (
-          <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="text-xs font-extrabold uppercase tracking-widest text-primary">
             {eyebrow}
           </span>
         )}
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">{title}</h1>
-        {description && <p className="max-w-2xl text-base text-gray-500">{description}</p>}
+        <h1 className="heading-poster text-3xl text-gray-900">{title}</h1>
+        {description && <p className="max-w-2xl text-base text-gray-600">{description}</p>}
       </div>
       {action}
     </div>

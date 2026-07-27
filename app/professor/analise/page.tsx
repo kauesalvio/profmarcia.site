@@ -67,20 +67,20 @@ export default function AnalysisIndexPage() {
             const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
-                <InteractiveCard className="p-0">
+                <InteractiveCard className="border-2 border-primary p-0">
                   <Link
                     href={`/professor/analise/${activity._id}`}
                     className="group flex flex-wrap items-center gap-4 rounded-xl p-5"
                   >
                     <span
                       aria-hidden
-                      className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary-light text-primary-dark"
+                      className="grid size-12 shrink-0 place-items-center rounded-xl border-2 border-gray-900 bg-primary-light text-primary-dark"
                     >
-                      <TypeIcon size={22} />
+                      <TypeIcon size={24} />
                     </span>
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-lg font-semibold text-gray-900">
+                        <span className="text-lg font-extrabold text-gray-900">
                           {activity.title}
                         </span>
                         {types.map((type) => (
@@ -89,16 +89,16 @@ export default function AnalysisIndexPage() {
                           </Badge>
                         ))}
                       </div>
-                      <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                      <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase tracking-wide">
                         <IconClock size={14} />
                         Criada em {formatDateTime(activity.createdAt)}
                       </span>
                     </div>
-                    <span className="flex items-center gap-2 text-sm font-semibold text-primary">
+                    <span className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wide text-primary">
                       Ver respostas
                       <IconArrowRight
-                        size={17}
-                        className="transition-transform duration-200 group-hover:translate-x-1"
+                        size={18}
+                        className="transition-transform duration-150 group-hover:translate-x-1"
                       />
                     </span>
                   </Link>

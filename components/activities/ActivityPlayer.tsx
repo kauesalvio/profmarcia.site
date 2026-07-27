@@ -92,9 +92,9 @@ export function ActivityPlayer({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between text-sm font-medium text-gray-500">
+        <div className="flex items-center justify-between text-sm font-extrabold uppercase tracking-wide text-gray-600">
           <span>Seu progresso</span>
-          <span className="font-bold text-student-dark">
+          <span className="text-student-dark">
             {answered} de {answerable.length}
           </span>
         </div>
@@ -104,10 +104,10 @@ export function ActivityPlayer({
           aria-valuemin={0}
           aria-valuemax={answerable.length}
           aria-label="Perguntas respondidas"
-          className="h-2.5 overflow-hidden rounded-full bg-gray-200"
+          className="h-4 overflow-hidden rounded-full border-2 border-gray-900 bg-gray-100"
         >
           <div
-            className="h-full rounded-full bg-gradient-to-r from-student to-student-dark transition-all duration-300"
+            className="h-full bg-student transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -119,11 +119,14 @@ export function ActivityPlayer({
         const value = answers[index] ?? "";
         const done = value.trim().length > 0;
         return (
-          <Card key={index} className="flex flex-col gap-4 p-5 sm:p-6">
-            <h2 className="flex items-start gap-3 text-lg font-semibold text-gray-900">
+          <Card
+            key={index}
+            className="flex flex-col gap-4 border-2 border-student p-5 sm:p-6"
+          >
+            <h2 className="flex items-start gap-3 text-lg font-extrabold text-gray-900">
               <span
                 aria-hidden
-                className={`grid size-8 shrink-0 place-items-center rounded-lg text-sm font-bold transition-colors duration-200 ${
+                className={`grid size-8 shrink-0 place-items-center rounded-lg border-2 border-gray-900 text-sm font-extrabold transition-colors duration-200 ${
                   done ? "bg-student text-white" : "bg-student-light text-student-dark"
                 }`}
               >

@@ -67,7 +67,7 @@ export function ClassForm({ schoolClass }: { schoolClass?: SchoolClass }) {
           </Select>
         </Field>
 
-        <div className="flex flex-wrap gap-3">
+        <div className="flex flex-wrap gap-3 pt-2">
           <Button type="submit" disabled={saving}>
             {saving ? "Salvando..." : "Salvar turma"}
           </Button>

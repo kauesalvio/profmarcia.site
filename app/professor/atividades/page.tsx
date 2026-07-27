@@ -73,9 +73,9 @@ export default function ActivitiesPage() {
       <div className="flex max-w-sm items-center gap-3">
         <label
           htmlFor="filter-class"
-          className="shrink-0 text-sm font-semibold text-gray-900"
+          className="shrink-0 text-sm font-extrabold uppercase tracking-wide text-gray-900"
         >
-          Filtrar por
+          Filtrar
         </label>
         <Select
           id="filter-class"
@@ -126,17 +126,17 @@ export default function ActivitiesPage() {
             const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
-                <InteractiveCard className="flex flex-col gap-4 p-5">
+                <InteractiveCard className="flex flex-col gap-4 border-2 border-primary p-5">
                   <div className="flex flex-wrap items-start gap-4">
                     <span
                       aria-hidden
-                      className="grid size-11 shrink-0 place-items-center rounded-lg bg-primary-light text-primary-dark"
+                      className="grid size-12 shrink-0 place-items-center rounded-xl border-2 border-gray-900 bg-primary-light text-primary-dark"
                     >
-                      <TypeIcon size={22} />
+                      <TypeIcon size={24} />
                     </span>
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h2 className="text-lg font-semibold text-gray-900">
+                        <h2 className="text-lg font-extrabold text-gray-900">
                           {activity.title}
                         </h2>
                         {types.map((type) => (
@@ -146,10 +146,10 @@ export default function ActivitiesPage() {
                         ))}
                       </div>
                       {activity.description && (
-                        <p className="text-sm text-gray-500">{activity.description}</p>
+                        <p className="text-sm font-medium text-gray-600">{activity.description}</p>
                       )}
                       <div className="mt-1 flex flex-wrap items-center gap-2">
-                        <span className="text-sm text-gray-500">Disponível para:</span>
+                        <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Disponível:</span>
                         {activity.classIds.map((id) => (
                           <Badge key={id}>
                             {classNames.get(id)?.name ?? "Turma removida"}
@@ -159,8 +159,8 @@ export default function ActivitiesPage() {
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2 border-t border-gray-100 pt-4">
-                    <span className="flex items-center gap-1.5 text-xs text-gray-500">
+                  <div className="flex flex-wrap items-center gap-2 border-t-2 border-gray-100 pt-4">
+                    <span className="flex items-center gap-1.5 text-xs font-bold text-gray-500 uppercase tracking-wide">
                       <IconClock size={14} />
                       Criada em {formatDateTime(activity.createdAt)}
                     </span>

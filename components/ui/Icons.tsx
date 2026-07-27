@@ -13,7 +13,7 @@ function createIcon(name: string, children: React.ReactNode) {
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
-        strokeWidth={2}
+        strokeWidth={2.5}
         strokeLinecap="round"
         strokeLinejoin="round"
         className={className}
@@ -72,7 +72,10 @@ export const IconArrowRight = createIcon(
 
 export const IconCheck = createIcon("Check", <path d="m4.5 12.5 5 5 10-11" />);
 
-export const IconChevronDown = createIcon("ChevronDown", <path d="m6 9.5 6 6 6-6" />);
+export const IconChevronDown = createIcon(
+  "ChevronDown",
+  <path d="m6 9.5 6 6 6-6" />,
+);
 
 export const IconPencil = createIcon(
   "Pencil",

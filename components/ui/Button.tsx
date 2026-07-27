@@ -6,24 +6,25 @@ type Size = "sm" | "md" | "lg";
 
 const VARIANTS: Record<Variant, string> = {
   primary:
-    "bg-primary text-white shadow-sm hover:bg-primary-dark hover:shadow-md active:shadow-sm",
+    "border-2 border-primary-dark bg-primary text-white shadow-sm hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:shadow-sm",
   student:
-    "bg-student text-white shadow-sm hover:bg-student-dark hover:shadow-md active:shadow-sm",
+    "border-2 border-student-dark bg-student text-white shadow-sm hover:-translate-y-0.5 hover:shadow-md active:translate-y-0 active:shadow-sm",
   secondary:
-    "bg-white text-gray-700 border border-gray-300 shadow-sm hover:border-gray-400 hover:bg-gray-50",
-  danger: "bg-white text-error border border-error/40 hover:border-error hover:bg-error-bg",
-  ghost: "text-gray-700 hover:bg-gray-900/5",
+    "border-2 border-gray-900 bg-white text-gray-900 shadow-sm hover:bg-gray-900 hover:text-white hover:-translate-y-0.5 active:translate-y-0",
+  danger:
+    "border-2 border-error bg-white text-error shadow-sm hover:bg-error hover:text-white hover:-translate-y-0.5 active:translate-y-0",
+  ghost:
+    "border-2 border-transparent text-gray-700 hover:bg-gray-100 hover:text-gray-900",
 };
 
 const SIZES: Record<Size, string> = {
-  // Área de toque mínima de 44px (design-tokens.md, seção 10)
-  sm: "min-h-11 px-4 py-2 text-sm",
-  md: "min-h-11 px-5 py-3 text-base",
-  lg: "min-h-12 px-6 py-4 text-lg font-semibold",
+  sm: "min-h-11 px-4 py-2 text-sm tracking-wide",
+  md: "min-h-12 px-5 py-3 text-sm tracking-wide",
+  lg: "min-h-14 px-6 py-4 text-base font-extrabold tracking-wide uppercase",
 };
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-150 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none disabled:active:translate-y-0";
+  "inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-150 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none disabled:hover:translate-y-0 disabled:active:translate-y-0";
 
 function classes(variant: Variant, size: Size, className?: string) {
   return [BASE, VARIANTS[variant], SIZES[size], className].filter(Boolean).join(" ");

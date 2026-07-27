@@ -60,13 +60,13 @@ export function WordSearch({ question, onChange }: QuestionViewProps<PuzzleQuest
 
   return (
     <div className="flex flex-col gap-5">
-      <p className="text-sm text-gray-500">
+      <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">
         Clique na primeira e depois na última letra de cada palavra escondida.
       </p>
 
       <div className="overflow-x-auto">
         <div
-          className="inline-grid gap-0.5"
+          className="inline-grid gap-1"
           style={{ gridTemplateColumns: `repeat(${size}, minmax(0, 2rem))` }}
         >
           {grid.map((line, row) =>
@@ -80,12 +80,12 @@ export function WordSearch({ question, onChange }: QuestionViewProps<PuzzleQuest
                   aria-label={`Letra ${letter}, linha ${row + 1}, coluna ${col + 1}`}
                   aria-pressed={isStart}
                   onClick={() => select({ row, col })}
-                  className={`size-8 rounded-md text-sm font-bold uppercase transition-colors duration-150 ${
+                  className={`size-8 rounded-md border-2 text-sm font-extrabold uppercase transition-colors duration-150 ${
                     isFound
-                      ? "bg-student text-white"
+                      ? "border-gray-900 bg-student text-white shadow-sm"
                       : isStart
-                        ? "bg-student-light text-student-dark ring-2 ring-student"
-                        : "bg-gray-100 text-gray-700 hover:bg-student-light hover:text-student-dark"
+                        ? "border-student bg-student-light text-student-dark"
+                        : "border-gray-200 bg-white text-gray-700 hover:border-student hover:bg-student-light hover:text-student-dark"
                   }`}
                 >
                   {letter}
@@ -103,10 +103,10 @@ export function WordSearch({ question, onChange }: QuestionViewProps<PuzzleQuest
             <li
               key={placement.word}
               title={placement.clue}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold transition-colors duration-200 ${
+              className={`inline-flex items-center gap-1.5 rounded-full border-2 px-3 py-1.5 text-sm font-extrabold uppercase tracking-wide transition-colors duration-200 ${
                 isFound
-                  ? "bg-student-light text-student-dark line-through"
-                  : "bg-gray-100 text-gray-700"
+                  ? "border-student bg-student-light text-student-dark line-through"
+                  : "border-gray-200 bg-white text-gray-700"
               }`}
             >
               {isFound && <IconCheck size={14} strokeWidth={3} />}
@@ -116,7 +116,7 @@ export function WordSearch({ question, onChange }: QuestionViewProps<PuzzleQuest
         })}
       </ul>
 
-      <p className="text-sm text-gray-500">
+      <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">
         {found.length} de {placements.length} palavras encontradas.
       </p>
     </div>

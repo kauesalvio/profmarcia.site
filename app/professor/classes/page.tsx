@@ -83,18 +83,18 @@ export default function ClassesPage() {
         <ul className="grid gap-3 sm:grid-cols-2">
           {classes.map((schoolClass) => (
             <li key={schoolClass._id}>
-              <InteractiveCard className="flex items-center gap-4 p-5">
+              <InteractiveCard className="flex items-center gap-4 border-2 border-primary p-5">
                 <span
                   aria-hidden
-                  className="grid size-12 shrink-0 place-items-center rounded-xl bg-primary-light text-lg font-bold text-primary-dark"
+                  className="grid size-14 shrink-0 place-items-center rounded-xl border-2 border-gray-900 bg-primary-light text-2xl font-extrabold text-primary-dark"
                 >
                   {schoolClass.year}º
                 </span>
                 <div className="flex min-w-0 flex-col">
-                  <span className="truncate text-lg font-semibold text-gray-900">
+                  <span className="truncate text-lg font-extrabold text-gray-900">
                     {schoolClass.name}
                   </span>
-                  <span className="text-sm text-gray-500">{yearLabel(schoolClass.year)}</span>
+                  <span className="text-sm font-semibold text-gray-500">{yearLabel(schoolClass.year)}</span>
                 </div>
                 <div className="ml-auto flex shrink-0 gap-2">
                   <ButtonLink

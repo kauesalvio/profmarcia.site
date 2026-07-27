@@ -62,7 +62,7 @@ export function Crossword({ question, value, onChange }: QuestionViewProps<Puzzl
         <div
           role="grid"
           aria-label="Grade da cruzadinha"
-          className="inline-grid gap-0.5"
+          className="inline-grid gap-1"
           style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 2.25rem))` }}
         >
           {Array.from({ length: rows }, (_, row) =>
@@ -75,7 +75,7 @@ export function Crossword({ question, value, onChange }: QuestionViewProps<Puzzl
                   {number && (
                     <span
                       aria-hidden
-                      className="absolute left-0.5 top-0 z-10 text-[0.55rem] font-bold text-student-dark"
+                      className="absolute left-0.5 top-0 z-10 text-[0.55rem] font-extrabold text-student-dark"
                     >
                       {number}
                     </span>
@@ -85,7 +85,7 @@ export function Crossword({ question, value, onChange }: QuestionViewProps<Puzzl
                     maxLength={1}
                     value={letters[key] ?? ""}
                     onChange={(event) => setLetter(row, col, event.target.value)}
-                    className="size-9 rounded-md border-2 border-gray-300 bg-white text-center text-lg font-bold uppercase text-gray-900 transition-colors duration-150 focus-visible:border-student focus-visible:bg-student-light"
+                    className="size-9 rounded-md border-2 border-gray-900 bg-white text-center text-lg font-extrabold uppercase text-gray-900 shadow-sm transition-colors duration-150 focus-visible:border-student focus-visible:bg-student-light focus-visible:outline-0"
                   />
                 </div>
               );
@@ -94,7 +94,7 @@ export function Crossword({ question, value, onChange }: QuestionViewProps<Puzzl
         </div>
       </div>
 
-      <p className="text-sm text-gray-500">
+      <p className="text-sm font-bold text-gray-500 uppercase tracking-wide">
         {filled} de {entries.reduce((total, entry) => total + entry.word.length, 0)} letras
         preenchidas.
       </p>
@@ -112,13 +112,13 @@ function ClueList({ title, entries }: { title: string; entries: CrosswordEntry[]
 
   return (
     <div className="flex flex-col gap-2">
-      <h4 className="text-sm font-semibold uppercase tracking-wider text-gray-500">
+      <h4 className="text-xs font-extrabold uppercase tracking-wider text-gray-500">
         {title}
       </h4>
       <ol className="flex flex-col gap-1.5">
         {entries.map((entry) => (
-          <li key={`${entry.number}-${entry.direction}`} className="flex gap-2 text-sm text-gray-700">
-            <span className="font-bold text-student-dark">{entry.number}.</span>
+          <li key={`${entry.number}-${entry.direction}`} className="flex gap-2 text-sm font-semibold text-gray-700">
+            <span className="font-extrabold text-student-dark">{entry.number}.</span>
             <span>{entry.clue ?? `Palavra com ${entry.word.length} letras`}</span>
           </li>
         ))}

@@ -47,14 +47,14 @@ export function QuestionBuilder({
       {questions.map((question, index) => {
         const Icon = QUESTION_TYPE_ICONS[question.type];
         return (
-          <Card key={index} className="flex flex-col gap-4 p-5">
+          <Card key={index} className="flex flex-col gap-4 border-2 border-primary p-5">
             <div className="flex items-center justify-between gap-3">
-              <h3 className="flex items-center gap-2.5 text-lg font-semibold text-gray-900">
+              <h3 className="flex items-center gap-2.5 text-lg font-extrabold text-gray-900">
                 <span
                   aria-hidden
-                  className="grid size-8 place-items-center rounded-lg bg-primary-light text-primary-dark"
+                  className="grid size-9 place-items-center rounded-lg border-2 border-gray-900 bg-primary-light text-primary-dark"
                 >
-                  <Icon size={18} />
+                  <Icon size={20} />
                 </span>
                 Pergunta {index + 1}
               </h3>
@@ -126,14 +126,14 @@ export function QuestionBuilder({
       <button
         type="button"
         onClick={() => onChange([...questions, emptyQuestion("quiz")])}
-        className="flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-dashed border-gray-300 bg-white/60 px-5 py-3 text-base font-medium text-gray-500 transition-colors duration-200 hover:border-primary hover:bg-primary-light/30 hover:text-primary-dark"
+        className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border-4 border-dashed border-primary bg-white px-5 py-3 text-base font-extrabold uppercase tracking-wide text-primary transition-all duration-150 hover:border-primary-dark hover:bg-primary-light/30"
       >
-        <IconPlus size={18} />
+        <IconPlus size={20} />
         Adicionar pergunta
       </button>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm text-gray-500">Em breve:</span>
+        <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Em breve:</span>
         {FUTURE_QUESTION_TYPES.map((type) => (
           <Badge key={type}>{QUESTION_TYPE_LABELS[type]}</Badge>
         ))}
@@ -153,16 +153,22 @@ function QuizOptions({
 }) {
   return (
     <fieldset className="flex flex-col gap-2">
-      <legend className="text-sm font-semibold text-gray-900">Alternativas</legend>
-      <p className="text-sm text-gray-500">Marque o círculo da alternativa correta.</p>
+      <legend className="text-sm font-extrabold uppercase tracking-wide text-gray-900">
+        Alternativas
+      </legend>
+      <p className="text-sm font-semibold text-gray-600">
+        Marque o círculo da alternativa correta.
+      </p>
 
       {question.options.map((option, optionIndex) => {
         const isCorrect = !!option && question.correctAnswer === option;
         return (
           <div
             key={optionIndex}
-            className={`flex items-center gap-3 rounded-lg border px-3 py-1.5 transition-colors duration-200 ${
-              isCorrect ? "border-student/40 bg-student-light/40" : "border-transparent"
+            className={`flex items-center gap-3 rounded-lg border-2 px-3 py-2 transition-colors duration-150 ${
+              isCorrect
+                ? "border-student bg-student-light/40"
+                : "border-transparent hover:border-gray-200"
             }`}
           >
             <input
@@ -245,8 +251,10 @@ function PuzzleWords({
 
   return (
     <fieldset className="flex flex-col gap-3">
-      <legend className="text-sm font-semibold text-gray-900">Palavras</legend>
-      <p className="text-sm text-gray-500">
+      <legend className="text-sm font-extrabold uppercase tracking-wide text-gray-900">
+        Palavras
+      </legend>
+      <p className="text-sm font-semibold text-gray-600">
         {question.type === "crossword"
           ? "As palavras são cruzadas automaticamente. A dica é opcional."
           : "As palavras ficam escondidas na grade. A dica é opcional."}

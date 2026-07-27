@@ -38,10 +38,10 @@ export function LayoutProfessor({ children }: { children: React.ReactNode }) {
         variant="professor"
         action={
           <>
-            <span className="hidden items-center gap-2 text-sm text-gray-500 sm:flex">
+            <span className="hidden items-center gap-2 text-sm font-bold text-gray-700 sm:flex">
               <span
                 aria-hidden
-                className="grid size-8 place-items-center rounded-full bg-primary-light text-xs font-bold text-primary-dark"
+                className="grid size-9 place-items-center rounded-full border-2 border-gray-900 bg-primary text-xs font-extrabold text-white shadow-sm"
               >
                 {session.name.trim().charAt(0).toUpperCase()}
               </span>

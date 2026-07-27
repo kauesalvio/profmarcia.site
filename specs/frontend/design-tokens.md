@@ -8,43 +8,43 @@ Design tokens para o site de aulas de informática. Tokens únicos de origem par
 
 | Token | Valor | Uso |
 |-------|-------|-----|
-| `--color-primary` | `#2563EB` | Botões primários, links, destaques da área do professor |
-| `--color-primary-dark` | `#1D4ED8` | Hover de botões primários |
-| `--color-primary-light` | `#DBEAFE` | Fundos de destaque, badges |
+| `--color-primary` | `#0047AB` | Botões primários, links, destaques da área do professor |
+| `--color-primary-dark` | `#003380` | Hover de botões primários |
+| `--color-primary-light` | `#CCE0F5` | Fundos de destaque, badges |
 
 ### Paleta do Aluno
 
 | Token | Valor | Uso |
 |-------|-------|-----|
-| `--color-student` | `#10B981` | Botões e destaques da área do aluno |
-| `--color-student-dark` | `#059669` | Hover da área do aluno |
-| `--color-student-light` | `#D1FAE5` | Fundos de destaque do aluno |
+| `--color-student` | `#E85D04` | Botões e destaques da área do aluno |
+| `--color-student-dark` | `#B94A00` | Hover da área do aluno |
+| `--color-student-light` | `#FFE8D6` | Fundos de destaque do aluno |
 
 ### Cores de Feedback
 
 | Token | Valor | Uso |
 |-------|-------|-----|
-| `--color-success` | `#22C55E` | Confirmação, sucesso no envio |
-| `--color-success-bg` | `#DCFCE7` | Fundo de mensagens de sucesso |
-| `--color-warning` | `#F59E0B` | Avisos |
-| `--color-warning-bg` | `#FEF3C7` | Fundo de avisos |
-| `--color-error` | `#EF4444` | Erros, campos inválidos |
-| `--color-error-bg` | `#FEE2E2` | Fundo de mensagens de erro |
-| `--color-info` | `#3B82F6` | Informações |
-| `--color-info-bg` | `#DBEAFE` | Fundo de informações |
+| `--color-success` | `#2D6A4F` | Confirmação, sucesso no envio |
+| `--color-success-bg` | `#D8F3DC` | Fundo de mensagens de sucesso |
+| `--color-warning` | `#D00000` | Avisos |
+| `--color-warning-bg` | `#FFCCD5` | Fundo de avisos |
+| `--color-error` | `#9D0208` | Erros, campos inválidos |
+| `--color-error-bg` | `#FFCCD5` | Fundo de mensagens de erro |
+| `--color-info` | `#0077B6` | Informações |
+| `--color-info-bg` | `#CAF0F8` | Fundo de informações |
 
 ### Tons de Cinza
 
 | Token | Valor | Uso |
 |-------|-------|-----|
 | `--color-white` | `#FFFFFF` | Fundo de cards e páginas |
-| `--color-gray-50` | `#F9FAFB` | Fundo de páginas |
-| `--color-gray-100` | `#F3F4F6` | Fundos alternados em listas |
-| `--color-gray-200` | `#E5E7EB` | Bordas leves |
-| `--color-gray-300` | `#D1D5DB` | Bordas de inputs |
-| `--color-gray-500` | `#6B7280` | Textos secundários |
-| `--color-gray-700` | `#374151` | Textos principais |
-| `--color-gray-900` | `#111827` | Títulos e textos de destaque |
+| `--color-gray-50` | `#F7F5F0` | Fundo de páginas |
+| `--color-gray-100` | `#F0EBE3` | Fundos alternados em listas |
+| `--color-gray-200` | `#E5E0D6` | Bordas leves |
+| `--color-gray-300` | `#CFC9BC` | Bordas de inputs |
+| `--color-gray-500` | `#6B655A` | Textos secundários |
+| `--color-gray-700` | `#3D3932` | Textos principais |
+| `--color-gray-900` | `#1C1A16` | Títulos e textos de destaque |
 
 ## 2. Tipografia
 
@@ -106,15 +106,15 @@ Design tokens para o site de aulas de informática. Tokens únicos de origem par
 | `--border-radius-lg` | `0.75rem` (12px) | Cards maiores |
 | `--border-radius-xl` | `1rem` (16px) | Modais, containers |
 | `--border-width` | `1px` | Bordas padrão |
-| `--border-color` | `#E5E7EB` | Bordas de inputs e cards |
+| `--border-color` | `#E5E0D6` | Bordas de inputs e cards |
 
 ## 5. Sombras
 
 | Token | Valor | Uso |
 |-------|-------|-----|
-| `--shadow-sm` | `0 1px 2px rgba(0,0,0,0.05)` | Inputs, elementos pequenos |
-| `--shadow-md` | `0 4px 6px -1px rgba(0,0,0,0.1)` | Cards, botões elevados |
-| `--shadow-lg` | `0 10px 15px -3px rgba(0,0,0,0.1)` | Modais, dropdowns |
+| `--shadow-sm` | `2px 2px 0 rgba(28, 26, 22, 0.12)` | Inputs, elementos pequenos |
+| `--shadow-md` | `4px 4px 0 rgba(28, 26, 22, 0.14)` | Cards, botões elevados |
+| `--shadow-lg` | `6px 6px 0 rgba(28, 26, 22, 0.16)` | Modais, dropdowns |
 
 ## 6. Transições
 
