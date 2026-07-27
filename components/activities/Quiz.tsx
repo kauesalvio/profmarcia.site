@@ -19,10 +19,10 @@ export function Quiz({ question, index, value, onChange }: QuestionViewProps<Qui
         return (
           <label
             key={option}
-            className={`flex min-h-11 cursor-pointer items-center gap-3 rounded-xl border-2 px-4 py-3 text-base transition-all duration-200 has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-student ${
+            className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border-4 px-4 py-3 text-base font-semibold transition-all duration-150 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-student ${
               checked
                 ? "border-student bg-student-light text-gray-900 shadow-sm"
-                : "border-gray-200 bg-white hover:border-student/40 hover:bg-gray-50"
+                : "border-gray-200 bg-white hover:border-student/60 hover:bg-gray-50"
             }`}
           >
             <input
@@ -34,8 +34,10 @@ export function Quiz({ question, index, value, onChange }: QuestionViewProps<Qui
             />
             <span
               aria-hidden
-              className={`grid size-7 shrink-0 place-items-center rounded-full text-xs font-bold transition-colors duration-200 ${
-                checked ? "bg-student text-white" : "bg-gray-100 text-gray-500"
+              className={`grid size-8 shrink-0 place-items-center rounded-full border-2 text-xs font-extrabold transition-colors duration-150 ${
+                checked
+                  ? "border-gray-900 bg-student text-white"
+                  : "border-gray-300 bg-gray-100 text-gray-500"
               }`}
             >
               {LETTERS[optionIndex] ?? optionIndex + 1}

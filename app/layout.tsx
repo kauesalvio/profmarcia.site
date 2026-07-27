@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aulas de Informática",
+  title: "Professora Márcia",
   description:
     "Atividades de informática para alunos do 1º ao 9º ano: quiz, formulários e mais.",
 };

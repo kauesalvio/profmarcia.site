@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field, Input } from "@/components/ui/Field";
 import { Alert } from "@/components/ui/Feedback";
+import { Logo } from "@/components/ui/Logo";
 import { IconArrowRight, IconBackpack, IconMonitor } from "@/components/ui/Icons";
 import { signIn } from "@/lib/auth";
 
@@ -37,31 +38,35 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="ambient-professor relative flex flex-1 items-center justify-center overflow-hidden px-4 py-12">
-      <div
-        aria-hidden
-        className="dot-grid pointer-events-none absolute inset-x-0 top-0 h-64 text-primary"
-      />
+    <main className="relative flex flex-1 items-center justify-center overflow-hidden bg-primary px-4 py-12">
+      {/* Formas geométricas do cartaz */}
+      <div aria-hidden className="pointer-events-none absolute inset-0">
+        <div className="absolute -right-20 -top-20 size-80 rounded-full border-[24px] border-white/10" />
+        <div className="absolute -left-24 bottom-0 size-96 rounded-full bg-student/20" />
+        <div className="absolute left-[10%] top-[15%] h-24 w-16 rotate-12 bg-white/10" />
+        <div className="absolute bottom-[20%] right-[12%] h-16 w-32 -rotate-6 bg-white/10" />
+        <div className="dot-grid absolute inset-0 text-white/20" />
+      </div>
 
-      <div className="relative flex w-full max-w-sm animate-rise flex-col gap-6">
-        <div className="flex flex-col items-center gap-4 text-center">
+      <div className="relative flex w-full max-w-md flex-col gap-8">
+        <div className="flex flex-col items-center gap-4 text-center text-white">
           <span
             aria-hidden
-            className="grid size-16 place-items-center rounded-2xl bg-gradient-to-br from-primary to-primary-dark text-white shadow-soft-lg"
+            className="grid size-20 place-items-center rounded-2xl border-4 border-gray-900 bg-white text-primary shadow-hard"
           >
-            <IconMonitor size={34} />
+            <IconMonitor size={44} />
           </span>
-          <div className="flex flex-col gap-1">
-            <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-              Aulas de Informática
+          <div className="flex flex-col items-center gap-3">
+            <h1 className="flex flex-col items-center">
+              <Logo size="lg" theme="light" />
             </h1>
-            <p className="text-base text-gray-500">
+            <p className="text-base text-white/80">
               Entre para gerenciar turmas e atividades.
             </p>
           </div>
         </div>
 
-        <Card className="p-6 shadow-soft-lg">
+        <Card className="p-6 sm:p-8">
           <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
             {error && <Alert tone="error">{error}</Alert>}
 
@@ -96,23 +101,23 @@ export default function LoginPage() {
 
         <Link
           href="/aluno"
-          className="group flex items-center gap-3 rounded-xl border border-student/25 bg-student-light/60 px-5 py-4 transition-colors duration-200 hover:border-student/50 hover:bg-student-light"
+          className="group flex items-center gap-4 rounded-2xl border-4 border-gray-900 bg-student px-5 py-5 text-white shadow-hard transition-all duration-150 hover:-translate-y-1 hover:shadow-lg"
         >
           <span
             aria-hidden
-            className="grid size-10 shrink-0 place-items-center rounded-lg bg-student text-white shadow-sm"
+            className="grid size-12 shrink-0 place-items-center rounded-xl border-2 border-white bg-student-dark text-white"
           >
-            <IconBackpack size={22} />
+            <IconBackpack size={26} />
           </span>
-          <span className="flex flex-col">
-            <span className="text-sm font-semibold text-gray-900">É aluno?</span>
-            <span className="text-sm text-student-dark">
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span className="text-sm font-extrabold uppercase tracking-wide">É aluno?</span>
+            <span className="text-sm font-semibold text-white/90">
               Acesse as atividades sem senha
             </span>
           </span>
           <IconArrowRight
-            size={18}
-            className="ml-auto text-student-dark transition-transform duration-200 group-hover:translate-x-1"
+            size={22}
+            className="shrink-0 text-white transition-transform duration-150 group-hover:translate-x-1"
           />
         </Link>
       </div>

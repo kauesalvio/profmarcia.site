@@ -87,17 +87,15 @@ export default function StudentActivityPage() {
             {TypeIcon && (
               <span
                 aria-hidden
-                className="grid size-12 shrink-0 place-items-center rounded-xl bg-student-light text-student-dark"
+                className="grid size-14 shrink-0 place-items-center rounded-xl border-2 border-gray-900 bg-student-light text-student-dark"
               >
-                <TypeIcon size={24} />
+                <TypeIcon size={28} />
               </span>
             )}
             <div className="flex flex-col gap-1.5">
-              <h1 className="text-3xl font-bold tracking-tight text-gray-900">
-                {activity.title}
-              </h1>
+              <h1 className="heading-poster text-3xl text-gray-900">{activity.title}</h1>
               {activity.description && (
-                <p className="text-base leading-relaxed text-gray-700">
+                <p className="text-base font-semibold leading-relaxed text-gray-700">
                   {activity.description}
                 </p>
               )}
@@ -124,18 +122,18 @@ export default function StudentActivityPage() {
         )}
 
         {done && (
-          <Card className="dot-grid relative animate-rise overflow-hidden p-10 text-center text-student">
-            <div className="relative flex flex-col items-center gap-4 text-gray-700">
+          <Card className="dot-grid relative animate-rise overflow-hidden border-4 border-student p-10 text-center text-student shadow-hard">
+            <div className="relative flex flex-col items-center gap-4 text-gray-900">
               <span
                 aria-hidden
-                className="grid size-16 place-items-center rounded-full bg-gradient-to-br from-student to-student-dark text-white shadow-soft-lg"
+                className="grid size-16 place-items-center rounded-full border-4 border-gray-900 bg-student text-white shadow-md"
               >
-                <IconCheck size={32} strokeWidth={2.5} />
+                <IconCheck size={36} strokeWidth={3} />
               </span>
-              <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+              <h1 className="heading-poster text-3xl text-gray-900">
                 Resposta enviada!
               </h1>
-              <p className="max-w-sm text-base text-gray-500">
+              <p className="max-w-sm text-base font-semibold text-gray-700">
                 Sua resposta chegou para a professora.
               </p>
               <ButtonLink href="/aluno" variant="student" size="lg" className="mt-2">

@@ -1,84 +1,136 @@
 @import "tailwindcss";
 
-/* Design tokens - ver specs/frontend/design-tokens.md */
+/* Design tokens — direção visual "Cartazes de Informática" (Saul Bass).
+   Cores planas, formas recortadas, sombras duras e tipografia em caps fortes.
+   Área da professora: azul cobalto. Área do aluno: laranja queimado. */
 @theme {
   --font-sans: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
 
-  --color-primary: #2563eb;
-  --color-primary-dark: #1d4ed8;
-  --color-primary-light: #dbeafe;
+  /* Professor — azul cobalto */
+  --color-primary: #0047ab;
+  --color-primary-dark: #003380;
+  --color-primary-light: #cce0f5;
 
-  --color-student: #10b981;
-  --color-student-dark: #059669;
-  --color-student-light: #d1fae5;
+  /* Aluno — laranja queimado */
+  --color-student: #e85d04;
+  --color-student-dark: #b94a00;
+  --color-student-light: #ffe8d6;
 
-  --color-success: #22c55e;
-  --color-success-bg: #dcfce7;
-  --color-warning: #f59e0b;
-  --color-warning-bg: #fef3c7;
-  --color-error: #ef4444;
-  --color-error-bg: #fee2e2;
-  --color-info: #3b82f6;
-  --color-info-bg: #dbeafe;
+  /* Feedback */
+  --color-success: #2d6a4f;
+  --color-success-bg: #d8f3dc;
+  --color-warning: #d00000;
+  --color-warning-bg: #ffccd5;
+  --color-error: #9d0208;
+  --color-error-bg: #ffccd5;
+  --color-info: #0077b6;
+  --color-info-bg: #caf0f8;
 
+  /* Neutros quentes — papel/cartaz */
+  --color-white: #ffffff;
+  --color-gray-50: #f7f5f0;
+  --color-gray-100: #f0ebe3;
+  --color-gray-200: #e5e0d6;
+  --color-gray-300: #cfc9bc;
+  --color-gray-500: #6b655a;
+  --color-gray-700: #3d3932;
+  --color-gray-900: #1c1a16;
+
+  /* Tipografia */
   --text-3xl: 2rem;
-  --text-3xl--line-height: 1.25;
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 2.5rem;
+  --text-4xl--line-height: 1.05;
+  --text-5xl: 3.25rem;
+  --text-5xl--line-height: 1;
 
+  /* Bordas */
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 0.75rem;
   --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  /* Sombras duras, estilo cartaz */
+  --shadow-sm: 2px 2px 0 rgba(28, 26, 22, 0.12);
+  --shadow-md: 4px 4px 0 rgba(28, 26, 22, 0.14);
+  --shadow-lg: 6px 6px 0 rgba(28, 26, 22, 0.16);
+  --shadow-hard: 8px 8px 0 rgba(28, 26, 22, 0.18);
 
-  /* Sombras suaves derivadas (blur largo, opacidade baixa) para cards elevados */
-  --shadow-soft: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px -12px rgba(17, 24, 39, 0.12);
-  --shadow-soft-lg: 0 2px 4px rgba(17, 24, 39, 0.04), 0 16px 40px -16px rgba(17, 24, 39, 0.18);
-
+  /* Z-index */
   --z-index-dropdown: 10;
   --z-index-sticky: 20;
   --z-index-modal: 30;
   --z-index-tooltip: 40;
 
-  --animate-rise: rise 0.4s ease both;
+  --animate-rise: rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-pop: pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   @keyframes rise {
     from {
       opacity: 0;
-      transform: translateY(8px);
+      transform: translateY(12px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
     }
   }
+
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--color-gray-50);
-  color: var(--color-gray-700);
+  color: var(--color-gray-900);
   font-family: var(--font-sans);
   line-height: 1.5;
 }
 
 ::selection {
-  background: var(--color-primary-light);
-  color: var(--color-gray-900);
+  background: var(--color-primary);
+  color: var(--color-white);
 }
 
-/* Fundos ambientais por área: azul (professora) e verde (aluno). */
+/* Títulos no registro cartaz */
+.heading-poster {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.heading-poster-sm {
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+/* Fundos ambientais por área */
 .ambient-professor {
   background-color: var(--color-gray-50);
   background-image:
     radial-gradient(
-      48rem 24rem at 85% -8rem,
-      color-mix(in srgb, var(--color-primary) 9%, transparent),
+      48rem 32rem at 100% 0%,
+      color-mix(in srgb, var(--color-primary) 12%, transparent),
       transparent 70%
     ),
     radial-gradient(
-      36rem 20rem at -10% 0%,
+      40rem 24rem at 0% 100%,
       color-mix(in srgb, var(--color-primary-light) 45%, transparent),
       transparent 70%
     );
@@ -88,31 +140,63 @@ body {
   background-color: var(--color-gray-50);
   background-image:
     radial-gradient(
-      48rem 24rem at 85% -8rem,
-      color-mix(in srgb, var(--color-student) 10%, transparent),
+      48rem 32rem at 100% 0%,
+      color-mix(in srgb, var(--color-student) 14%, transparent),
       transparent 70%
     ),
     radial-gradient(
-      36rem 20rem at -10% 0%,
-      color-mix(in srgb, var(--color-student-light) 50%, transparent),
+      40rem 24rem at 0% 100%,
+      color-mix(in srgb, var(--color-student-light) 55%, transparent),
       transparent 70%
     );
 }
 
-/* Textura pontilhada sutil para heros e blocos de destaque. */
+/* Padrão de pontos sutil para destaques */
 .dot-grid {
   background-image: radial-gradient(
-    color-mix(in srgb, currentColor 14%, transparent) 1px,
-    transparent 1px
+    color-mix(in srgb, currentColor 18%, transparent) 1.5px,
+    transparent 1.5px
   );
-  background-size: 1.125rem 1.125rem;
+  background-size: 1.25rem 1.25rem;
 }
 
-/* Foco visível em todos os elementos interativos (acessibilidade) */
+/* Cartão com sombra dura */
+.poster-card {
+  background: var(--color-white);
+  border: 2px solid var(--color-gray-900);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.poster-card-student {
+  border-color: var(--color-student);
+  box-shadow: 4px 4px 0 var(--color-student);
+}
+
+.poster-card-primary {
+  border-color: var(--color-primary);
+  box-shadow: 4px 4px 0 var(--color-primary);
+}
+
+/* Etiqueta/tag no estilo cartaz */
+.poster-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: 2px solid var(--color-gray-900);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Foco visível em todos os elementos interativos */
 @layer base {
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
+    outline: 3px solid var(--color-primary);
+    outline-offset: 3px;
     border-radius: var(--radius-sm);
   }
 }
@@ -124,5 +208,6 @@ body {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

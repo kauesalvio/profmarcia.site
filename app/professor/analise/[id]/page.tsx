@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import { PageHeader } from "@/components/layout/Header";
-import { Button, ButtonLink } from "@/components/ui/Button";
+import { ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
 import { IconChart, IconChevronDown, IconClock, IconUsers } from "@/components/ui/Icons";
@@ -54,12 +54,12 @@ export default function AnalysisPage() {
           <Card className="flex items-center gap-3 p-4">
             <span
               aria-hidden
-              className="grid size-10 shrink-0 place-items-center rounded-lg bg-primary-light text-primary-dark"
+              className="grid size-10 shrink-0 place-items-center rounded-lg border-2 border-gray-900 bg-primary-light text-primary-dark"
             >
               <IconChart size={20} />
             </span>
             <div className="flex flex-col gap-1">
-              <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-gray-500">
                 Tipos de pergunta
               </span>
               <div className="flex flex-wrap gap-1.5">
@@ -74,15 +74,15 @@ export default function AnalysisPage() {
           <Card className="flex items-center gap-3 p-4">
             <span
               aria-hidden
-              className="grid size-10 shrink-0 place-items-center rounded-lg bg-student-light text-student-dark"
+              className="grid size-10 shrink-0 place-items-center rounded-lg border-2 border-gray-900 bg-student-light text-student-dark"
             >
               <IconUsers size={20} />
             </span>
             <div className="flex flex-col">
-              <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+              <span className="text-xs font-extrabold uppercase tracking-wider text-gray-500">
                 Respostas
               </span>
-              <span className="text-lg font-bold text-gray-900">
+              <span className="text-lg font-extrabold text-gray-900">
                 {list.length} {list.length === 1 ? "enviada" : "enviadas"}
               </span>
             </div>
@@ -96,9 +96,9 @@ export default function AnalysisPage() {
         <Alert
           tone="error"
           action={
-            <Button variant="secondary" onClick={responses.reload}>
+            <ButtonLink href="/professor/analise" variant="secondary">
               Tentar novamente
-            </Button>
+            </ButtonLink>
           }
         >
           Não foi possível carregar as respostas. Tente novamente.
@@ -120,17 +120,17 @@ export default function AnalysisPage() {
               <li key={response._id}>
                 <Card className="p-0">
                   <details className="group">
-                    <summary className="flex min-h-11 cursor-pointer flex-wrap items-center gap-3 rounded-xl p-4 transition-colors duration-150 hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
+                    <summary className="flex min-h-12 cursor-pointer flex-wrap items-center gap-3 rounded-xl p-4 transition-colors duration-150 hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
                       <span
                         aria-hidden
-                        className="grid size-9 shrink-0 place-items-center rounded-full bg-student-light text-sm font-bold text-student-dark"
+                        className="grid size-9 shrink-0 place-items-center rounded-full border-2 border-gray-900 bg-student-light text-sm font-extrabold text-student-dark"
                       >
                         {position + 1}
                       </span>
-                      <span className="text-base font-semibold text-gray-900">
+                      <span className="text-base font-extrabold text-gray-900">
                         Resposta {position + 1}
                       </span>
-                      <span className="flex items-center gap-1.5 text-sm text-gray-500">
+                      <span className="flex items-center gap-1.5 text-sm font-bold text-gray-500 uppercase tracking-wide">
                         <IconClock size={14} />
                         {formatDateTime(response.submittedAt)}
                       </span>
@@ -145,7 +145,7 @@ export default function AnalysisPage() {
                       />
                     </summary>
 
-                    <dl className="flex flex-col gap-4 border-t border-gray-100 p-5">
+                    <dl className="flex flex-col gap-4 border-t-2 border-gray-100 p-5">
                       {response.answers.map((answer, index) => {
                         const expected = correctAnswers.get(answer.question);
                         const isCorrect = expected ? expected === answer.answer : null;
@@ -153,15 +153,15 @@ export default function AnalysisPage() {
                           <div key={index} className="flex gap-3">
                             <span
                               aria-hidden
-                              className="grid size-6 shrink-0 place-items-center rounded-full bg-gray-100 text-xs font-bold text-gray-500"
+                              className="grid size-6 shrink-0 place-items-center rounded-full border-2 border-gray-900 bg-gray-100 text-xs font-extrabold text-gray-500"
                             >
                               {index + 1}
                             </span>
                             <div className="flex flex-col gap-1">
-                              <dt className="text-sm font-semibold text-gray-900">
+                              <dt className="text-sm font-extrabold text-gray-900">
                                 {answer.question}
                               </dt>
-                              <dd className="flex flex-wrap items-center gap-2 text-base text-gray-700">
+                              <dd className="flex flex-wrap items-center gap-2 text-base font-semibold text-gray-700">
                                 {answer.answer || (
                                   <span className="text-gray-400">Sem resposta</span>
                                 )}

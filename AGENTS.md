@@ -37,7 +37,7 @@ npm run build
   `useEffect` e listas de dependências precisam ser literais. Para ler
   `localStorage`/`sessionStorage`, use `lib/browserStore.ts`; para buscar dados,
   `lib/useResource.ts`.
-- Área da professora usa a paleta `primary` (azul); área do aluno, `student` (verde).
+- Área da professora usa a paleta `primary` (azul cobalto); área do aluno, `student` (laranja queimado #e85d04).
 - `app/api/` + `lib/mock/db.ts` são um backend **mockado em memória** para visualizar o
   design. Devem ser substituídos pela implementação real (MongoDB + NextAuth.js) mantendo
   o mesmo contrato, sem alterar o frontend.

@@ -4,7 +4,7 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={[
-        "rounded-xl border border-gray-200/80 bg-white p-4 shadow-soft",
+        "rounded-xl border-2 border-gray-900 bg-white p-5 shadow-md",
         className,
       ]
         .filter(Boolean)
@@ -14,12 +14,12 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
   );
 }
 
-/** Card clicável: mesma base, com elevação no hover. */
+/** Card clicável com elevação no hover. */
 export function InteractiveCard({ className, ...props }: ComponentProps<"div">) {
   return (
     <Card
       className={[
-        "transition-all duration-200 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-soft-lg",
+        "transition-all duration-150 hover:-translate-y-1 hover:shadow-lg",
         className,
       ]
         .filter(Boolean)
@@ -37,15 +37,15 @@ export function Badge({
   tone?: "neutral" | "primary" | "student" | "warning";
 }) {
   const tones = {
-    neutral: "bg-gray-100 text-gray-700 ring-gray-200",
-    primary: "bg-primary-light text-primary-dark ring-primary/15",
-    student: "bg-student-light text-student-dark ring-student/15",
-    warning: "bg-warning-bg text-gray-900 ring-warning/25",
+    neutral: "border-gray-900 bg-gray-100 text-gray-900",
+    primary: "border-primary-dark bg-primary-light text-primary-dark",
+    student: "border-student-dark bg-student-light text-student-dark",
+    warning: "border-warning bg-warning-bg text-gray-900",
   } as const;
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${tones[tone]}`}
+      className={`inline-flex items-center gap-1 rounded-full border-2 px-2.5 py-1 text-xs font-extrabold uppercase tracking-wide ${tones[tone]}`}
     >
       {children}
     </span>
