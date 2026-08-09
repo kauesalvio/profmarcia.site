@@ -38,7 +38,6 @@ export default function ClassesPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Gerenciamento"
         title="Turmas"
         description="Turmas do 1º ao 9º ano usadas na distribuição das atividades."
         action={

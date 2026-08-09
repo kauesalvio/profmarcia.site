@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { QuestionBuilder, emptyQuestion } from "@/components/builders/QuestionBuilder";
+import {
+  QuestionBuilder,
+  emptyQuestion,
+  validateQuestion,
+} from "@/components/builders/QuestionBuilder";
 import { YearClassSelector } from "@/components/builders/YearClassSelector";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
@@ -25,32 +29,48 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       ? activity.config.questions
       : [emptyQuestion("quiz")],
   );
+  const [kahootUrl, setKahootUrl] = useState(
+    typeof activity?.config?.settings?.kahootUrl === "string"
+      ? activity.config.settings.kahootUrl
+      : "",
+  );
   const [error, setError] = useState<string | null>(null);
+  const [showValidation, setShowValidation] = useState(false);
   const [saving, setSaving] = useState(false);
   const [step, setStep] = useState(1);
+
+  function isValidKahootUrl(value: string) {
+    if (!value) return true;
+    try {
+      const url = new URL(value);
+      return (
+        url.protocol === "https:" &&
+        (url.hostname === "kahoot.it" ||
+          url.hostname.endsWith(".kahoot.it") ||
+          url.hostname === "kahoot.com" ||
+          url.hostname.endsWith(".kahoot.com"))
+      );
+    } catch {
+      return false;
+    }
+  }
 
   function validate() {
     if (!title.trim()) return "Informe o título da atividade.";
     if (classIds.length === 0) return "Selecione ao menos um ano/turma.";
     if (questions.length === 0) return "Adicione ao menos uma pergunta.";
-    if (questions.some((question) => !question.label.trim()))
-      return "Todas as perguntas precisam de enunciado.";
-
-    for (const question of questions) {
-      if (question.type === "quiz") {
-        if (
-          question.options.filter((option) => option.trim()).length < 2 ||
-          !question.correctAnswer?.trim()
-        ) {
-          return "Cada pergunta de quiz precisa de duas alternativas e uma resposta correta.";
-        }
-      }
-      if (question.type === "crossword" || question.type === "wordsearch") {
-        const valid = question.words.filter((item) => normalizeWord(item.word).length >= 2);
-        if (valid.length < 2)
-          return "Cruzadinha e caça-palavra precisam de ao menos duas palavras com 2 letras ou mais.";
-      }
+    const firstQuestionError = questions.findIndex((question) => {
+      const validation = validateQuestion(question);
+      return validation.label || validation.details;
+    });
+    if (firstQuestionError >= 0) {
+      const validation = validateQuestion(questions[firstQuestionError]);
+      return `Revise a pergunta ${firstQuestionError + 1}: ${validation.label ?? validation.details}`;
     }
+
+    if (!isValidKahootUrl(kahootUrl.trim()))
+      return "Cole um link válido do Kahoot, começando com https://.";
+
     return null;
   }
 
@@ -62,6 +82,8 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
         const options = question.options.map((option) => option.trim()).filter(Boolean);
         return { ...question, label, options };
       }
+      case "image-quiz":
+        return { ...question, label, options: question.options.filter((option) => option !== null) };
       case "crossword":
       case "wordsearch": {
         const words = question.words
@@ -84,8 +106,10 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
     if (currentStep === 3) {
       if (questions.length === 0) return "Adicione ao menos uma pergunta.";
       if (questions.some((question) => !question.label.trim()))
-        return "Todas as perguntas precisam de enunciado.";
+        return "Preencha o enunciado de todas as perguntas para continuar.";
     }
+    if (currentStep === 4 && !isValidKahootUrl(kahootUrl.trim()))
+      return "Cole um link válido do Kahoot, começando com https://.";
     return null;
   }
 
@@ -93,21 +117,24 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
     const validationError = validateStep(step);
     if (validationError) {
       setError(validationError);
+      setShowValidation(true);
       return;
     }
     setError(null);
-    setStep((s) => Math.min(s + 1, 3));
+    setShowValidation(false);
+    setStep((s) => Math.min(s + 1, 4));
   }
 
   async function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
-    if (step !== 3) {
+    if (step !== 4) {
       setError("Preencha todas as etapas antes de salvar a atividade.");
       return;
     }
     const validationError = validate();
     if (validationError) {
       setError(validationError);
+      setShowValidation(true);
       return;
     }
 
@@ -120,7 +147,10 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
         classIds,
         config: {
           questions: questions.map(serializeQuestion),
-          settings: activity?.config?.settings ?? {},
+          settings: {
+            ...(activity?.config?.settings ?? {}),
+            kahootUrl: kahootUrl.trim() || undefined,
+          },
         },
       };
 
@@ -139,12 +169,12 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       {error && <Alert tone="error">{error}</Alert>}
 
       <nav aria-label="Progresso da atividade">
-        <ol className="flex flex-col gap-2 sm:flex-row sm:items-center">
-          {[1, 2, 3].map((s) => (
+        <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {[1, 2, 3, 4].map((s) => (
             <li
               key={s}
               aria-current={s === step ? "step" : undefined}
-              className={`flex flex-1 items-center gap-2 rounded-xl border-2 px-3 py-2 transition-colors duration-150 ${
+              className={`flex min-w-0 items-center gap-2 rounded-xl border-2 px-3 py-2 transition-colors duration-150 ${
                 s === step
                   ? "border-primary bg-primary-light"
                   : s < step
@@ -163,7 +193,13 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
                 {s}
               </span>
               <span className="text-sm font-extrabold uppercase tracking-wide text-gray-900">
-                {s === 1 ? "Informações" : s === 2 ? "Distribuição" : "Perguntas"}
+                {s === 1
+                  ? "Informações"
+                  : s === 2
+                    ? "Distribuição"
+                    : s === 3
+                      ? "Perguntas"
+                      : "Finalização"}
               </span>
             </li>
           ))}
@@ -178,11 +214,17 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
             fazer nesta atividade.
           </p>
           <Card className="flex flex-col gap-5 p-5 sm:p-6">
-            <Field label="Título" htmlFor="title" required>
+            <Field
+              label="Título"
+              htmlFor="title"
+              required
+              error={showValidation && step === 1 && !title.trim() ? "Informe o título da atividade." : undefined}
+            >
               <Input
                 id="title"
                 value={title}
                 placeholder="Atividade de Word"
+                aria-invalid={Boolean(showValidation && step === 1 && !title.trim())}
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Field>
@@ -242,7 +284,55 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
             Monte as perguntas da atividade. Você pode misturar quiz, resposta
             curta, resposta longa, cruzadinha e caça-palavra na mesma atividade.
           </p>
-          <QuestionBuilder questions={questions} onChange={setQuestions} />
+          <QuestionBuilder
+            questions={questions}
+            onChange={setQuestions}
+            validation={showValidation ? questions.map(validateQuestion) : undefined}
+          />
+        </section>
+      )}
+
+      {step === 4 && (
+        <section className="animate-rise flex flex-col gap-3">
+          <StepHeading step={4} title="Finalização" />
+          <p className="text-sm font-semibold text-gray-600">
+            Se quiser terminar com uma dinâmica no Kahoot, cole o link abaixo.
+            O aluno verá o endereço depois de enviar a atividade.
+          </p>
+          <Card className="flex flex-col gap-5 p-5 sm:p-6">
+            <Field
+              label="Link do Kahoot (opcional)"
+              htmlFor="kahoot-url"
+              hint="Aceitamos links oficiais de kahoot.it e kahoot.com."
+              error={
+                showValidation && step === 4 && kahootUrl.trim() && !isValidKahootUrl(kahootUrl.trim())
+                  ? "Cole um link válido do Kahoot, começando com https://."
+                  : undefined
+              }
+            >
+              <Input
+                id="kahoot-url"
+                type="url"
+                inputMode="url"
+                value={kahootUrl}
+                placeholder="https://kahoot.it/challenge/..."
+                aria-invalid={Boolean(
+                  showValidation && step === 4 && kahootUrl.trim() && !isValidKahootUrl(kahootUrl.trim()),
+                )}
+                onChange={(event) => setKahootUrl(event.target.value)}
+              />
+            </Field>
+            {kahootUrl.trim() && isValidKahootUrl(kahootUrl.trim()) && (
+              <div className="rounded-xl border-2 border-primary bg-primary-light/40 p-4">
+                <p className="text-sm font-extrabold uppercase tracking-wide text-primary-dark">
+                  Prévia para o aluno
+                </p>
+                <p className="mt-2 break-all text-base font-bold text-gray-900 underline">
+                  {kahootUrl.trim()}
+                </p>
+              </div>
+            )}
+          </Card>
         </section>
       )}
 
@@ -258,7 +348,7 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
               Voltar
             </Button>
           )}
-          {step < 3 ? (
+          {step < 4 ? (
             <Button type="button" size="lg" onClick={goToNext}>
               Próxima etapa
             </Button>

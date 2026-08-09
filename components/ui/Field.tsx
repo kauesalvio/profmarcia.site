@@ -9,6 +9,7 @@ export function Field({
   error,
   htmlFor,
   required,
+  hintPosition = "above",
   children,
 }: {
   label: string;
@@ -16,6 +17,7 @@ export function Field({
   error?: string;
   htmlFor?: string;
   required?: boolean;
+  hintPosition?: "above" | "below";
   children: ReactNode;
 }) {
   return (
@@ -24,8 +26,9 @@ export function Field({
         {label}
         {required && <span className="text-error"> *</span>}
       </label>
-      {hint && <p className="text-sm text-gray-500">{hint}</p>}
+      {hint && hintPosition === "above" && <p className="text-sm text-gray-500">{hint}</p>}
       {children}
+      {hint && hintPosition === "below" && <p className="text-sm text-gray-500">{hint}</p>}
       {error && (
         <p className="text-sm font-bold text-error" role="alert">
           {error}

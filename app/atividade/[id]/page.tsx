@@ -7,7 +7,12 @@ import { Header } from "@/components/layout/Header";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
 import { Alert, EmptyState, Spinner } from "@/components/ui/Feedback";
-import { IconCheck, IconClipboard, QUESTION_TYPE_ICONS } from "@/components/ui/Icons";
+import {
+  IconCheck,
+  IconClipboard,
+  IconLink,
+  QUESTION_TYPE_ICONS,
+} from "@/components/ui/Icons";
 import { activitiesApi, responsesApi } from "@/lib/api";
 import { QUESTION_TYPE_LABELS, activityQuestionTypes } from "@/lib/labels";
 import { getSelectedClassId } from "@/lib/student";
@@ -50,11 +55,15 @@ export default function StudentActivityPage() {
 
   const types = activity ? activityQuestionTypes(activity) : [];
   const TypeIcon = types.length > 0 ? QUESTION_TYPE_ICONS[types[0]] : null;
+  const kahootUrl =
+    typeof activity?.config?.settings?.kahootUrl === "string"
+      ? activity.config.settings.kahootUrl
+      : undefined;
 
   return (
     <div className="ambient-aluno flex flex-1 flex-col">
       <Header variant="aluno" />
-      <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-6 px-4 py-8 sm:py-10">
+      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-3 py-8 sm:px-4 sm:py-10">
         {loading && <Spinner label="Carregando atividade..." />}
 
         {error && !loading && (
@@ -83,7 +92,7 @@ export default function StudentActivityPage() {
         )}
 
         {activity && !done && (
-          <div className="flex animate-rise items-start gap-4">
+          <div className="flex max-w-2xl animate-rise items-start gap-4">
             {TypeIcon && (
               <span
                 aria-hidden
@@ -136,6 +145,22 @@ export default function StudentActivityPage() {
               <p className="max-w-sm text-base font-semibold text-gray-700">
                 Sua resposta chegou para a professora.
               </p>
+              {kahootUrl && (
+                <div className="mt-2 w-full max-w-lg rounded-xl border-2 border-gray-900 bg-white p-4 text-left shadow-sm">
+                  <p className="flex items-center gap-2 text-sm font-extrabold uppercase tracking-wide text-student-dark">
+                    <IconLink size={18} />
+                    Agora é hora do Kahoot
+                  </p>
+                  <a
+                    href={kahootUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-2 block break-all text-base font-extrabold text-gray-900 underline decoration-2 underline-offset-4 hover:text-student-dark"
+                  >
+                    {kahootUrl}
+                  </a>
+                </div>
+              )}
               <ButtonLink href="/aluno" variant="student" size="lg" className="mt-2">
                 Voltar para as atividades
               </ButtonLink>

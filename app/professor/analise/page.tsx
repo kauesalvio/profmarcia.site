@@ -21,13 +21,12 @@ import {
 import { useResource } from "@/lib/useResource";
 
 export default function AnalysisIndexPage() {
-  const { data, error, loading, reload } = useResource(() => activitiesApi.list());
+  const { data, error, loading, reload } = useResource(() => activitiesApi.list(undefined, true));
   const activities = data ?? [];
 
   return (
     <>
       <PageHeader
-        eyebrow="Análise"
         title="Ver respostas"
         description="Selecione uma atividade para ver as respostas enviadas."
       />

@@ -2,6 +2,10 @@ import { request } from "http";
 
 const base = "http://localhost:3000";
 
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
 function fetchJson(path, opts = {}) {
   const url = new URL(path, base);
   const body = opts.body ? JSON.stringify(opts.body) : undefined;
@@ -67,10 +71,65 @@ async function main() {
     },
   });
   console.log("status", activity.status, activity.body);
+  assert(
+    activity.body.config.questions[0].correctAnswer === "4",
+    "A professora deve receber o gabarito ao criar uma atividade.",
+  );
 
   console.log("\nAtividades do 4o ano (publico)...");
   const publicActivities = await fetchJson(`/api/atividades?classId=${c4}`);
   console.log("status", publicActivities.status, publicActivities.body);
+  const publicQuiz = publicActivities.body
+    .find((item) => item._id === activity.body._id)
+    ?.config.questions.find((question) => question.label === "2+2?");
+  assert(publicQuiz, "A atividade criada nÃ£o apareceu na listagem pÃºblica.");
+  assert(
+    !Object.hasOwn(publicQuiz, "correctAnswer"),
+    "A listagem pÃºblica nÃ£o pode expor correctAnswer.",
+  );
+
+  console.log("\nListagem da professora...");
+  const teacherActivities = await fetchJson(
+    `/api/atividades?classId=${c4}&includeAnswers=true`,
+    { cookie },
+  );
+  const teacherQuiz = teacherActivities.body
+    .find((item) => item._id === activity.body._id)
+    ?.config.questions.find((question) => question.label === "2+2?");
+  assert(
+    teacherQuiz?.correctAnswer === "4",
+    "A professora deve continuar recebendo o gabarito na listagem autenticada.",
+  );
+
+  console.log("\nDetalhe pÃºblico...");
+  const publicActivity = await fetchJson(`/api/atividades/${activity.body._id}`);
+  const publicDetailQuiz = publicActivity.body.config.questions.find(
+    (question) => question.label === "2+2?",
+  );
+  assert(publicDetailQuiz, "A atividade não apareceu no detalhe público.");
+  assert(
+    !Object.hasOwn(publicDetailQuiz, "correctAnswer"),
+    "O detalhe pÃºblico nÃ£o pode expor correctAnswer.",
+  );
+
+  console.log("\nTentativa de gabarito sem autenticação...");
+  const unauthorizedAnswers = await fetchJson(
+    `/api/atividades/${activity.body._id}?includeAnswers=true`,
+  );
+  assert(
+    unauthorizedAnswers.status === 401,
+    "O gabarito deve exigir autenticação da professora.",
+  );
+
+  console.log("\nDetalhe da professora...");
+  const teacherActivity = await fetchJson(
+    `/api/atividades/${activity.body._id}?includeAnswers=true`,
+    { cookie },
+  );
+  assert(
+    teacherActivity.body.config.questions[0].correctAnswer === "4",
+    "A professora deve continuar recebendo o gabarito no detalhe autenticado.",
+  );
 
   console.log("\nEnviando resposta...");
   const response = await fetchJson("/api/respostas", {

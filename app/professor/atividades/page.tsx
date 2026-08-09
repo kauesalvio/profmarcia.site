@@ -30,7 +30,10 @@ export default function ActivitiesPage() {
   const [removingId, setRemovingId] = useState<string | null>(null);
 
   const classes = useResource(() => classesApi.list());
-  const activities = useResource(() => activitiesApi.list(classId || undefined), classId);
+  const activities = useResource(
+    () => activitiesApi.list(classId || undefined, true),
+    classId,
+  );
 
   const classNames = new Map((classes.data ?? []).map((item) => [item._id, item]));
 
@@ -57,7 +60,6 @@ export default function ActivitiesPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Gerenciamento"
         title="Atividades"
         description="Atividades criadas e os anos em que estão disponíveis."
         action={

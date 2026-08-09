@@ -156,6 +156,8 @@ export const IconSearch = createIcon(
   </>,
 );
 
+export const IconX = createIcon("X", <path d="m6 6 12 12M18 6 6 18" />);
+
 export const IconCards = createIcon(
   "Cards",
   <>
@@ -171,6 +173,7 @@ export const QUESTION_TYPE_ICONS: Record<
   text: IconForm,
   textarea: IconForm,
   quiz: IconQuiz,
+  "image-quiz": IconCards,
   crossword: IconGrid,
   wordsearch: IconSearch,
   memory: IconCards,

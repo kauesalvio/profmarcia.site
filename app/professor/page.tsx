@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { InteractiveCard } from "@/components/ui/Card";
 import {
   IconArrowRight,
   IconChart,
@@ -13,77 +12,94 @@ const ACTIONS = [
   {
     href: "/professor/classes",
     title: "Turmas",
-    description: "Cadastre e organize as turmas do 1º ao 9º ano.",
+    description: "Cadastre e organize os anos das suas turmas.",
     icon: IconUsers,
-    accent: "bg-primary-light text-primary-dark",
-    border: "border-primary",
   },
   {
     href: "/professor/atividades/nova",
-    title: "Criar atividade",
-    description: "Misture quiz, formulário, cruzadinha e caça-palavra.",
+    title: "Nova atividade",
+    description: "Monte uma atividade com diferentes tipos de pergunta.",
     icon: IconPlus,
-    accent: "bg-student-light text-student-dark",
-    border: "border-student",
   },
   {
     href: "/professor/atividades",
     title: "Atividades",
-    description: "Veja, edite ou exclua as atividades já criadas.",
+    description: "Veja e organize o que já foi criado.",
     icon: IconClipboard,
-    accent: "bg-info-bg text-info",
-    border: "border-info",
   },
   {
     href: "/professor/analise",
     title: "Ver respostas",
-    description: "Acompanhe as respostas enviadas em cada atividade.",
+    description: "Acompanhe as respostas enviadas pelos alunos.",
     icon: IconChart,
-    accent: "bg-warning-bg text-warning",
-    border: "border-warning",
   },
 ];
 
 export default function ProfessorDashboardPage() {
   return (
     <>
-      <div className="grid gap-4 sm:grid-cols-2">
-        {ACTIONS.map((action) => {
-          const Icon = action.icon;
-          return (
-            <InteractiveCard
-              key={action.href}
-              className={`border-2 ${action.border} p-0`}
-            >
-              <Link
-                href={action.href}
-                className="group flex h-full flex-col gap-4 rounded-xl p-5"
-              >
-                <span
-                  aria-hidden
-                  className={`grid size-12 place-items-center rounded-lg border-2 border-gray-900 ${action.accent} shadow-sm`}
-                >
-                  <Icon size={24} />
-                </span>
-                <span className="flex flex-col gap-1">
-                  <span className="flex items-center gap-2 text-xl font-extrabold uppercase tracking-wide text-gray-900">
-                    {action.title}
-                    <IconArrowRight
-                      size={20}
-                      className="text-gray-400 transition-all duration-150 group-hover:translate-x-1 group-hover:text-primary"
-                    />
-                  </span>
-                  <span className="text-sm font-medium text-gray-600">
-                    {action.description}
-                  </span>
-                </span>
-              </Link>
-            </InteractiveCard>
-          );
-        })}
-      </div>
+      <section className="grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+        <Link
+          href="/professor/atividades/nova"
+          className="group relative flex min-h-64 flex-col justify-between overflow-hidden rounded-2xl border-2 border-gray-900 bg-primary p-6 text-white shadow-hard transition-all duration-150 hover:-translate-y-1 hover:shadow-lg sm:p-8"
+        >
+          <span aria-hidden className="dot-grid absolute inset-0 text-white/30" />
+          <span className="relative flex size-14 items-center justify-center rounded-xl border-2 border-gray-900 bg-white text-primary shadow-md">
+            <IconPlus size={30} />
+          </span>
+          <span className="relative flex flex-col gap-2">
+            <span className="flex items-center gap-3 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">
+              Criar atividade
+              <IconArrowRight
+                size={28}
+                className="transition-transform duration-150 group-hover:translate-x-1"
+              />
+            </span>
+            <span className="max-w-md text-base font-semibold leading-relaxed text-white/85">
+              Monte uma atividade com quiz, formulário, cruzadinha ou caça-palavra.
+            </span>
+          </span>
+        </Link>
 
-      <div className="relative overflow-hidden rounded-2xl border-4 border-gray-900 bg-student p-6 text-white shadow-hard">
+        <nav
+          aria-label="Atalhos da professora"
+          className="divide-y-2 divide-gray-200 rounded-2xl border-2 border-gray-900 bg-white px-5"
+        >
+          {ACTIONS.filter((action) => action.href !== "/professor/atividades/nova").map(
+            (action) => {
+              const Icon = action.icon;
+              return (
+                <Link
+                  key={action.href}
+                  href={action.href}
+                  className="group flex min-h-[5.5rem] items-center gap-4 py-4 first:pt-5 last:pb-5"
+                >
+                  <span
+                    aria-hidden
+                    className="grid size-10 shrink-0 place-items-center rounded-lg bg-gray-100 text-primary transition-colors group-hover:bg-primary group-hover:text-white"
+                  >
+                    <Icon size={21} />
+                  </span>
+                  <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <span className="text-base font-extrabold uppercase tracking-wide text-gray-900">
+                      {action.title}
+                    </span>
+                    <span className="text-sm font-medium leading-snug text-gray-500">
+                      {action.description}
+                    </span>
+                  </span>
+                  <IconArrowRight
+                    size={19}
+                    className="shrink-0 text-gray-400 transition-transform duration-150 group-hover:translate-x-1 group-hover:text-primary"
+                  />
+                </Link>
+              );
+            },
+          )}
+        </nav>
+      </section>
+
+      <div className="relative overflow-hidden rounded-2xl border-2 border-gray-900 bg-student p-5 text-white shadow-md sm:p-6">
         <div aria-hidden className="dot-grid absolute inset-0 text-white/40" />
         <div className="relative flex flex-wrap items-center gap-4">
           <span
@@ -97,8 +113,8 @@ export default function ProfessorDashboardPage() {
               Link para os alunos
             </h2>
             <p className="text-sm font-semibold leading-relaxed text-white/90">
-              Os alunos não precisam de senha. Compartilhe o endereço abaixo para que
-              escolham o ano e respondam as atividades.
+              Os alunos não precisam de senha. Compartilhe o endereço abaixo para que escolham
+              o ano e respondam as atividades.
             </p>
           </div>
           <Link

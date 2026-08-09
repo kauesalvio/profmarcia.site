@@ -34,7 +34,10 @@
   - Descrição.
   - Seleção dos anos/classes para distribuição (checkboxes).
   - Perguntas com tipos mistos (quiz, formulário, cruzadinha, caça-palavra, etc.) na mesma atividade.
+- Quiz com imagens: enunciado, de duas a quatro alternativas visuais e uma resposta correta.
 - Renderização dinâmica do formulário de configuração por pergunta.
+- Imagem decorativa opcional em cada pergunta, escolhida por busca no Openverse.
+- Etapa final com link opcional do Kahoot; o endereço aparece após o aluno enviar a atividade.
 
 ### 5. `/professor/atividades` - Lista de Atividades
 - Lista todas as atividades criadas.
@@ -54,7 +57,8 @@
 ### 8. `/atividade/[id]` - Realização da Atividade
 - Renderiza as perguntas conforme o tipo de cada uma (`quiz`, `text`, etc.).
 - Coleta respostas e envia para a API.
-- Exibe confirmação ao final.
+- Exibe confirmação ao final e, quando configurado, o link cru do Kahoot.
+- Cruzadinha e caça-palavra usam instruções numeradas, alvos de toque grandes e grade com rolagem nos tamanhos que não cabem na tela.
 
 ## Componentes
 
@@ -67,13 +71,14 @@ Localizados em `components/activities/`:
 
 - `Form.tsx` - formulário de texto livre.
 - `Quiz.tsx` - quiz com alternativas.
+- `ImageQuiz.tsx` - quiz com duas a quatro alternativas em imagem.
 - `Crossword.tsx` - cruzadinha.
 - `WordSearch.tsx` - caça-palavra.
 - `Memory.tsx` - jogo da memória (futuro).
 
 ### Componentes de Formulário de Criação
 - `YearClassSelector.tsx` - seleciona anos/classes de distribuição.
-- `QuestionBuilder.tsx` - construtor de perguntas com suporte a quiz, formulário, cruzadinha e caça-palavra na mesma atividade.
+- `QuestionBuilder.tsx` - construtor de perguntas com suporte a quiz textual, quiz com imagens, formulário, cruzadinha e caça-palavra na mesma atividade.
 
 ## Fluxo do Usuário
 

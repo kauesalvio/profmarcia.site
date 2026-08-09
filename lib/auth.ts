@@ -24,7 +24,10 @@ export function useTeacherSession(): TeacherSession | null | undefined {
   if (raw === undefined) return undefined;
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as TeacherSession;
+    const session = JSON.parse(raw) as TeacherSession;
+    return session.name === "Professora Ana"
+      ? { ...session, name: "Professora Márcia" }
+      : session;
   } catch {
     return null;
   }

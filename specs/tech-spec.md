@@ -25,7 +25,9 @@ Site para apoio às aulas de informática de uma professora.
 - Login com e-mail e senha armazenados no MongoDB (senha com hash).
 - Painel para criar/editar/excluir classes do 1º ao 9º ano.
 - Criar atividades com título, descrição, perguntas de tipos mistos (quiz, formulário, cruzadinha, caça-palavra) e seleção dos anos/classes de distribuição.
-- Tipos de perguntas previstos: **Quiz**, **Formulário**, **Cruzadinha**, **Caça-palavra** (MVP) e **Memória** (futuro).
+- Adicionar uma imagem decorativa opcional por pergunta, pesquisada no Openverse sem persistir o arquivo.
+- Adicionar um link oficial do Kahoot opcional, apresentado ao aluno após o envio.
+- Tipos de perguntas previstos: **Quiz**, **Quiz com imagens**, **Formulário**, **Cruzadinha**, **Caça-palavra** (MVP) e **Memória** (futuro).
 - Configurar cada pergunta de acordo com o tipo selecionado, permitindo misturar tipos dentro de uma mesma atividade.
 - Selecionar uma atividade e visualizar as respostas enviadas.
 
@@ -83,7 +85,7 @@ informatic-class/
   "_id": "ObjectId",
   "email": "professora@escola.com",
   "passwordHash": "$2b$10$...",
-  "name": "Professora Ana",
+  "name": "Professora Márcia",
   "createdAt": "ISO date"
 }
 ```
@@ -149,11 +151,12 @@ informatic-class/
 |------|-----------|--------------|
 | **Formulário (text)** | Campos de texto livre para resposta. | Baixa (MVP) |
 | **Quiz** | Perguntas com alternativas e resposta correta. | Baixa (MVP) |
+| **Quiz com imagens** | Enunciado com duas a quatro imagens, sendo uma resposta correta. | Baixa (MVP) |
 | **Cruzadinha** | Palavras cruzadas geradas a partir de dicas. | Média (MVP) |
 | **Caça-palavra** | Grade com palavras a serem encontradas. | Média (MVP) |
 | **Memória** | Jogo de cartas com pares. | Média (futuro) |
 
-Cada pergunta dentro de `config.questions` possui seu próprio `type`, permitindo misturar tipos dentro da mesma atividade. Nas perguntas `crossword` e `wordsearch`, o campo `clue` de cada palavra é opcional: a professora define as palavras e pode ou não adicionar dicas.
+Cada pergunta dentro de `config.questions` possui seu próprio `type`, permitindo misturar tipos dentro da mesma atividade. O tipo `image-quiz` guarda de duas a quatro referências do Openverse em `options` e o ID correto em `correctAnswer`. Nas perguntas `crossword` e `wordsearch`, o campo `clue` de cada palavra é opcional: a professora define as palavras e pode ou não adicionar dicas. Toda pergunta também pode guardar uma referência `decoration` do Openverse (ID, título, licença e fonte), sem armazenar o arquivo. O link opcional fica em `config.settings.kahootUrl`.
 
 ### Response
 ```json

@@ -24,10 +24,10 @@ async function seed() {
     await responses.createIndex({ submittedAt: -1 });
 
     const existing = await teachers.findOne({ email: process.env.TEACHER_EMAIL ?? "professora@escola.com" });
+    const email = process.env.TEACHER_EMAIL ?? "professora@escola.com";
+    const password = process.env.TEACHER_PASSWORD ?? "senha123";
+    const name = process.env.TEACHER_NAME ?? "Professora Márcia";
     if (!existing) {
-      const email = process.env.TEACHER_EMAIL ?? "professora@escola.com";
-      const password = process.env.TEACHER_PASSWORD ?? "senha123";
-      const name = process.env.TEACHER_NAME ?? "Professora Ana";
       await teachers.insertOne({
         email,
         passwordHash: await bcrypt.hash(password, 10),
@@ -36,7 +36,8 @@ async function seed() {
       });
       console.log("Professora criada:", email);
     } else {
-      console.log("Professora já existe.");
+      await teachers.updateOne({ _id: existing._id }, { $set: { name } });
+      console.log("Professora atualizada:", name);
     }
 
     const classNames = [

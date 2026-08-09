@@ -6,6 +6,7 @@ export type QuestionType =
   | "text"
   | "textarea"
   | "quiz"
+  | "image-quiz"
   | "crossword"
   | "wordsearch"
   | "memory";
@@ -16,8 +17,20 @@ export interface PuzzleWord {
   clue?: string;
 }
 
+export interface DecorationImage {
+  /** Identificador público do Openverse; o arquivo da imagem não é salvo. */
+  id: string;
+  title: string;
+  creator?: string;
+  license: string;
+  sourceUrl: string;
+}
+
+export type ImageSearchResult = DecorationImage;
+
 interface BaseQuestion {
   label: string;
+  decoration?: DecorationImage;
 }
 
 export interface TextQuestion extends BaseQuestion {
@@ -27,6 +40,12 @@ export interface TextQuestion extends BaseQuestion {
 export interface QuizQuestion extends BaseQuestion {
   type: "quiz";
   options: string[];
+  correctAnswer: string | null;
+}
+
+export interface ImageQuizQuestion extends BaseQuestion {
+  type: "image-quiz";
+  options: (DecorationImage | null)[];
   correctAnswer: string | null;
 }
 
@@ -40,11 +59,20 @@ export interface FutureQuestion extends BaseQuestion {
   type: "memory";
 }
 
-export type Question = TextQuestion | QuizQuestion | PuzzleQuestion | FutureQuestion;
+export type Question =
+  | TextQuestion
+  | QuizQuestion
+  | ImageQuizQuestion
+  | PuzzleQuestion
+  | FutureQuestion;
+
+export interface ActivitySettings extends Record<string, unknown> {
+  kahootUrl?: string;
+}
 
 export interface ActivityConfig {
   questions: Question[];
-  settings: Record<string, unknown>;
+  settings: ActivitySettings;
 }
 
 export interface SchoolClass {

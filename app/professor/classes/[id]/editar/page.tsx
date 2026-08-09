@@ -19,7 +19,6 @@ export default function EditClassPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Turmas"
         title="Editar turma"
         description="Atualize o nome ou o ano da turma."
       />

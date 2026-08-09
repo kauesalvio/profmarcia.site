@@ -1,7 +1,8 @@
 import { ObjectId } from "mongodb";
 import { getDatabase } from "@/lib/mongodb";
 import { requireAuth } from "@/lib/session";
-import { serializeActivity } from "@/lib/server/mongo";
+import { sanitizeActivityConfig } from "@/lib/server/activity";
+import { serializeActivity, serializePublicActivity } from "@/lib/server/mongo";
 import type { ActivityInput } from "@/lib/types";
 
 const INVALID_ACTIVITY = "Informe título, ao menos uma turma e ao menos uma pergunta.";
@@ -9,6 +10,17 @@ const INVALID_ACTIVITY = "Informe título, ao menos uma turma e ao menos uma per
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const classId = searchParams.get("classId");
+  const includeAnswers = searchParams.get("includeAnswers") === "true";
+
+  if (includeAnswers) {
+    try {
+      await requireAuth();
+    } catch {
+      return Response.json({ error: "Não autorizado." }, { status: 401 });
+    }
+  }
+
+  const serialize = includeAnswers ? serializeActivity : serializePublicActivity;
 
   try {
     const db = await getDatabase("escola");
@@ -18,7 +30,7 @@ export async function GET(request: Request) {
       .find(filter)
       .sort({ createdAt: -1 })
       .toArray();
-    return Response.json(activities.map((doc) => serializeActivity(doc as Record<string, unknown>)));
+    return Response.json(activities.map((doc) => serialize(doc as Record<string, unknown>)));
   } catch {
     return Response.json({ error: "Não foi possível carregar as atividades." }, { status: 500 });
   }
@@ -38,12 +50,18 @@ export async function POST(request: Request) {
     return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 
-  const title = body.title?.trim();
+  const title = body.title?.trim().slice(0, 160);
   const classIds = body.classIds;
-  const description = body.description?.trim() ?? "";
-  const config = body.config ?? { questions: [], settings: {} };
+  const description = body.description?.trim().slice(0, 2000) ?? "";
+  const config = sanitizeActivityConfig(body.config);
 
-  if (!title || !classIds?.length || !config.questions?.length) {
+  if (
+    !title ||
+    !classIds?.length ||
+    classIds.length > 30 ||
+    classIds.some((id) => !ObjectId.isValid(id)) ||
+    !config
+  ) {
     return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 

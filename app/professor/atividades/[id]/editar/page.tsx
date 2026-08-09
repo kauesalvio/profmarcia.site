@@ -10,12 +10,11 @@ import { useResource } from "@/lib/useResource";
 
 export default function EditActivityPage() {
   const { id } = useParams<{ id: string }>();
-  const { data, error, loading, reload } = useResource(() => activitiesApi.get(id), id);
+  const { data, error, loading, reload } = useResource(() => activitiesApi.get(id, true), id);
 
   return (
     <>
       <PageHeader
-        eyebrow="Atividades"
         title="Editar atividade"
         description="Atualize os dados e as perguntas."
       />

@@ -23,8 +23,13 @@ $env:Path = "C:\Program Files\nodejs;" + $env:Path
 ```powershell
 npx tsc --noEmit
 npm run lint
+npm run test:e2e
 npm run build
 ```
+
+O `test:e2e` exige o MongoDB em execução (por exemplo, via Docker) e a
+aplicação disponível em `http://localhost:3000` (`npm run start` depois do
+build, ou `npm run dev`). O teste cria e remove uma atividade de teste.
 
 ## Convenções
 
@@ -38,6 +43,6 @@ npm run build
   `localStorage`/`sessionStorage`, use `lib/browserStore.ts`; para buscar dados,
   `lib/useResource.ts`.
 - Área da professora usa a paleta `primary` (azul cobalto); área do aluno, `student` (laranja queimado #e85d04).
-- `app/api/` + `lib/mock/db.ts` são um backend **mockado em memória** para visualizar o
-  design. Devem ser substituídos pela implementação real (MongoDB + NextAuth.js) mantendo
-  o mesmo contrato, sem alterar o frontend.
+- `app/api/` + `lib/mongodb.ts` + `lib/server/` implementam o backend com MongoDB e
+  autenticação por sessão. Ao evoluir o backend, mantenha o contrato das APIs sem
+  alterar o frontend.

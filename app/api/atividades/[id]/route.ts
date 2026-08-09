@@ -1,15 +1,27 @@
 import { ObjectId } from "mongodb";
 import { getDatabase } from "@/lib/mongodb";
 import { requireAuth } from "@/lib/session";
-import { serializeActivity } from "@/lib/server/mongo";
+import { sanitizeActivityConfig } from "@/lib/server/activity";
+import { serializeActivity, serializePublicActivity } from "@/lib/server/mongo";
 import type { ActivityInput } from "@/lib/types";
 
 const INVALID_ACTIVITY = "Informe título, ao menos uma turma e ao menos uma pergunta.";
 
 type Params = { params: Promise<{ id: string }> };
 
-export async function GET(_request: Request, { params }: Params) {
+export async function GET(request: Request, { params }: Params) {
   const { id } = await params;
+  const includeAnswers = new URL(request.url).searchParams.get("includeAnswers") === "true";
+
+  if (includeAnswers) {
+    try {
+      await requireAuth();
+    } catch {
+      return Response.json({ error: "Não autorizado." }, { status: 401 });
+    }
+  }
+
+  const serialize = includeAnswers ? serializeActivity : serializePublicActivity;
 
   try {
     const db = await getDatabase("escola");
@@ -19,7 +31,7 @@ export async function GET(_request: Request, { params }: Params) {
       return Response.json({ error: "Atividade não encontrada." }, { status: 404 });
     }
 
-    return Response.json(serializeActivity(activity as Record<string, unknown>));
+    return Response.json(serialize(activity as Record<string, unknown>));
   } catch {
     return Response.json({ error: "Não foi possível carregar a atividade." }, { status: 500 });
   }
@@ -41,12 +53,19 @@ export async function PUT(request: Request, { params }: Params) {
     return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 
-  const title = body.title?.trim();
+  const title = body.title?.trim().slice(0, 160);
   const classIds = body.classIds;
-  const description = body.description?.trim() ?? "";
-  const config = body.config ?? { questions: [], settings: {} };
+  const description = body.description?.trim().slice(0, 2000) ?? "";
+  const config = sanitizeActivityConfig(body.config);
 
-  if (!title || !classIds?.length || !config.questions?.length) {
+  if (
+    !ObjectId.isValid(id) ||
+    !title ||
+    !classIds?.length ||
+    classIds.length > 30 ||
+    classIds.some((classId) => !ObjectId.isValid(classId)) ||
+    !config
+  ) {
     return Response.json({ error: INVALID_ACTIVITY }, { status: 400 });
   }
 

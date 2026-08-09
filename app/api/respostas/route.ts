@@ -40,7 +40,14 @@ export async function POST(request: Request) {
   const answers = body.answers;
   const classIds = body.classIds ?? [];
 
-  if (!activityId || !answers?.length) {
+  if (
+    !activityId ||
+    !ObjectId.isValid(activityId) ||
+    !answers?.length ||
+    answers.length > 50 ||
+    classIds.length > 30 ||
+    classIds.some((id) => !ObjectId.isValid(id))
+  ) {
     return Response.json({ error: "Informe as respostas da atividade." }, { status: 400 });
   }
 
@@ -52,10 +59,45 @@ export async function POST(request: Request) {
       return Response.json({ error: "Atividade não encontrada." }, { status: 404 });
     }
 
+    const activityClassIds = new Set(
+      ((activity.classIds as ObjectId[] | undefined) ?? []).map((id) => id.toHexString()),
+    );
+    const questions =
+      ((activity.config as { questions?: { label?: unknown }[] } | undefined)?.questions ?? []);
+    const allowedLabels = new Set(
+      questions.flatMap((question) =>
+        typeof question.label === "string" ? [question.label] : [],
+      ),
+    );
+    const sanitizedAnswers = answers.map((answer) => ({
+      question: typeof answer.question === "string" ? answer.question.trim() : "",
+      answer: typeof answer.answer === "string" ? answer.answer.trim() : "",
+    }));
+    const totalAnswerLength = sanitizedAnswers.reduce(
+      (total, answer) => total + answer.answer.length,
+      0,
+    );
+
+    if (
+      classIds.some((id) => !activityClassIds.has(id)) ||
+      sanitizedAnswers.some(
+        (answer) =>
+          !allowedLabels.has(answer.question) ||
+          answer.question.length > 300 ||
+          answer.answer.length > 5000,
+      ) ||
+      totalAnswerLength > 25000
+    ) {
+      return Response.json(
+        { error: "As respostas enviadas não correspondem a esta atividade." },
+        { status: 400 },
+      );
+    }
+
     const document = {
       activityId: new ObjectId(activityId),
       classIds: classIds.map((id) => new ObjectId(id)),
-      answers,
+      answers: sanitizedAnswers,
       submittedAt: new Date(),
     };
     const inserted = await db.collection("responses").insertOne(document);
