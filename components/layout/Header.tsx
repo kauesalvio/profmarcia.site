@@ -4,18 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 import { Logo } from "@/components/ui/Logo";
-import {
-  IconChart,
-  IconClipboard,
-  IconMonitor,
-  IconUsers,
-} from "@/components/ui/Icons";
 
-const PROFESSOR_LINKS = [
-  { href: "/professor/classes", label: "Turmas", icon: IconUsers },
-  { href: "/professor/atividades", label: "Atividades", icon: IconClipboard },
-  { href: "/professor/analise", label: "Ver respostas", icon: IconChart },
-];
+const TEACHER_NAV = [
+  ["/professor", "Bancada"],
+  ["/professor/classes", "Turmas"],
+  ["/professor/atividades", "Atividades"],
+  ["/professor/analise", "Respostas"],
+] as const;
 
 export function Header({
   variant,
@@ -28,52 +23,43 @@ export function Header({
   const isProfessor = variant === "professor";
 
   return (
-    <header className="sticky top-0 z-20 border-b-4 border-gray-900 bg-white">
-      <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+    <header className="sticky top-0 z-20 border-b border-creme/15 bg-marinho/95 text-creme backdrop-blur-sm">
+      <div className="mx-auto grid w-full max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-4 py-4 sm:px-6">
         <Link
           href={isProfessor ? "/professor" : "/aluno"}
-          className="flex items-center gap-2.5 rounded-md text-gray-900"
+          aria-label="Professora Márcia — início"
+          className="rounded-xl"
         >
-          <span
-            aria-hidden
-            className={`grid size-10 place-items-center rounded-lg border-2 border-gray-900 text-white shadow-sm ${
-              isProfessor ? "bg-primary" : "bg-student"
-            }`}
-          >
-            <IconMonitor size={22} />
-          </span>
-          <Logo area={isProfessor ? "professor" : "aluno"} />
+          <Logo theme="light" />
         </Link>
-
-        {isProfessor && (
-          <nav
-            aria-label="Área da professora"
-            className="order-last flex w-full flex-wrap items-center gap-1 sm:order-none sm:w-auto"
-          >
-            {PROFESSOR_LINKS.map((link) => {
-              const active = pathname.startsWith(link.href);
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  aria-current={active ? "page" : undefined}
-                  className={`flex min-h-11 items-center gap-2 rounded-lg border-2 px-3 py-2 text-sm font-extrabold uppercase tracking-wide transition-all duration-150 ${
-                    active
-                      ? "border-primary bg-primary text-white shadow-sm"
-                      : "border-transparent text-gray-700 hover:border-gray-200 hover:bg-gray-100"
-                  }`}
-                >
-                  <Icon size={17} />
-                  {link.label}
-                </Link>
-              );
-            })}
-          </nav>
-        )}
 
         <div className="ml-auto flex items-center gap-3">{action}</div>
       </div>
+
+      {isProfessor && (
+        <nav aria-label="Área da professora" className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+          <ul className="grid w-full grid-cols-4 gap-1 pb-3 sm:flex sm:flex-wrap sm:gap-2">
+            {TEACHER_NAV.map(([href, label]) => {
+              const active = href === "/professor" ? pathname === href : pathname.startsWith(href);
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    aria-current={active ? "page" : undefined}
+                    className={`flex min-h-11 items-center justify-center rounded-t-2xl rounded-b-md border-2 px-1 text-[11px] font-bold whitespace-nowrap transition-colors sm:px-4 sm:text-sm ${
+                      active
+                        ? "border-tinta bg-creme text-marinho shadow-sm"
+                        : "border-creme/20 text-creme/70 hover:bg-marinho-2 hover:text-creme"
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }
@@ -82,23 +68,16 @@ export function PageHeader({
   title,
   description,
   action,
-  eyebrow,
 }: {
   title: string;
   description?: string;
   action?: ReactNode;
-  eyebrow?: string;
 }) {
   return (
-    <div className="flex flex-wrap items-end justify-between gap-4">
-      <div className="flex flex-col gap-1.5">
-        {eyebrow && (
-          <span className="text-xs font-extrabold uppercase tracking-widest text-primary">
-            {eyebrow}
-          </span>
-        )}
-        <h1 className="heading-poster text-3xl text-gray-900">{title}</h1>
-        {description && <p className="max-w-2xl text-base text-gray-600">{description}</p>}
+    <div className="flex animate-rise flex-wrap items-end justify-between gap-5 py-2">
+      <div className="flex max-w-3xl flex-col gap-2">
+        <h1 className="titulo-caixa text-4xl text-creme sm:text-5xl">{title}</h1>
+        {description && <p className="max-w-2xl text-base font-semibold text-creme/75">{description}</p>}
       </div>
       {action}
     </div>

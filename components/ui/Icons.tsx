@@ -72,6 +72,23 @@ export const IconArrowRight = createIcon(
 
 export const IconCheck = createIcon("Check", <path d="m4.5 12.5 5 5 10-11" />);
 
+export const IconAlert = createIcon(
+  "Alert",
+  <>
+    <path d="M12 7.5v5" />
+    <path d="M12 16.5h.01" />
+    <path d="M10.1 3.9 2.8 17a2 2 0 0 0 1.8 3h14.8a2 2 0 0 0 1.8-3L13.9 3.9a2.2 2.2 0 0 0-3.8 0Z" />
+  </>,
+);
+
+export const IconInfo = createIcon(
+  "Info",
+  <>
+    <circle cx="12" cy="12" r="9" />
+    <path d="M12 11v5M12 8h.01" />
+  </>,
+);
+
 export const IconChevronDown = createIcon(
   "ChevronDown",
   <path d="m6 9.5 6 6 6-6" />,
@@ -156,6 +173,16 @@ export const IconSearch = createIcon(
   </>,
 );
 
+export const IconFlask = createIcon(
+  "Flask",
+  <>
+    <path d="M9 3h6M10 3v5.2l-5.2 8.7A2.7 2.7 0 0 0 7.1 21h9.8a2.7 2.7 0 0 0 2.3-4.1L14 8.2V3" />
+    <path d="M7.5 15h9M9.5 12.2h5" />
+  </>,
+);
+
+export const IconX = createIcon("X", <path d="m6 6 12 12M18 6 6 18" />);
+
 export const IconCards = createIcon(
   "Cards",
   <>
@@ -171,6 +198,7 @@ export const QUESTION_TYPE_ICONS: Record<
   text: IconForm,
   textarea: IconForm,
   quiz: IconQuiz,
+  "image-quiz": IconCards,
   crossword: IconGrid,
   wordsearch: IconSearch,
   memory: IconCards,

@@ -5,7 +5,6 @@ export default function NewClassPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Turmas"
         title="Nova turma"
         description="Informe o nome e o ano da turma."
       />

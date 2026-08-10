@@ -21,13 +21,12 @@ import {
 import { useResource } from "@/lib/useResource";
 
 export default function AnalysisIndexPage() {
-  const { data, error, loading, reload } = useResource(() => activitiesApi.list());
+  const { data, error, loading, reload } = useResource(() => activitiesApi.list(undefined, true));
   const activities = data ?? [];
 
   return (
     <>
       <PageHeader
-        eyebrow="Análise"
         title="Ver respostas"
         description="Selecione uma atividade para ver as respostas enviadas."
       />
@@ -67,7 +66,7 @@ export default function AnalysisIndexPage() {
             const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
-                <InteractiveCard className="border-2 border-primary p-0">
+                <InteractiveCard className="border-[3px] border-tinta p-0">
                   <Link
                     href={`/professor/analise/${activity._id}`}
                     className="group flex flex-wrap items-center gap-4 rounded-xl p-5"

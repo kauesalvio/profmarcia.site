@@ -16,6 +16,10 @@ async function seed() {
     const responses = db.collection("responses");
 
     await teachers.createIndex({ email: 1 }, { unique: true });
+    await teachers.createIndex(
+      { username: 1 },
+      { unique: true, partialFilterExpression: { username: { $type: "string" } } },
+    );
     await classes.createIndex({ year: 1 });
     await classes.createIndex({ name: 1 }, { unique: true });
     await activities.createIndex({ classIds: 1 });
@@ -23,12 +27,14 @@ async function seed() {
     await responses.createIndex({ activityId: 1 });
     await responses.createIndex({ submittedAt: -1 });
 
-    const existing = await teachers.findOne({ email: process.env.TEACHER_EMAIL ?? "professora@escola.com" });
+    const username = process.env.TEACHER_USERNAME ?? "marcia";
+    const email = process.env.TEACHER_EMAIL ?? "professora@escola.com";
+    const password = process.env.TEACHER_PASSWORD ?? "Meleka@2430";
+    const name = process.env.TEACHER_NAME ?? "Professora Márcia";
+    const existing = await teachers.findOne({ $or: [{ username }, { email }] });
     if (!existing) {
-      const email = process.env.TEACHER_EMAIL ?? "professora@escola.com";
-      const password = process.env.TEACHER_PASSWORD ?? "senha123";
-      const name = process.env.TEACHER_NAME ?? "Professora Ana";
       await teachers.insertOne({
+        username,
         email,
         passwordHash: await bcrypt.hash(password, 10),
         name,
@@ -36,7 +42,11 @@ async function seed() {
       });
       console.log("Professora criada:", email);
     } else {
-      console.log("Professora já existe.");
+      await teachers.updateOne(
+        { _id: existing._id },
+        { $set: { username, email, passwordHash: await bcrypt.hash(password, 10), name } },
+      );
+      console.log("Professora atualizada:", username);
     }
 
     const classNames = [

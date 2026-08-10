@@ -5,6 +5,7 @@ export const QUESTION_TYPE_LABELS: Record<QuestionType, string> = {
   text: "Resposta curta",
   textarea: "Resposta longa",
   quiz: "Quiz",
+  "image-quiz": "Quiz com imagens",
   crossword: "Cruzadinha",
   wordsearch: "Caça-palavra",
   memory: "Jogo da Memória",
@@ -14,6 +15,7 @@ export const QUESTION_TYPE_DESCRIPTIONS: Record<QuestionType, string> = {
   text: "Campo de texto curto para o aluno responder.",
   textarea: "Campo de texto longo para respostas com mais detalhes.",
   quiz: "Pergunta com alternativas e resposta correta.",
+  "image-quiz": "Pergunta com duas a quatro imagens e uma resposta correta.",
   crossword: "Palavras cruzadas montadas a partir das palavras e dicas.",
   wordsearch: "Grade com palavras escondidas para o aluno encontrar.",
   memory: "Jogo de cartas com pares.",
@@ -24,6 +26,7 @@ export const AVAILABLE_QUESTION_TYPES: QuestionType[] = [
   "text",
   "textarea",
   "quiz",
+  "image-quiz",
   "crossword",
   "wordsearch",
 ];
@@ -40,10 +43,16 @@ export function activityQuestionTypes(activity: Activity): QuestionType[] {
 /** Resposta esperada de uma pergunta, quando existe gabarito. */
 export function expectedAnswer(question: Question): string | null {
   if (question.type === "quiz") return question.correctAnswer;
+  if (question.type === "image-quiz") return question.correctAnswer;
   if (question.type === "crossword" || question.type === "wordsearch") {
     return question.words.map((item) => item.word.toUpperCase()).join(", ");
   }
   return null;
+}
+
+export function answerLabel(question: Question | undefined, answer: string) {
+  if (question?.type !== "image-quiz") return answer;
+  return question.options.find((option) => option?.id === answer)?.title ?? answer;
 }
 
 /** Anos escolares atendidos pelo site: 1º ao 9º ano. */

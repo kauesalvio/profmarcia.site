@@ -4,7 +4,7 @@ export function Card({ className, ...props }: ComponentProps<"div">) {
   return (
     <div
       className={[
-        "rounded-xl border-2 border-gray-900 bg-white p-5 shadow-md",
+        "rounded-3xl border-[3px] border-tinta bg-creme p-5 text-marinho shadow-md",
         className,
       ]
         .filter(Boolean)
@@ -37,15 +37,15 @@ export function Badge({
   tone?: "neutral" | "primary" | "student" | "warning";
 }) {
   const tones = {
-    neutral: "border-gray-900 bg-gray-100 text-gray-900",
-    primary: "border-primary-dark bg-primary-light text-primary-dark",
-    student: "border-student-dark bg-student-light text-student-dark",
-    warning: "border-warning bg-warning-bg text-gray-900",
+    neutral: "border-tinta bg-creme-2 text-marinho",
+    primary: "border-tinta bg-eletrico text-creme",
+    student: "border-tinta bg-lima text-marinho",
+    warning: "border-tinta bg-amarelo text-marinho",
   } as const;
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-full border-2 px-2.5 py-1 text-xs font-extrabold uppercase tracking-wide ${tones[tone]}`}
+      className={`inline-flex items-center gap-1 rounded-lg border-2 px-2 py-1 text-[11px] font-black uppercase tracking-widest ${tones[tone]}`}
     >
       {children}
     </span>

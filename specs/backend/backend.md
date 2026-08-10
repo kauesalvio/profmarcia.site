@@ -14,7 +14,7 @@ Todas as rotas estão em `app/api/`.
 
 ### `/api/auth/[...nextauth]` - Autenticação
 - Provider `credentials`.
-- Busca professor(a) no MongoDB pelo e-mail.
+- Busca professor(a) no MongoDB pelo usuário ou e-mail.
 - Compara senha com `bcrypt.compare`.
 - Cria sessão JWT em cookie.
 - Protege rotas de professor.
@@ -40,6 +40,8 @@ Todas as rotas estão em `app/api/`.
 ### `/api/atividades` - CRUD de Atividades
 
 #### `GET /api/atividades`
+- Sem `includeAnswers=true`, omite `correctAnswer` das perguntas de quiz para os alunos.
+- Com `includeAnswers=true`, exige sessão válida da professora e preserva o gabarito completo.
 - Lista atividades.
 - Query opcional: `classId` para filtrar por ano/classe.
 - Retorna atividades com `classIds` populados ou não.
@@ -71,15 +73,35 @@ Todas as rotas estão em `app/api/`.
             { "word": "MOUSE", "clue": "Periférico usado para apontar" },
             { "word": "TECLADO" }
           ],
-          "gridSize": 10
+          "gridSize": 10,
+          "decoration": {
+            "id": "id-publico-do-openverse",
+            "title": "Computador",
+            "license": "cc0",
+            "sourceUrl": "https://fonte-da-imagem.example"
+          }
         }
-      ]
+      ],
+      "settings": {
+        "kahootUrl": "https://kahoot.it/challenge/..."
+      }
     }
   }
   ```
-- Validação: título, ao menos um `classId` e ao menos uma pergunta. Cada pergunta pode ser de tipos mistos (`text`, `quiz`, `crossword`, `wordsearch`, etc.). Para `crossword` e `wordsearch`, a professora define as palavras (`word`) e as dicas (`clue`) são opcionais.
+- Validação: título, ao menos um `classId` e ao menos uma pergunta. Cada pergunta pode ser de tipos mistos (`text`, `quiz`, `image-quiz`, `crossword`, `wordsearch`, etc.). `image-quiz` exige de duas a quatro imagens válidas do Openverse e um `correctAnswer` correspondente ao ID de uma delas. Para `crossword` e `wordsearch`, a professora define as palavras (`word`) e as dicas (`clue`) são opcionais.
+- Cada pergunta pode ter `decoration` opcional. Somente metadados e o ID público do Openverse são salvos; o arquivo da imagem nunca é persistido no MongoDB.
+- `config.settings.kahootUrl` é opcional, aceita apenas HTTPS em domínios oficiais do Kahoot e aparece para o aluno depois do envio.
+
+### `/api/imagens` - Busca de imagens decorativas
+
+#### `GET /api/imagens?q=computador`
+- Exige autenticação da professora.
+- Faz proxy de busca para a API pública do Openverse, com conteúdo adulto desabilitado.
+- Retorna no máximo 12 referências (`id`, título, autor, licença e URL da fonte).
+- Não baixa nem persiste arquivos; as miniaturas continuam hospedadas pelo Openverse.
 
 #### `GET /api/atividades/[id]`
+- Sem `includeAnswers=true`, omite `correctAnswer`; com `includeAnswers=true`, exige sessão válida da professora e preserva o gabarito.
 - Retorna detalhes de uma atividade específica.
 
 #### `PUT /api/atividades/[id]`

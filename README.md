@@ -4,7 +4,7 @@ Site de apoio às aulas de informática. A professora cria atividades com pergun
 mistos (quiz, formulário, cruzadinha e caça-palavra) e os alunos do 1º ao 9º ano respondem
 sem precisar de login.
 
-- Área da professora: login com e-mail e senha, cadastro de turmas do 1º ao 9º ano, criação
+- Área da professora: login com usuário ou e-mail e senha, cadastro de turmas do 1º ao 9º ano, criação
   de atividades e análise das respostas.
 - Área do aluno: escolhe o ano, vê as atividades disponíveis e responde sem cadastro.
 
@@ -76,7 +76,7 @@ Os design tokens de `specs/frontend/design-tokens.md` estão em `app/globals.css
 
 A fonte de verdade está em `specs/database/mongodb.md`. Principais coleções:
 
-- `teachers` — professora (e-mail, senha com hash).
+- `teachers` — professora (usuário, e-mail e senha com hash).
 - `classes` — turmas do 1º ao 9º ano.
 - `activities` — atividades com `config.questions` (perguntas de tipos mistos) e `classIds`.
 - `responses` — respostas dos alunos, sem `studentName`.

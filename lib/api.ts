@@ -63,16 +63,22 @@ export const classesApi = {
 };
 
 export const activitiesApi = {
-  list: (classId?: string) =>
-    request<Activity[]>(
-      classId ? `/api/atividades?classId=${encodeURIComponent(classId)}` : "/api/atividades",
-    ),
+  list: (classId?: string, includeAnswers = false) => {
+    const params = new URLSearchParams();
+    if (classId) params.set("classId", classId);
+    if (includeAnswers) params.set("includeAnswers", "true");
+    const query = params.toString();
+    return request<Activity[]>(`/api/atividades${query ? `?${query}` : ""}`);
+  },
   create: (data: ActivityInput) =>
     request<Activity>("/api/atividades", {
       method: "POST",
       body: JSON.stringify(data),
     }),
-  get: (id: string) => request<Activity>(`/api/atividades/${id}`),
+  get: (id: string, includeAnswers = false) =>
+    request<Activity>(
+      `/api/atividades/${id}${includeAnswers ? "?includeAnswers=true" : ""}`,
+    ),
   update: (id: string, data: ActivityInput) =>
     request<Activity>(`/api/atividades/${id}`, {
       method: "PUT",

@@ -9,6 +9,7 @@ import { IconChart, IconChevronDown, IconClock, IconUsers } from "@/components/u
 import { activitiesApi, responsesApi } from "@/lib/api";
 import {
   QUESTION_TYPE_LABELS,
+  answerLabel,
   activityQuestionTypes,
   expectedAnswer,
   formatDateTime,
@@ -18,7 +19,7 @@ import type { Answer } from "@/lib/types";
 
 export default function AnalysisPage() {
   const { id } = useParams<{ id: string }>();
-  const activity = useResource(() => activitiesApi.get(id), id);
+  const activity = useResource(() => activitiesApi.get(id, true), id);
   const responses = useResource(() => responsesApi.list(id), id);
 
   const list = responses.data ?? [];
@@ -27,6 +28,9 @@ export default function AnalysisPage() {
     (activity.data?.config?.questions ?? [])
       .map((question) => [question.label, expectedAnswer(question)] as const)
       .filter(([, expected]) => expected),
+  );
+  const questionsByLabel = new Map(
+    (activity.data?.config?.questions ?? []).map((question) => [question.label, question]),
   );
   const isGraded = correctAnswers.size > 0;
 
@@ -39,7 +43,6 @@ export default function AnalysisPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Análise"
         title={activity.data?.title ?? "Respostas da atividade"}
         description={activity.data?.description || undefined}
         action={
@@ -149,6 +152,9 @@ export default function AnalysisPage() {
                       {response.answers.map((answer, index) => {
                         const expected = correctAnswers.get(answer.question);
                         const isCorrect = expected ? expected === answer.answer : null;
+                        const question = questionsByLabel.get(answer.question);
+                        const displayedAnswer = answerLabel(question, answer.answer);
+                        const displayedExpected = expected ? answerLabel(question, expected) : null;
                         return (
                           <div key={index} className="flex gap-3">
                             <span
@@ -162,12 +168,12 @@ export default function AnalysisPage() {
                                 {answer.question}
                               </dt>
                               <dd className="flex flex-wrap items-center gap-2 text-base font-semibold text-gray-700">
-                                {answer.answer || (
+                                {displayedAnswer || (
                                   <span className="text-gray-400">Sem resposta</span>
                                 )}
                                 {isCorrect !== null && (
                                   <Badge tone={isCorrect ? "student" : "warning"}>
-                                    {isCorrect ? "✓ correta" : `✗ esperado: ${expected}`}
+                                    {isCorrect ? "Correta" : `Esperado: ${displayedExpected}`}
                                   </Badge>
                                 )}
                               </dd>

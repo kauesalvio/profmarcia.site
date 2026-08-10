@@ -1,5 +1,6 @@
 "use client";
 
+import { ImagePicker } from "@/components/builders/ImagePicker";
 import { Button } from "@/components/ui/Button";
 import { Badge, Card } from "@/components/ui/Card";
 import { Field, Input, Select } from "@/components/ui/Field";
@@ -11,6 +12,8 @@ import {
   QUESTION_TYPE_LABELS,
 } from "@/lib/labels";
 import type {
+  DecorationImage,
+  ImageQuizQuestion,
   PuzzleQuestion,
   PuzzleWord,
   Question,
@@ -18,25 +21,74 @@ import type {
   QuizQuestion,
 } from "@/lib/types";
 
+export type QuestionValidation = {
+  label?: string;
+  details?: string;
+};
+
+const LETTERS = "ABCD";
+
+export function validateQuestion(question: Question): QuestionValidation {
+  if (!question.label.trim()) return { label: "Informe o enunciado da pergunta." };
+
+  if (question.type === "quiz") {
+    const options = question.options.filter((option) => option.trim());
+    if (options.length < 2) {
+      return { details: "Adicione pelo menos duas alternativas." };
+    }
+    if (!question.correctAnswer?.trim() || !options.includes(question.correctAnswer.trim())) {
+      return { details: "Marque uma alternativa correta." };
+    }
+  }
+
+  if (question.type === "image-quiz") {
+    const options = question.options.filter((option) => option !== null);
+    if (options.length < 2) {
+      return { details: "Escolha pelo menos duas imagens." };
+    }
+    if (!question.correctAnswer || !options.some((option) => option.id === question.correctAnswer)) {
+      return { details: "Marque uma imagem como resposta correta." };
+    }
+  }
+
+  if (question.type === "crossword" || question.type === "wordsearch") {
+    const words = question.words.filter((item) => item.word.trim().length >= 2);
+    if (words.length < 2) {
+      return { details: "Adicione pelo menos duas palavras com 2 letras ou mais." };
+    }
+  }
+
+  return {};
+}
+
 /** Pergunta em branco de cada tipo, preservando o enunciado já digitado. */
-export function emptyQuestion(type: QuestionType, label = ""): Question {
+export function emptyQuestion(
+  type: QuestionType,
+  label = "",
+  decoration?: DecorationImage,
+): Question {
+  const base = { label, ...(decoration ? { decoration } : {}) };
   switch (type) {
     case "quiz":
-      return { label, type, options: ["", ""], correctAnswer: null };
+      return { ...base, type, options: ["", ""], correctAnswer: null };
+    case "image-quiz":
+      return { ...base, type, options: [null, null], correctAnswer: null };
     case "crossword":
     case "wordsearch":
-      return { label, type, words: [{ word: "" }] };
+      return { ...base, type, words: [{ word: "" }] };
     default:
-      return { label, type: type === "textarea" ? "textarea" : "text" };
+      return { ...base, type: type === "textarea" ? "textarea" : "text" };
   }
 }
 
 export function QuestionBuilder({
   questions,
   onChange,
+  validation,
 }: {
   questions: Question[];
   onChange: (questions: Question[]) => void;
+  validation?: QuestionValidation[];
 }) {
   function replace(index: number, question: Question) {
     onChange(questions.map((item, i) => (i === index ? question : item)));
@@ -46,8 +98,13 @@ export function QuestionBuilder({
     <div className="flex flex-col gap-4">
       {questions.map((question, index) => {
         const Icon = QUESTION_TYPE_ICONS[question.type];
+        const questionValidation = validation?.[index];
         return (
-          <Card key={index} className="flex flex-col gap-4 border-2 border-primary p-5">
+          <Card
+            key={index}
+            id={`question-${index}`}
+            className="flex scroll-mt-6 flex-col gap-4 border-[3px] border-tinta p-5"
+          >
             <div className="flex items-center justify-between gap-3">
               <h3 className="flex items-center gap-2.5 text-lg font-extrabold text-gray-900">
                 <span
@@ -71,11 +128,17 @@ export function QuestionBuilder({
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Enunciado" htmlFor={`question-label-${index}`} required>
+              <Field
+                label="Enunciado"
+                htmlFor={`question-label-${index}`}
+                required
+                error={questionValidation?.label}
+              >
                 <Input
                   id={`question-label-${index}`}
                   value={question.label}
                   placeholder="Qual programa serve para escrever textos?"
+                  aria-invalid={Boolean(questionValidation?.label)}
                   onChange={(e) => replace(index, { ...question, label: e.target.value })}
                 />
               </Field>
@@ -84,6 +147,7 @@ export function QuestionBuilder({
                 label="Tipo da pergunta"
                 htmlFor={`question-type-${index}`}
                 hint={QUESTION_TYPE_DESCRIPTIONS[question.type]}
+                hintPosition="below"
               >
                 <Select
                   id={`question-type-${index}`}
@@ -91,7 +155,11 @@ export function QuestionBuilder({
                   onChange={(e) =>
                     replace(
                       index,
-                      emptyQuestion(e.target.value as QuestionType, question.label),
+                      emptyQuestion(
+                        e.target.value as QuestionType,
+                        question.label,
+                        question.decoration,
+                      ),
                     )
                   }
                 >
@@ -108,6 +176,7 @@ export function QuestionBuilder({
               <QuizOptions
                 index={index}
                 question={question}
+                error={questionValidation?.details}
                 onChange={(next) => replace(index, next)}
               />
             )}
@@ -116,7 +185,31 @@ export function QuestionBuilder({
               <PuzzleWords
                 index={index}
                 question={question}
+                error={questionValidation?.details}
                 onChange={(next) => replace(index, next)}
+              />
+            )}
+
+            {question.type === "image-quiz" && (
+              <ImageQuizOptions
+                index={index}
+                question={question}
+                error={questionValidation?.details}
+                onChange={(next) => replace(index, next)}
+              />
+            )}
+
+            {question.type !== "image-quiz" && (
+              <ImagePicker
+                questionIndex={index}
+                value={question.decoration}
+                onChange={(decoration) =>
+                  replace(index, {
+                    ...question,
+                    ...(decoration ? { decoration } : {}),
+                    ...(!decoration && question.decoration ? { decoration: undefined } : {}),
+                  })
+                }
               />
             )}
           </Card>
@@ -125,15 +218,26 @@ export function QuestionBuilder({
 
       <button
         type="button"
-        onClick={() => onChange([...questions, emptyQuestion("quiz")])}
-        className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border-4 border-dashed border-primary bg-white px-5 py-3 text-base font-extrabold uppercase tracking-wide text-primary transition-all duration-150 hover:border-primary-dark hover:bg-primary-light/30"
+        onClick={() => {
+          const nextIndex = questions.length;
+          onChange([...questions, emptyQuestion("quiz")]);
+          requestAnimationFrame(() =>
+            document.getElementById(`question-${nextIndex}`)?.scrollIntoView({
+              behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+                ? "auto"
+                : "smooth",
+              block: "start",
+            }),
+          );
+        }}
+        className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border-[3px] border-dashed border-creme/40 px-5 py-3 text-base font-extrabold uppercase tracking-wide text-creme transition-all duration-150 hover:border-amarelo hover:text-amarelo"
       >
         <IconPlus size={20} />
         Adicionar pergunta
       </button>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Em breve:</span>
+        <span className="text-sm font-bold text-cream/60">Em breve:</span>
         {FUTURE_QUESTION_TYPES.map((type) => (
           <Badge key={type}>{QUESTION_TYPE_LABELS[type]}</Badge>
         ))}
@@ -145,10 +249,12 @@ export function QuestionBuilder({
 function QuizOptions({
   index,
   question,
+  error,
   onChange,
 }: {
   index: number;
   question: QuizQuestion;
+  error?: string;
   onChange: (question: QuizQuestion) => void;
 }) {
   return (
@@ -227,6 +333,108 @@ function QuizOptions({
         <IconPlus size={16} />
         Adicionar alternativa
       </Button>
+      {error && <p role="alert" className="text-sm font-bold text-error">{error}</p>}
+    </fieldset>
+  );
+}
+
+function ImageQuizOptions({
+  index,
+  question,
+  error,
+  onChange,
+}: {
+  index: number;
+  question: ImageQuizQuestion;
+  error?: string;
+  onChange: (question: ImageQuizQuestion) => void;
+}) {
+  function updateOption(optionIndex: number, image?: DecorationImage) {
+    const previous = question.options[optionIndex];
+    const options = question.options.map((option, currentIndex) =>
+      currentIndex === optionIndex ? (image ?? null) : option,
+    );
+    onChange({
+      ...question,
+      options,
+      correctAnswer:
+        previous?.id === question.correctAnswer ? (image?.id ?? null) : question.correctAnswer,
+    });
+  }
+
+  return (
+    <fieldset className="flex flex-col gap-3">
+      <legend className="text-sm font-extrabold uppercase tracking-wide text-gray-900">
+        Alternativas em imagens
+      </legend>
+      <p className="text-sm font-semibold text-gray-600">
+        Escolha de duas a quatro imagens e marque a resposta correta.
+      </p>
+
+      <div className="grid gap-3 lg:grid-cols-2">
+        {question.options.map((option, optionIndex) => {
+          const isCorrect = !!option && question.correctAnswer === option.id;
+          return (
+            <div
+              key={option?.id ?? `empty-${optionIndex}`}
+              id={`image-option-${index}-${optionIndex}`}
+              className={`flex min-w-0 flex-col gap-3 rounded-xl border-2 p-3 ${
+                isCorrect ? "border-primary bg-primary-light/30" : "border-gray-200 bg-white"
+              }`}
+            >
+              <ImagePicker
+                questionIndex={index}
+                pickerKey={`option-${optionIndex}`}
+                heading={`Alternativa ${LETTERS[optionIndex]}`}
+                description="Busque e selecione a imagem desta alternativa."
+                value={option ?? undefined}
+                onChange={(image) => updateOption(optionIndex, image)}
+              />
+              <label className="flex min-h-11 cursor-pointer items-center gap-3 rounded-lg border-2 border-gray-900 bg-white px-3 py-2 text-sm font-extrabold text-gray-900">
+                <input
+                  type="radio"
+                  name={`correct-image-${index}`}
+                  checked={isCorrect}
+                  disabled={!option}
+                  onChange={() => option && onChange({ ...question, correctAnswer: option.id })}
+                  className="size-5 accent-primary"
+                />
+                Resposta correta
+              </label>
+              {question.options.length > 2 && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="self-start"
+                  onClick={() =>
+                    onChange({
+                      ...question,
+                      options: question.options.filter((_, currentIndex) => currentIndex !== optionIndex),
+                      correctAnswer: isCorrect ? null : question.correctAnswer,
+                    })
+                  }
+                >
+                  <IconTrash size={16} />
+                  Remover alternativa
+                </Button>
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {question.options.length < 4 && (
+        <Button
+          variant="secondary"
+          size="sm"
+          className="self-start"
+          onClick={() => onChange({ ...question, options: [...question.options, null] })}
+        >
+          <IconPlus size={16} />
+          Adicionar imagem
+        </Button>
+      )}
+      {error && <p role="alert" className="text-sm font-bold text-error">{error}</p>}
     </fieldset>
   );
 }
@@ -234,10 +442,12 @@ function QuizOptions({
 function PuzzleWords({
   index,
   question,
+  error,
   onChange,
 }: {
   index: number;
   question: PuzzleQuestion;
+  error?: string;
   onChange: (question: PuzzleQuestion) => void;
 }) {
   function updateWord(wordIndex: number, patch: Partial<PuzzleWord>) {
@@ -309,6 +519,8 @@ function PuzzleWords({
         <IconPlus size={16} />
         Adicionar palavra
       </Button>
+
+      {error && <p role="alert" className="text-sm font-bold text-error">{error}</p>}
 
       {question.type === "wordsearch" && (
         <div className="max-w-40">

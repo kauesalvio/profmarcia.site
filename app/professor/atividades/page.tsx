@@ -30,7 +30,10 @@ export default function ActivitiesPage() {
   const [removingId, setRemovingId] = useState<string | null>(null);
 
   const classes = useResource(() => classesApi.list());
-  const activities = useResource(() => activitiesApi.list(classId || undefined), classId);
+  const activities = useResource(
+    () => activitiesApi.list(classId || undefined, true),
+    classId,
+  );
 
   const classNames = new Map((classes.data ?? []).map((item) => [item._id, item]));
 
@@ -57,7 +60,6 @@ export default function ActivitiesPage() {
   return (
     <>
       <PageHeader
-        eyebrow="Gerenciamento"
         title="Atividades"
         description="Atividades criadas e os anos em que estão disponíveis."
         action={
@@ -73,7 +75,7 @@ export default function ActivitiesPage() {
       <div className="flex max-w-sm items-center gap-3">
         <label
           htmlFor="filter-class"
-          className="shrink-0 text-sm font-extrabold uppercase tracking-wide text-gray-900"
+          className="shrink-0 text-sm font-black text-cream"
         >
           Filtrar
         </label>
@@ -126,7 +128,7 @@ export default function ActivitiesPage() {
             const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
-                <InteractiveCard className="flex flex-col gap-4 border-2 border-primary p-5">
+                <InteractiveCard className="flex flex-col gap-4 border-[3px] border-tinta p-5">
                   <div className="flex flex-wrap items-start gap-4">
                     <span
                       aria-hidden

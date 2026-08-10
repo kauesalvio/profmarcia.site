@@ -1,16 +1,19 @@
 "use client";
 
+import Image from "next/image";
 import { useState } from "react";
 import { ComingSoon } from "@/components/activities/ComingSoon";
 import { Crossword } from "@/components/activities/Crossword";
 import { Form } from "@/components/activities/Form";
+import { ImageQuiz } from "@/components/activities/ImageQuiz";
 import { Quiz } from "@/components/activities/Quiz";
 import { WordSearch } from "@/components/activities/WordSearch";
 import type { QuestionViewProps } from "@/components/activities/types";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Alert } from "@/components/ui/Feedback";
-import type { Activity, Answer, Question } from "@/lib/types";
+import { openverseThumbnailUrl } from "@/lib/images";
+import type { Activity, Answer, DecorationImage, Question } from "@/lib/types";
 
 /** Renderiza a pergunta conforme o tipo escolhido pela professora. */
 function QuestionView(props: QuestionViewProps) {
@@ -18,6 +21,8 @@ function QuestionView(props: QuestionViewProps) {
   switch (question.type) {
     case "quiz":
       return <Quiz {...props} question={question} />;
+    case "image-quiz":
+      return <ImageQuiz {...props} question={question} />;
     case "crossword":
       return <Crossword {...props} question={question} />;
     case "wordsearch":
@@ -33,6 +38,8 @@ function QuestionView(props: QuestionViewProps) {
 function isAnswerable(question: Question) {
   if (question.type === "memory") return false;
   if (question.type === "quiz") return question.options.length > 0;
+  if (question.type === "image-quiz")
+    return question.options.filter((option) => option !== null).length >= 2;
   if (question.type === "crossword" || question.type === "wordsearch")
     return question.words.length > 0;
   return true;
@@ -92,9 +99,9 @@ export function ActivityPlayer({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between text-sm font-extrabold uppercase tracking-wide text-gray-600">
+        <div className="flex items-center justify-between text-sm font-black text-cream/70">
           <span>Seu progresso</span>
-          <span className="text-student-dark">
+          <span className="text-sun">
             {answered} de {answerable.length}
           </span>
         </div>
@@ -119,28 +126,44 @@ export function ActivityPlayer({
         const value = answers[index] ?? "";
         const done = value.trim().length > 0;
         return (
-          <Card
-            key={index}
-            className="flex flex-col gap-4 border-2 border-student p-5 sm:p-6"
-          >
-            <h2 className="flex items-start gap-3 text-lg font-extrabold text-gray-900">
-              <span
-                aria-hidden
-                className={`grid size-8 shrink-0 place-items-center rounded-lg border-2 border-gray-900 text-sm font-extrabold transition-colors duration-200 ${
-                  done ? "bg-student text-white" : "bg-student-light text-student-dark"
+          <Card key={index} className="overflow-hidden border-2 border-student p-4 sm:p-6">
+            <div
+              className={`grid min-w-0 gap-5 ${
+                question.decoration ? "lg:grid-cols-[minmax(0,1fr)_12rem] lg:items-start" : ""
+              }`}
+            >
+              <div
+                className={`flex min-w-0 flex-col gap-4 ${
+                  question.decoration && index % 2 === 1 ? "lg:order-2" : ""
                 }`}
               >
-                {index + 1}
-              </span>
-              {question.label}
-            </h2>
+                <h2 className="flex items-start gap-3 text-lg font-extrabold text-gray-900">
+                  <span
+                    aria-hidden
+                    className={`grid size-8 shrink-0 place-items-center rounded-lg border-2 border-gray-900 text-sm font-extrabold transition-colors duration-200 ${
+                      done ? "bg-student text-white" : "bg-student-light text-student-dark"
+                    }`}
+                  >
+                    {index + 1}
+                  </span>
+                  <span className="min-w-0 break-words">{question.label}</span>
+                </h2>
 
-            <QuestionView
-              question={question}
-              index={index}
-              value={value}
-              onChange={(next) => setAnswers({ ...answers, [index]: next })}
-            />
+                <QuestionView
+                  question={question}
+                  index={index}
+                  value={value}
+                  onChange={(next) => setAnswers({ ...answers, [index]: next })}
+                />
+              </div>
+
+              {question.decoration && (
+                <QuestionDecoration
+                  image={question.decoration}
+                  className={index % 2 === 1 ? "lg:order-1" : ""}
+                />
+              )}
+            </div>
           </Card>
         );
       })}
@@ -149,5 +172,38 @@ export function ActivityPlayer({
         {submitting ? "Enviando..." : "Enviar resposta"}
       </Button>
     </form>
+  );
+}
+
+function QuestionDecoration({
+  image,
+  className,
+}: {
+  image: DecorationImage;
+  className?: string;
+}) {
+  return (
+    <figure className={`min-w-0 ${className ?? ""}`}>
+      <div className="relative aspect-[16/7] overflow-hidden rounded-xl border-2 border-gray-900 bg-gray-100 shadow-sm lg:aspect-[4/5]">
+        <Image
+          src={openverseThumbnailUrl(image.id)}
+          alt=""
+          fill
+          sizes="(min-width: 1024px) 192px, 100vw"
+          className="object-cover"
+        />
+      </div>
+      <figcaption className="mt-2 line-clamp-2 text-xs font-semibold text-gray-500">
+        <a
+          href={image.sourceUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="underline decoration-1 underline-offset-2 hover:text-student-dark"
+        >
+          {image.creator ? `${image.title}, por ${image.creator}` : image.title}
+        </a>
+        {` · ${image.license.toUpperCase()}`}
+      </figcaption>
+    </figure>
   );
 }

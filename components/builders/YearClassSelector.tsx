@@ -24,7 +24,7 @@ export function YearClassSelector({
     return (
       <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-white p-5 text-sm font-semibold text-gray-600">
         Nenhuma turma cadastrada.{" "}
-        <Link href="/professor/classes/nova" className="font-extrabold text-primary underline">
+        <Link href="/professor/classes/nova" className="font-extrabold text-eletrico underline">
           Crie a primeira turma
         </Link>{" "}
         para poder distribuir a atividade.
@@ -51,8 +51,8 @@ export function YearClassSelector({
               key={schoolClass._id}
               className={`flex min-h-12 cursor-pointer items-center gap-3 rounded-xl border-4 px-4 py-2.5 transition-all duration-150 has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-primary ${
                 checked
-                  ? "border-primary bg-primary-light shadow-sm"
-                  : "border-gray-200 bg-white hover:border-gray-300 hover:bg-gray-50"
+                  ? "border-tinta bg-lima shadow-sm"
+                  : "border-marinho/15 bg-creme hover:border-tinta"
               }`}
             >
               <input
@@ -64,7 +64,7 @@ export function YearClassSelector({
               <span
                 aria-hidden
                 className={`grid size-6 shrink-0 place-items-center rounded-md border-2 text-white transition-colors duration-150 ${
-                  checked ? "border-gray-900 bg-primary" : "border-gray-400 bg-white"
+                  checked ? "border-tinta bg-marinho" : "border-gray-400 bg-creme"
                 }`}
               >
                 {checked && <IconCheck size={14} strokeWidth={3} />}

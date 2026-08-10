@@ -1,0 +1,813 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-09T21:03:28.1590554-03:00",
+  "title": "Design System: Professora Márcia",
+  "extensions": {
+    "colorMeta": {
+      "marinho": {
+        "role": "neutral",
+        "displayName": "Azul Sala",
+        "canonical": "oklch(0.24 0.075 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.075 262)",
+          "oklch(0.25 0.075 262)",
+          "oklch(0.35 0.075 262)",
+          "oklch(0.48 0.075 262)",
+          "oklch(0.62 0.075 262)",
+          "oklch(0.75 0.075 262)",
+          "oklch(0.86 0.075 262)",
+          "oklch(0.95 0.075 262)"
+        ]
+      },
+      "marinho-2": {
+        "role": "neutral",
+        "displayName": "Azul Sala Elevado",
+        "canonical": "oklch(0.31 0.078 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.078 262)",
+          "oklch(0.25 0.078 262)",
+          "oklch(0.35 0.078 262)",
+          "oklch(0.48 0.078 262)",
+          "oklch(0.62 0.078 262)",
+          "oklch(0.75 0.078 262)",
+          "oklch(0.86 0.078 262)",
+          "oklch(0.95 0.078 262)"
+        ]
+      },
+      "creme": {
+        "role": "neutral",
+        "displayName": "Creme Bancada",
+        "canonical": "oklch(0.968 0.021 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.021 92)",
+          "oklch(0.25 0.021 92)",
+          "oklch(0.35 0.021 92)",
+          "oklch(0.48 0.021 92)",
+          "oklch(0.62 0.021 92)",
+          "oklch(0.75 0.021 92)",
+          "oklch(0.86 0.021 92)",
+          "oklch(0.95 0.021 92)"
+        ]
+      },
+      "creme-2": {
+        "role": "neutral",
+        "displayName": "Creme Suave",
+        "canonical": "oklch(0.925 0.032 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.032 92)",
+          "oklch(0.25 0.032 92)",
+          "oklch(0.35 0.032 92)",
+          "oklch(0.48 0.032 92)",
+          "oklch(0.62 0.032 92)",
+          "oklch(0.75 0.032 92)",
+          "oklch(0.86 0.032 92)",
+          "oklch(0.95 0.032 92)"
+        ]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta Profunda",
+        "canonical": "oklch(0.19 0.055 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.055 262)",
+          "oklch(0.25 0.055 262)",
+          "oklch(0.35 0.055 262)",
+          "oklch(0.48 0.055 262)",
+          "oklch(0.62 0.055 262)",
+          "oklch(0.75 0.055 262)",
+          "oklch(0.86 0.055 262)",
+          "oklch(0.95 0.055 262)"
+        ]
+      },
+      "eletrico": {
+        "role": "primary",
+        "displayName": "Azul Instrumento",
+        "canonical": "oklch(0.62 0.21 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.21 258)",
+          "oklch(0.25 0.21 258)",
+          "oklch(0.35 0.21 258)",
+          "oklch(0.48 0.21 258)",
+          "oklch(0.62 0.21 258)",
+          "oklch(0.75 0.21 258)",
+          "oklch(0.86 0.21 258)",
+          "oklch(0.95 0.21 258)"
+        ]
+      },
+      "amarelo": {
+        "role": "primary",
+        "displayName": "Amarelo Experimento",
+        "canonical": "oklch(0.88 0.17 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.17 92)",
+          "oklch(0.25 0.17 92)",
+          "oklch(0.35 0.17 92)",
+          "oklch(0.48 0.17 92)",
+          "oklch(0.62 0.17 92)",
+          "oklch(0.75 0.17 92)",
+          "oklch(0.86 0.17 92)",
+          "oklch(0.95 0.17 92)"
+        ]
+      },
+      "coral": {
+        "role": "tertiary",
+        "displayName": "Coral Correção",
+        "canonical": "oklch(0.7 0.18 25)",
+        "tonalRamp": [
+          "oklch(0.15 0.18 25)",
+          "oklch(0.25 0.18 25)",
+          "oklch(0.35 0.18 25)",
+          "oklch(0.48 0.18 25)",
+          "oklch(0.62 0.18 25)",
+          "oklch(0.75 0.18 25)",
+          "oklch(0.86 0.18 25)",
+          "oklch(0.95 0.18 25)"
+        ]
+      },
+      "lima": {
+        "role": "secondary",
+        "displayName": "Lima Descoberta",
+        "canonical": "oklch(0.85 0.19 130)",
+        "tonalRamp": [
+          "oklch(0.15 0.19 130)",
+          "oklch(0.25 0.19 130)",
+          "oklch(0.35 0.19 130)",
+          "oklch(0.48 0.19 130)",
+          "oklch(0.62 0.19 130)",
+          "oklch(0.75 0.19 130)",
+          "oklch(0.86 0.19 130)",
+          "oklch(0.95 0.19 130)"
+        ]
+      },
+      "primary": {
+        "role": "primary",
+        "displayName": "Azul Instrumento",
+        "canonical": "oklch(0.62 0.21 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.21 258)",
+          "oklch(0.25 0.21 258)",
+          "oklch(0.35 0.21 258)",
+          "oklch(0.48 0.21 258)",
+          "oklch(0.62 0.21 258)",
+          "oklch(0.75 0.21 258)",
+          "oklch(0.86 0.21 258)",
+          "oklch(0.95 0.21 258)"
+        ]
+      },
+      "primary-dark": {
+        "role": "primary",
+        "displayName": "Azul Sala",
+        "canonical": "oklch(0.24 0.075 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.075 262)",
+          "oklch(0.25 0.075 262)",
+          "oklch(0.35 0.075 262)",
+          "oklch(0.48 0.075 262)",
+          "oklch(0.62 0.075 262)",
+          "oklch(0.75 0.075 262)",
+          "oklch(0.86 0.075 262)",
+          "oklch(0.95 0.075 262)"
+        ]
+      },
+      "primary-light": {
+        "role": "primary",
+        "displayName": "Azul Instrumento Claro",
+        "canonical": "oklch(0.9 0.055 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.055 258)",
+          "oklch(0.25 0.055 258)",
+          "oklch(0.35 0.055 258)",
+          "oklch(0.48 0.055 258)",
+          "oklch(0.62 0.055 258)",
+          "oklch(0.75 0.055 258)",
+          "oklch(0.86 0.055 258)",
+          "oklch(0.95 0.055 258)"
+        ]
+      },
+      "student": {
+        "role": "secondary",
+        "displayName": "Lima Descoberta",
+        "canonical": "oklch(0.85 0.19 130)",
+        "tonalRamp": [
+          "oklch(0.15 0.19 130)",
+          "oklch(0.25 0.19 130)",
+          "oklch(0.35 0.19 130)",
+          "oklch(0.48 0.19 130)",
+          "oklch(0.62 0.19 130)",
+          "oklch(0.75 0.19 130)",
+          "oklch(0.86 0.19 130)",
+          "oklch(0.95 0.19 130)"
+        ]
+      },
+      "student-dark": {
+        "role": "secondary",
+        "displayName": "Lima Descoberta Escura",
+        "canonical": "oklch(0.38 0.11 132)",
+        "tonalRamp": [
+          "oklch(0.15 0.11 132)",
+          "oklch(0.25 0.11 132)",
+          "oklch(0.35 0.11 132)",
+          "oklch(0.48 0.11 132)",
+          "oklch(0.62 0.11 132)",
+          "oklch(0.75 0.11 132)",
+          "oklch(0.86 0.11 132)",
+          "oklch(0.95 0.11 132)"
+        ]
+      },
+      "student-light": {
+        "role": "secondary",
+        "displayName": "Lima Descoberta Clara",
+        "canonical": "oklch(0.93 0.09 130)",
+        "tonalRamp": [
+          "oklch(0.15 0.09 130)",
+          "oklch(0.25 0.09 130)",
+          "oklch(0.35 0.09 130)",
+          "oklch(0.48 0.09 130)",
+          "oklch(0.62 0.09 130)",
+          "oklch(0.75 0.09 130)",
+          "oklch(0.86 0.09 130)",
+          "oklch(0.95 0.09 130)"
+        ]
+      },
+      "sun": {
+        "role": "primary",
+        "displayName": "Amarelo Experimento",
+        "canonical": "oklch(0.88 0.17 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.17 92)",
+          "oklch(0.25 0.17 92)",
+          "oklch(0.35 0.17 92)",
+          "oklch(0.48 0.17 92)",
+          "oklch(0.62 0.17 92)",
+          "oklch(0.75 0.17 92)",
+          "oklch(0.86 0.17 92)",
+          "oklch(0.95 0.17 92)"
+        ]
+      },
+      "sun-light": {
+        "role": "primary",
+        "displayName": "Amarelo Experimento Claro",
+        "canonical": "oklch(0.93 0.12 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.12 92)",
+          "oklch(0.25 0.12 92)",
+          "oklch(0.35 0.12 92)",
+          "oklch(0.48 0.12 92)",
+          "oklch(0.62 0.12 92)",
+          "oklch(0.75 0.12 92)",
+          "oklch(0.86 0.12 92)",
+          "oklch(0.95 0.12 92)"
+        ]
+      },
+      "lab": {
+        "role": "neutral",
+        "displayName": "Azul Sala",
+        "canonical": "oklch(0.24 0.075 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.075 262)",
+          "oklch(0.25 0.075 262)",
+          "oklch(0.35 0.075 262)",
+          "oklch(0.48 0.075 262)",
+          "oklch(0.62 0.075 262)",
+          "oklch(0.75 0.075 262)",
+          "oklch(0.86 0.075 262)",
+          "oklch(0.95 0.075 262)"
+        ]
+      },
+      "lab-deep": {
+        "role": "neutral",
+        "displayName": "Azul Sala Profunda",
+        "canonical": "oklch(0.19 0.055 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.055 262)",
+          "oklch(0.25 0.055 262)",
+          "oklch(0.35 0.055 262)",
+          "oklch(0.48 0.055 262)",
+          "oklch(0.62 0.055 262)",
+          "oklch(0.75 0.055 262)",
+          "oklch(0.86 0.055 262)",
+          "oklch(0.95 0.055 262)"
+        ]
+      },
+      "cream": {
+        "role": "neutral",
+        "displayName": "Creme Bancada",
+        "canonical": "oklch(0.968 0.021 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.021 92)",
+          "oklch(0.25 0.021 92)",
+          "oklch(0.35 0.021 92)",
+          "oklch(0.48 0.021 92)",
+          "oklch(0.62 0.021 92)",
+          "oklch(0.75 0.021 92)",
+          "oklch(0.86 0.021 92)",
+          "oklch(0.95 0.021 92)"
+        ]
+      },
+      "success": {
+        "role": "secondary",
+        "displayName": "Verde Confirmação",
+        "canonical": "oklch(0.35 0.1 140)",
+        "tonalRamp": [
+          "oklch(0.15 0.1 140)",
+          "oklch(0.25 0.1 140)",
+          "oklch(0.35 0.1 140)",
+          "oklch(0.48 0.1 140)",
+          "oklch(0.62 0.1 140)",
+          "oklch(0.75 0.1 140)",
+          "oklch(0.86 0.1 140)",
+          "oklch(0.95 0.1 140)"
+        ]
+      },
+      "success-bg": {
+        "role": "secondary",
+        "displayName": "Fundo de Confirmação",
+        "canonical": "oklch(0.9 0.09 130)",
+        "tonalRamp": [
+          "oklch(0.15 0.09 130)",
+          "oklch(0.25 0.09 130)",
+          "oklch(0.35 0.09 130)",
+          "oklch(0.48 0.09 130)",
+          "oklch(0.62 0.09 130)",
+          "oklch(0.75 0.09 130)",
+          "oklch(0.86 0.09 130)",
+          "oklch(0.95 0.09 130)"
+        ]
+      },
+      "warning": {
+        "role": "tertiary",
+        "displayName": "Âmbar Aviso",
+        "canonical": "oklch(0.4 0.11 60)",
+        "tonalRamp": [
+          "oklch(0.15 0.11 60)",
+          "oklch(0.25 0.11 60)",
+          "oklch(0.35 0.11 60)",
+          "oklch(0.48 0.11 60)",
+          "oklch(0.62 0.11 60)",
+          "oklch(0.75 0.11 60)",
+          "oklch(0.86 0.11 60)",
+          "oklch(0.95 0.11 60)"
+        ]
+      },
+      "warning-bg": {
+        "role": "tertiary",
+        "displayName": "Fundo de Aviso",
+        "canonical": "oklch(0.91 0.1 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.1 92)",
+          "oklch(0.25 0.1 92)",
+          "oklch(0.35 0.1 92)",
+          "oklch(0.48 0.1 92)",
+          "oklch(0.62 0.1 92)",
+          "oklch(0.75 0.1 92)",
+          "oklch(0.86 0.1 92)",
+          "oklch(0.95 0.1 92)"
+        ]
+      },
+      "error": {
+        "role": "tertiary",
+        "displayName": "Vinho Erro",
+        "canonical": "oklch(0.4 0.15 25)",
+        "tonalRamp": [
+          "oklch(0.15 0.15 25)",
+          "oklch(0.25 0.15 25)",
+          "oklch(0.35 0.15 25)",
+          "oklch(0.48 0.15 25)",
+          "oklch(0.62 0.15 25)",
+          "oklch(0.75 0.15 25)",
+          "oklch(0.86 0.15 25)",
+          "oklch(0.95 0.15 25)"
+        ]
+      },
+      "error-bg": {
+        "role": "tertiary",
+        "displayName": "Fundo de Erro",
+        "canonical": "oklch(0.91 0.07 25)",
+        "tonalRamp": [
+          "oklch(0.15 0.07 25)",
+          "oklch(0.25 0.07 25)",
+          "oklch(0.35 0.07 25)",
+          "oklch(0.48 0.07 25)",
+          "oklch(0.62 0.07 25)",
+          "oklch(0.75 0.07 25)",
+          "oklch(0.86 0.07 25)",
+          "oklch(0.95 0.07 25)"
+        ]
+      },
+      "info": {
+        "role": "primary",
+        "displayName": "Azul Informação",
+        "canonical": "oklch(0.42 0.16 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.16 258)",
+          "oklch(0.25 0.16 258)",
+          "oklch(0.35 0.16 258)",
+          "oklch(0.48 0.16 258)",
+          "oklch(0.62 0.16 258)",
+          "oklch(0.75 0.16 258)",
+          "oklch(0.86 0.16 258)",
+          "oklch(0.95 0.16 258)"
+        ]
+      },
+      "info-bg": {
+        "role": "primary",
+        "displayName": "Fundo de Informação",
+        "canonical": "oklch(0.9 0.055 258)",
+        "tonalRamp": [
+          "oklch(0.15 0.055 258)",
+          "oklch(0.25 0.055 258)",
+          "oklch(0.35 0.055 258)",
+          "oklch(0.48 0.055 258)",
+          "oklch(0.62 0.055 258)",
+          "oklch(0.75 0.055 258)",
+          "oklch(0.86 0.055 258)",
+          "oklch(0.95 0.055 258)"
+        ]
+      },
+      "white": {
+        "role": "neutral",
+        "displayName": "Creme Branco",
+        "canonical": "oklch(0.968 0.021 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.021 92)",
+          "oklch(0.25 0.021 92)",
+          "oklch(0.35 0.021 92)",
+          "oklch(0.48 0.021 92)",
+          "oklch(0.62 0.021 92)",
+          "oklch(0.75 0.021 92)",
+          "oklch(0.86 0.021 92)",
+          "oklch(0.95 0.021 92)"
+        ]
+      },
+      "gray-50": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 50",
+        "canonical": "oklch(0.968 0.021 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.021 92)",
+          "oklch(0.25 0.021 92)",
+          "oklch(0.35 0.021 92)",
+          "oklch(0.48 0.021 92)",
+          "oklch(0.62 0.021 92)",
+          "oklch(0.75 0.021 92)",
+          "oklch(0.86 0.021 92)",
+          "oklch(0.95 0.021 92)"
+        ]
+      },
+      "gray-100": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 100",
+        "canonical": "oklch(0.925 0.032 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.032 92)",
+          "oklch(0.25 0.032 92)",
+          "oklch(0.35 0.032 92)",
+          "oklch(0.48 0.032 92)",
+          "oklch(0.62 0.032 92)",
+          "oklch(0.75 0.032 92)",
+          "oklch(0.86 0.032 92)",
+          "oklch(0.95 0.032 92)"
+        ]
+      },
+      "gray-200": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 200",
+        "canonical": "oklch(0.84 0.035 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.035 92)",
+          "oklch(0.25 0.035 92)",
+          "oklch(0.35 0.035 92)",
+          "oklch(0.48 0.035 92)",
+          "oklch(0.62 0.035 92)",
+          "oklch(0.75 0.035 92)",
+          "oklch(0.86 0.035 92)",
+          "oklch(0.95 0.035 92)"
+        ]
+      },
+      "gray-300": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 300",
+        "canonical": "oklch(0.74 0.032 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.032 92)",
+          "oklch(0.25 0.032 92)",
+          "oklch(0.35 0.032 92)",
+          "oklch(0.48 0.032 92)",
+          "oklch(0.62 0.032 92)",
+          "oklch(0.75 0.032 92)",
+          "oklch(0.86 0.032 92)",
+          "oklch(0.95 0.032 92)"
+        ]
+      },
+      "gray-400": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 400",
+        "canonical": "oklch(0.57 0.026 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.026 92)",
+          "oklch(0.25 0.026 92)",
+          "oklch(0.35 0.026 92)",
+          "oklch(0.48 0.026 92)",
+          "oklch(0.62 0.026 92)",
+          "oklch(0.75 0.026 92)",
+          "oklch(0.86 0.026 92)",
+          "oklch(0.95 0.026 92)"
+        ]
+      },
+      "gray-500": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 500",
+        "canonical": "oklch(0.46 0.025 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.025 92)",
+          "oklch(0.25 0.025 92)",
+          "oklch(0.35 0.025 92)",
+          "oklch(0.48 0.025 92)",
+          "oklch(0.62 0.025 92)",
+          "oklch(0.75 0.025 92)",
+          "oklch(0.86 0.025 92)",
+          "oklch(0.95 0.025 92)"
+        ]
+      },
+      "gray-600": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 600",
+        "canonical": "oklch(0.38 0.025 92)",
+        "tonalRamp": [
+          "oklch(0.15 0.025 92)",
+          "oklch(0.25 0.025 92)",
+          "oklch(0.35 0.025 92)",
+          "oklch(0.48 0.025 92)",
+          "oklch(0.62 0.025 92)",
+          "oklch(0.75 0.025 92)",
+          "oklch(0.86 0.025 92)",
+          "oklch(0.95 0.025 92)"
+        ]
+      },
+      "gray-700": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 700",
+        "canonical": "oklch(0.29 0.035 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.035 262)",
+          "oklch(0.25 0.035 262)",
+          "oklch(0.35 0.035 262)",
+          "oklch(0.48 0.035 262)",
+          "oklch(0.62 0.035 262)",
+          "oklch(0.75 0.035 262)",
+          "oklch(0.86 0.035 262)",
+          "oklch(0.95 0.035 262)"
+        ]
+      },
+      "gray-900": {
+        "role": "neutral",
+        "displayName": "Cinza Quente 900",
+        "canonical": "oklch(0.19 0.055 262)",
+        "tonalRamp": [
+          "oklch(0.15 0.055 262)",
+          "oklch(0.25 0.055 262)",
+          "oklch(0.35 0.055 262)",
+          "oklch(0.48 0.055 262)",
+          "oklch(0.62 0.055 262)",
+          "oklch(0.75 0.055 262)",
+          "oklch(0.86 0.055 262)",
+          "oklch(0.95 0.055 262)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Cartaz",
+        "purpose": "Heróis e nome da bancada."
+      },
+      "headline": {
+        "displayName": "Título de Página",
+        "purpose": "Orienta a tarefa no primeiro viewport."
+      },
+      "title": {
+        "displayName": "Placa",
+        "purpose": "Seções e cards operacionais."
+      },
+      "body": {
+        "displayName": "Instrução",
+        "purpose": "Corpo, descrições e formulários."
+      },
+      "label": {
+        "displayName": "Rótulo",
+        "purpose": "Controles, badges e navegação."
+      },
+      "micro": {
+        "displayName": "Micro-rótulo",
+        "purpose": "Metadados curtos e etiquetas de marca."
+      }
+    },
+    "shadows": [
+      {
+        "name": "controle",
+        "value": "3px 3px 0 var(--color-tinta)",
+        "purpose": "Campos, badges, ícones e botões compactos."
+      },
+      {
+        "name": "bancada",
+        "value": "6px 6px 0 var(--color-tinta)",
+        "purpose": "Cards e ações em repouso."
+      },
+      {
+        "name": "bancada-elevada",
+        "value": "8px 8px 0 var(--color-tinta)",
+        "purpose": "Hover de cards interativos."
+      },
+      {
+        "name": "peca-destaque",
+        "value": "9px 9px 0 var(--color-tinta)",
+        "purpose": "Logo grande e quadro operacional."
+      },
+      {
+        "name": "bancada-aluno",
+        "value": "6px 6px 0 var(--color-student-dark)",
+        "purpose": "Cards que pertencem ao percurso do aluno."
+      },
+      {
+        "name": "bancada-professora",
+        "value": "6px 6px 0 var(--color-eletrico)",
+        "purpose": "Cards que destacam ferramentas da professora."
+      }
+    ],
+    "motion": [
+      {
+        "name": "rise",
+        "value": "350ms cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Entrada vertical de heróis e blocos carregados."
+      },
+      {
+        "name": "control",
+        "value": "150ms ease",
+        "purpose": "Hover e pressão de controles."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Neutraliza animações e transições quando o sistema solicita redução de movimento."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1280px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão Primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação dominante de qualquer fluxo, amarela e tátil.",
+      "html": "<button class=\"ds-btn-primary\">Criar atividade</button>",
+      "css": ".ds-btn-primary{display:inline-flex;min-height:48px;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border:2px solid var(--color-tinta);border-radius:var(--radius-2xl);background:var(--color-amarelo);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:900 14px/1.5 var(--font-nunito),sans-serif;letter-spacing:.025em;transition:transform 150ms,box-shadow 150ms,background-color 150ms;cursor:pointer}.ds-btn-primary:hover{background:var(--color-sun-light);transform:translateY(-2px)}.ds-btn-primary:active{transform:none}.ds-btn-primary:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Botão do Aluno",
+      "kind": "button",
+      "refersTo": "button-student",
+      "description": "Ação de início ou avanço no percurso do aluno.",
+      "html": "<button class=\"ds-btn-student\">Começar →</button>",
+      "css": ".ds-btn-student{display:inline-flex;min-height:56px;align-items:center;justify-content:center;gap:8px;padding:16px 28px;border:2px solid var(--color-tinta);border-radius:var(--radius-2xl);background:var(--color-lima);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:900 16px/1.5 var(--font-nunito),sans-serif;transition:transform 150ms,background-color 150ms;cursor:pointer}.ds-btn-student:hover{background:var(--color-student-light);transform:translateY(-2px)}.ds-btn-student:active{transform:none}.ds-btn-student:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Botão Secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ação de apoio sobre superfícies claras ou escuras.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary{display:inline-flex;min-height:48px;align-items:center;justify-content:center;padding:12px 20px;border:2px solid var(--color-tinta);border-radius:var(--radius-2xl);background:var(--color-creme);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:900 14px/1.5 var(--font-nunito),sans-serif;transition:transform 150ms,background-color 150ms;cursor:pointer}.ds-btn-secondary:hover{background:var(--color-creme-2);transform:translateY(-2px)}.ds-btn-secondary:active{transform:none}.ds-btn-secondary:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Botão de Perigo",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Ação destrutiva reservada a exclusão e perigo.",
+      "html": "<button class=\"ds-btn-danger\">Excluir</button>",
+      "css": ".ds-btn-danger{display:inline-flex;min-height:48px;align-items:center;justify-content:center;padding:12px 20px;border:2px solid var(--color-tinta);border-radius:var(--radius-2xl);background:var(--color-coral);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:900 14px/1.5 var(--font-nunito),sans-serif;transition:transform 150ms,background-color 150ms;cursor:pointer}.ds-btn-danger:hover{background:var(--color-error-bg);transform:translateY(-2px)}.ds-btn-danger:active{transform:none}.ds-btn-danger:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Card de Bancada",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Superfície canônica para conteúdo e operações.",
+      "html": "<article class=\"ds-card\"><h3>Atividades</h3><p>Veja, edite e organize o que já foi criado.</p></article>",
+      "css": ".ds-card{padding:20px;border:3px solid var(--color-tinta);border-radius:var(--radius-3xl);background:var(--color-creme);color:var(--color-marinho);box-shadow:var(--shadow-md);font:600 16px/1.5 var(--font-nunito),sans-serif;transition:transform 150ms,box-shadow 150ms}.ds-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}.ds-card h3{margin:0 0 8px;font:900 24px/.95 var(--font-archivo),sans-serif;letter-spacing:-.01em;text-transform:uppercase}.ds-card p{margin:0;color:var(--color-gray-600)}.ds-card:focus-within{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Campo de Texto",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Campo firme e legível para formulários da bancada.",
+      "html": "<label class=\"ds-field\"><span>E-mail</span><input type=\"email\" placeholder=\"professora@escola.com\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:6px;color:var(--color-tinta);font:900 14px/1.5 var(--font-nunito),sans-serif}.ds-field input{min-height:48px;padding:10px 16px;border:2px solid var(--color-tinta);border-radius:var(--radius-xl);background:var(--color-creme);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:700 16px/1.5 var(--font-nunito),sans-serif;transition:transform 150ms,border-color 150ms}.ds-field input:hover{transform:translateY(-1px)}.ds-field input:focus-visible{transform:none;border-color:var(--color-eletrico);outline:3px solid var(--color-amarelo);outline-offset:3px}.ds-field input:disabled{background:var(--color-creme-2);color:var(--color-gray-500)}"
+    },
+    {
+      "name": "Badge de Atividade",
+      "kind": "chip",
+      "refersTo": "badge",
+      "description": "Identifica categoria com texto e cor redundantes.",
+      "html": "<span class=\"ds-badge\">Quiz</span>",
+      "css": ".ds-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border:2px solid var(--color-tinta);border-radius:var(--radius-lg);background:var(--color-lima);color:var(--color-marinho);font:900 11px/1.5 var(--font-nunito),sans-serif;letter-spacing:.1em;text-transform:uppercase}.ds-badge:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Navegação da Professora",
+      "kind": "nav",
+      "description": "Quatro rotas sempre visíveis em grade no celular e fileira em telas maiores.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-active\" href=\"#\">Bancada</a><a href=\"#\">Turmas</a><a href=\"#\">Atividades</a><a href=\"#\">Respostas</a></nav>",
+      "css": ".ds-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;padding:0 16px 12px;background:var(--color-marinho);font:700 11px/1.5 var(--font-nunito),sans-serif}.ds-nav a{display:flex;min-height:44px;align-items:center;justify-content:center;padding:0 4px;border:2px solid color-mix(in oklch,var(--color-creme) 20%,transparent);border-radius:var(--radius-2xl) var(--radius-2xl) var(--radius-sm) var(--radius-sm);color:color-mix(in oklch,var(--color-creme) 70%,transparent);text-decoration:none;white-space:nowrap}.ds-nav a:hover{background:var(--color-marinho-2);color:var(--color-creme)}.ds-nav .ds-nav-active{border-color:var(--color-tinta);background:var(--color-creme);color:var(--color-marinho);box-shadow:var(--shadow-sm)}.ds-nav a:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}@media(min-width:640px){.ds-nav{display:flex;flex-wrap:wrap;gap:8px}.ds-nav a{padding:0 16px;font-size:14px}}"
+    },
+    {
+      "name": "Alerta de Erro",
+      "kind": "custom",
+      "description": "Feedback textual, tonal e acompanhado por símbolo próprio.",
+      "html": "<div class=\"ds-alert\" role=\"alert\"><span class=\"ds-alert-icon\" aria-hidden=\"true\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 7.5v5\"/><path d=\"M12 16.5h.01\"/><path d=\"M10.1 3.9 2.8 17a2 2 0 0 0 1.8 3h14.8a2 2 0 0 0 1.8-3L13.9 3.9a2.2 2.2 0 0 0-3.8 0Z\"/></svg></span><span>Não foi possível carregar. Tente novamente.</span></div>",
+      "css": ".ds-alert{display:flex;align-items:center;gap:12px;padding:12px 16px;border:2px solid var(--color-tinta);border-radius:var(--radius-2xl);background:var(--color-error-bg);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:700 14px/1.5 var(--font-nunito),sans-serif}.ds-alert-icon{display:grid;width:28px;height:28px;flex:none;place-items:center;border-radius:9999px;background:var(--color-marinho);color:var(--color-creme)}.ds-alert:focus-within{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    },
+    {
+      "name": "Pílula de Cartaz",
+      "kind": "custom",
+      "description": "Adesivo curto que introduz instruções ou contexto no herói.",
+      "html": "<span class=\"ds-poster-pill\">Experimento do dia</span>",
+      "css": ".ds-poster-pill{display:inline-flex;align-items:center;gap:8px;padding:5px 13px;border:2px solid var(--color-tinta);border-radius:var(--radius-md);background:var(--color-amarelo);color:var(--color-marinho);box-shadow:var(--shadow-sm);font:900 12px/1.5 var(--font-nunito),sans-serif;letter-spacing:.08em;text-transform:uppercase}.ds-poster-pill:hover{transform:rotate(-1deg)}.ds-poster-pill:focus-visible{outline:3px solid var(--color-amarelo);outline-offset:3px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Laboratório Colorido",
+    "overview": "O produto se comporta como uma sala de informática transformada em bancada de experimentos: o azul-marinho envolve toda a experiência como a sala, o creme oferece superfícies legíveis de trabalho e as cores vivas funcionam como instrumentos. A expressão é lúdica e segura para alunos do 1º ao 9º ano, mas permanece operacional para a professora; toda cor, placa e ícone ajuda a encontrar ou concluir uma tarefa.\n\nA interface combina tipografia de cartaz, contornos escuros e sombras sólidas com uma hierarquia de produto muito direta. O primeiro viewport sempre apresenta a próxima ação: entrar na bancada, criar uma atividade ou escolher o ano. Enfeites geométricos, grades de pontos e círculos radiais ambientam sem competir com formulários, navegação e estados do sistema.",
+    "keyCharacteristics": [
+      "Azul-marinho contínuo como ambiente e creme como superfície de trabalho.",
+      "Amarelo para a ação principal, azul para ferramentas da professora, lima para o percurso do aluno e coral para ações destrutivas.",
+      "Archivo pesado nos títulos e Nunito firme e amigável no corpo.",
+      "Bordas escuras de 2–3px, cantos generosos e sombras deslocadas sem desfoque.",
+      "Fluxos em português que explicitam a próxima operação e mantêm os alvos grandes."
+    ],
+    "rules": [
+      {
+        "name": "The Functional Color Rule",
+        "body": "Amarelo significa agir ou selecionar; azul significa ferramenta da professora; lima significa percurso do aluno; coral significa perigo.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark Room Rule",
+        "body": "Páginas e cabeçalhos permanecem no Azul Sala; o creme entra como bancada delimitada, nunca como fundo genérico de toda a aplicação.",
+        "section": "colors"
+      },
+      {
+        "name": "The Poster, Not Shouting Rule",
+        "body": "O impacto dos títulos vem de Archivo pesado, escala e composição; não transformar toda a interface em caixa alta.",
+        "section": "typography"
+      },
+      {
+        "name": "The First Action Rule",
+        "body": "O primeiro viewport deve revelar a tarefa primária sem depender de rolagem: autenticar, criar uma atividade ou escolher a turma.",
+        "section": "layout"
+      },
+      {
+        "name": "The 320px Rule",
+        "body": "Nenhum rótulo de navegação, botão ou card pode forçar rolagem horizontal a partir de 320px.",
+        "section": "layout"
+      },
+      {
+        "name": "The Solid Shadow Rule",
+        "body": "Não usar sombra difusa, brilho ou glassmorphism; profundidade vem de deslocamento sólido e contorno escuro.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Dark Edge Rule",
+        "body": "Toda superfície clara interativa precisa de borda Azul Sala Profunda; cor de área aparece no preenchimento, no ícone ou na sombra, sem remover a estrutura comum.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do manter a história operacional clara: a professora entra na bancada, cria e acompanha; o aluno escolhe o ano e começa sem senha.",
+      "Do reservar o amarelo para a ação principal, foco e seleção ativa.",
+      "Do usar bordas escuras grossas, sombras sólidas e ícones de traço 2.5 como linguagem comum.",
+      "Do preservar alvos de 44px ou mais, foco visível e redução de movimento quando solicitada pelo sistema.",
+      "Do validar cada superfície em 320–375px e manter as quatro rotas da professora visíveis na grade móvel."
+    ],
+    "donts": [
+      "Don't voltar ao mundo anterior de azul cobalto sobre fundo quente, laranja como identidade do aluno ou Inter como fonte única.",
+      "Don't usar creme como fundo total da aplicação, nem substituir o Azul Sala por branco genérico.",
+      "Don't introduzir gradientes decorativos multicoloridos, vidro, brilho, sombras difusas ou bordas finas cinza como linguagem principal.",
+      "Don't transformar todos os textos em caixa alta ou usar cor como único sinal de estado.",
+      "Don't esconder a ação principal abaixo de narrativa, decoração ou painéis secundários no primeiro viewport."
+    ]
+  }
+}
