@@ -11,7 +11,7 @@
 ## Páginas
 
 ### 1. `/` - Login da Professora
-- Formulário com e-mail e senha.
+- Formulário com usuário e senha.
 - Envia credenciais para a API de autenticação.
 - Em caso de sucesso, redireciona para `/professor`.
 - Apenas professora autenticada acessa as rotas protegidas.

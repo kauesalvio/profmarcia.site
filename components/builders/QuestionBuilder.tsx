@@ -103,7 +103,7 @@ export function QuestionBuilder({
           <Card
             key={index}
             id={`question-${index}`}
-            className="flex scroll-mt-6 flex-col gap-4 border-2 border-primary p-5"
+            className="flex scroll-mt-6 flex-col gap-4 border-[3px] border-tinta p-5"
           >
             <div className="flex items-center justify-between gap-3">
               <h3 className="flex items-center gap-2.5 text-lg font-extrabold text-gray-900">
@@ -230,14 +230,14 @@ export function QuestionBuilder({
             }),
           );
         }}
-        className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border-4 border-dashed border-primary bg-white px-5 py-3 text-base font-extrabold uppercase tracking-wide text-primary transition-all duration-150 hover:border-primary-dark hover:bg-primary-light/30"
+        className="flex min-h-14 items-center justify-center gap-2 rounded-2xl border-[3px] border-dashed border-creme/40 px-5 py-3 text-base font-extrabold uppercase tracking-wide text-creme transition-all duration-150 hover:border-amarelo hover:text-amarelo"
       >
         <IconPlus size={20} />
         Adicionar pergunta
       </button>
 
       <div className="flex flex-wrap items-center gap-2">
-        <span className="text-sm font-bold text-gray-500 uppercase tracking-wide">Em breve:</span>
+        <span className="text-sm font-bold text-cream/60">Em breve:</span>
         {FUTURE_QUESTION_TYPES.map((type) => (
           <Badge key={type}>{QUESTION_TYPE_LABELS[type]}</Badge>
         ))}

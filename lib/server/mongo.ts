@@ -132,6 +132,7 @@ export function serializeResponse(doc: Record<string, unknown>) {
 export function serializeTeacher(doc: Record<string, unknown>) {
   return {
     _id: toIdString(doc._id as string | ObjectId),
+    ...(typeof doc.username === "string" ? { username: doc.username } : {}),
     email: doc.email as string,
     name: doc.name as string,
     createdAt: (doc.createdAt as Date | undefined)?.toISOString(),

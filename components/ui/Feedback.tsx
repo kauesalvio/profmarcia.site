@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { IconAlert, IconCheck, IconInfo } from "@/components/ui/Icons";
 
 const TONES = {
   success: "bg-success-bg border-success text-success",
@@ -8,10 +9,10 @@ const TONES = {
 } as const;
 
 const ICONS = {
-  success: "✓",
-  error: "!",
-  warning: "!",
-  info: "i",
+  success: IconCheck,
+  error: IconAlert,
+  warning: IconAlert,
+  info: IconInfo,
 } as const;
 
 export function Alert({
@@ -23,16 +24,17 @@ export function Alert({
   children: ReactNode;
   action?: ReactNode;
 }) {
+  const Icon = ICONS[tone];
   return (
     <div
       role={tone === "error" ? "alert" : "status"}
-      className={`flex flex-wrap items-center gap-3 rounded-lg border-2 px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm ${TONES[tone]}`}
+      className={`flex flex-wrap items-center gap-3 rounded-2xl border-2 border-tinta px-4 py-3 text-sm font-bold text-marinho shadow-sm ${TONES[tone]}`}
     >
       <span
         aria-hidden
-        className="grid size-7 shrink-0 place-items-center rounded-full bg-gray-900 text-xs font-extrabold text-white"
+        className="grid size-7 shrink-0 place-items-center rounded-full bg-lab text-xs font-black text-white"
       >
-        {ICONS[tone]}
+        <Icon size={16} strokeWidth={3} />
       </span>
       <span className="flex-1 leading-relaxed">{children}</span>
       {action}
@@ -42,10 +44,10 @@ export function Alert({
 
 export function Spinner({ label = "Carregando..." }: { label?: string }) {
   return (
-    <div role="status" className="flex items-center gap-3 py-6 text-sm font-bold text-gray-700">
+    <div role="status" className="flex items-center gap-3 py-6 text-sm font-bold text-inherit">
       <span
         aria-hidden
-        className="size-6 animate-spin rounded-full border-4 border-gray-200 border-t-primary"
+        className="size-6 animate-spin rounded-full border-4 border-current/20 border-t-sun"
       />
       {label}
     </div>
@@ -62,7 +64,7 @@ export function EmptyState({
   icon?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center gap-4 rounded-2xl border-2 border-dashed border-gray-300 bg-white/70 px-6 py-16 text-center">
+    <div className="flex flex-col items-center gap-4 rounded-3xl border-[3px] border-dashed border-tinta bg-creme px-6 py-16 text-center text-marinho">
       {icon && (
         <span
           aria-hidden

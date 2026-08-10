@@ -99,9 +99,9 @@ export function ActivityPlayer({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
       <div className="flex flex-col gap-2">
-        <div className="flex items-center justify-between text-sm font-extrabold uppercase tracking-wide text-gray-600">
+        <div className="flex items-center justify-between text-sm font-black text-cream/70">
           <span>Seu progresso</span>
-          <span className="text-student-dark">
+          <span className="text-sun">
             {answered} de {answerable.length}
           </span>
         </div>

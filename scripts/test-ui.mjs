@@ -8,25 +8,32 @@ try {
 }
 
 const base = process.env.BASE_URL || "http://localhost:3000";
-const teacherEmail = process.env.TEACHER_EMAIL || "professora@escola.com";
-const teacherPassword = process.env.TEACHER_PASSWORD || "senha123";
+const teacherUsername = process.env.TEACHER_USERNAME || "marcia";
+const teacherPassword = process.env.TEACHER_PASSWORD || "Meleka@2430";
 const title = `Experiência E2E ${Date.now()}`;
 const kahootUrl = process.env.TEST_KAHOOT_URL ?? "https://kahoot.it/challenge/123456";
 const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox"] });
 const page = await browser.newPage();
 let activityId;
+const activityPosts = [];
+
+page.on("request", (request) => {
+  if (request.method() === "POST" && request.url().endsWith("/api/atividades")) {
+    activityPosts.push(request.url());
+  }
+});
 
 const sleep = (milliseconds) => new Promise((resolve) => setTimeout(resolve, milliseconds));
 
 async function clickButton(text) {
-  const clicked = await page.evaluate((label) => {
-    const button = [...document.querySelectorAll("button")].find(
-      (item) => item.textContent?.trim() === label,
-    );
-    button?.click();
-    return !!button;
-  }, text);
-  assert.equal(clicked, true, `Botão não encontrado: ${text}`);
+  const buttons = await page.$$("button");
+  for (const button of buttons) {
+    if ((await button.evaluate((item) => item.textContent?.trim())) === text) {
+      await button.click();
+      return;
+    }
+  }
+  assert.fail(`Botão não encontrado: ${text}`);
 }
 
 async function configurePuzzle(index, type, label, words) {
@@ -78,9 +85,9 @@ async function configureImageQuiz(index) {
 }
 
 try {
-  await page.setViewport({ width: 1280, height: 900, deviceScaleFactor: 1 });
+  await page.setViewport({ width: 375, height: 667, deviceScaleFactor: 1 });
   await page.goto(`${base}/`, { waitUntil: "networkidle0" });
-  await page.type("#email", teacherEmail);
+  await page.type("#username", teacherUsername);
   await page.type("#password", teacherPassword);
   const loginRequest = page.waitForResponse((response) => response.url().endsWith("/api/login"));
   await page.click('button[type="submit"]');
@@ -143,14 +150,50 @@ try {
   await configureImageQuiz(3);
   await clickButton("Próxima etapa");
 
-  const kahootFieldIsVisible = await page.$eval("#kahoot-url", (input) => {
+  await page.waitForFunction(() => {
+    const input = document.querySelector("#kahoot-url");
+    const bounds = input?.getBoundingClientRect();
+    return !!bounds && bounds.top >= 0 && bounds.bottom <= window.innerHeight;
+  });
+  const kahootFieldPosition = await page.$eval("#kahoot-url", (input) => {
+    const bounds = input.getBoundingClientRect();
+    return {
+      visible: bounds.top >= 0 && bounds.bottom <= window.innerHeight,
+      scrollY: window.scrollY,
+      top: bounds.top,
+      bottom: bounds.bottom,
+      viewport: window.innerHeight,
+    };
+  });
+  assert.equal(
+    kahootFieldPosition.visible,
+    true,
+    `A etapa do Kahoot abriu fora da área visível: ${JSON.stringify(kahootFieldPosition)}`,
+  );
+  await sleep(1500);
+  const finalField = await page.$("#kahoot-url");
+  const finalStepState = await page.evaluate(() => ({
+    currentStep: document.querySelector('[aria-current="step"]')?.textContent?.trim(),
+    alerts: [...document.querySelectorAll('[role="alert"]')].map((alert) => alert.textContent),
+  }));
+  assert.ok(
+    finalField,
+    `A etapa final apareceu brevemente e fechou: ${JSON.stringify({
+      url: page.url(),
+      ...finalStepState,
+      activityPosts,
+    })}`,
+  );
+  assert.deepEqual(activityPosts, [], "A etapa final submeteu a atividade antes do clique em salvar.");
+  const finalStepStayedVisible = await finalField.evaluate((input) => {
     const bounds = input.getBoundingClientRect();
     return bounds.top >= 0 && bounds.bottom <= window.innerHeight;
   });
+  assert.equal(finalStepStayedVisible, true, "A etapa final apareceu brevemente e fechou.");
   assert.equal(
-    kahootFieldIsVisible,
-    true,
-    "A etapa do Kahoot abriu fora da área visível, parecendo que o formulário fechou.",
+    page.url(),
+    `${base}/professor/atividades/nova`,
+    "O formulário navegou para outra página ao abrir a etapa final.",
   );
 
   await page.type("#kahoot-url", kahootUrl);

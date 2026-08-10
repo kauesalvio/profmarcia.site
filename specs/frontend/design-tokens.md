@@ -1,184 +1,57 @@
-# Design Tokens
+# Design Tokens — Laboratório Colorido
 
-Design tokens para o site de aulas de informática. Tokens únicos de origem para cores, tipografia, espaçamento e outros estilos visuais.
+Fonte de verdade visual do site. Os tokens implementados ficam no bloco `@theme` de `app/globals.css`.
 
 ## 1. Cores
 
-### Paleta Principal
-
 | Token | Valor | Uso |
-|-------|-------|-----|
-| `--color-primary` | `#0047AB` | Botões primários, links, destaques da área do professor |
-| `--color-primary-dark` | `#003380` | Hover de botões primários |
-| `--color-primary-light` | `#CCE0F5` | Fundos de destaque, badges |
+|---|---|---|
+| `--color-marinho` | `oklch(0.24 0.075 262)` | Fundo global e controles escuros |
+| `--color-marinho-2` | `oklch(0.31 0.078 262)` | Painéis escuros e hovers |
+| `--color-tinta` | `oklch(0.19 0.055 262)` | Bordas, texto estrutural e sombras |
+| `--color-creme` | `oklch(0.968 0.021 92)` | Cards, campos e superfícies de trabalho |
+| `--color-creme-2` | `oklch(0.925 0.032 92)` | Superfícies secundárias |
+| `--color-eletrico` | `oklch(0.62 0.21 258)` | Ferramentas da professora e informação |
+| `--color-amarelo` | `oklch(0.88 0.17 92)` | Ação principal, foco e seleção |
+| `--color-coral` | `oklch(0.7 0.18 25)` | Exclusão, perigo e acentos |
+| `--color-lima` | `oklch(0.85 0.19 130)` | Área do aluno e estados concluídos |
 
-### Paleta do Aluno
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--color-student` | `#E85D04` | Botões e destaques da área do aluno |
-| `--color-student-dark` | `#B94A00` | Hover da área do aluno |
-| `--color-student-light` | `#FFE8D6` | Fundos de destaque do aluno |
-
-### Cores de Feedback
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--color-success` | `#2D6A4F` | Confirmação, sucesso no envio |
-| `--color-success-bg` | `#D8F3DC` | Fundo de mensagens de sucesso |
-| `--color-warning` | `#D00000` | Avisos |
-| `--color-warning-bg` | `#FFCCD5` | Fundo de avisos |
-| `--color-error` | `#9D0208` | Erros, campos inválidos |
-| `--color-error-bg` | `#FFCCD5` | Fundo de mensagens de erro |
-| `--color-info` | `#0077B6` | Informações |
-| `--color-info-bg` | `#CAF0F8` | Fundo de informações |
-
-### Tons de Cinza
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--color-white` | `#FFFFFF` | Fundo de cards e páginas |
-| `--color-gray-50` | `#F7F5F0` | Fundo de páginas |
-| `--color-gray-100` | `#F0EBE3` | Fundos alternados em listas |
-| `--color-gray-200` | `#E5E0D6` | Bordas leves |
-| `--color-gray-300` | `#CFC9BC` | Bordas de inputs |
-| `--color-gray-500` | `#6B655A` | Textos secundários |
-| `--color-gray-700` | `#3D3932` | Textos principais |
-| `--color-gray-900` | `#1C1A16` | Títulos e textos de destaque |
+Os aliases `primary`, `student`, `sun`, `lab` e `cream` continuam disponíveis para compatibilidade. Em código novo, prefira os nomes do Laboratório Colorido.
 
 ## 2. Tipografia
 
-### Fonte
+| Papel | Fonte | Peso | Regra |
+|---|---|---|---|
+| Títulos | Archivo | 900 | Caixa alta, `line-height: 0.95`, tracking `-0.01em` |
+| Corpo | Nunito | 600 | Mínimo de 16 px em textos e campos no celular |
+| Labels | Nunito | 900 | Caixa alta apenas em micro-rótulos e badges |
 
-| Token | Valor |
-|-------|-------|
-| `--font-family` | `Inter, system-ui, -apple-system, sans-serif` |
+Use a classe `titulo-caixa` para títulos de página e seção. O impacto vem de escala e peso; textos corridos permanecem em caixa normal.
 
-### Tamanhos
+## 3. Forma e profundidade
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--font-size-xs` | `0.75rem` (12px) | Legendas, tags |
-| `--font-size-sm` | `0.875rem` (14px) | Textos secundários |
-| `--font-size-base` | `1rem` (16px) | Corpo de texto |
-| `--font-size-lg` | `1.125rem` (18px) | Subtítulos |
-| `--font-size-xl` | `1.25rem` (20px) | Títulos de seção |
-| `--font-size-2xl` | `1.5rem` (24px) | Títulos de página |
-| `--font-size-3xl` | `2rem` (32px) | Título principal |
+| Elemento | Borda | Raio | Sombra |
+|---|---|---|---|
+| Card | `3px solid tinta` | `2rem` | `6px 6px 0 tinta` |
+| Controle | `2px solid tinta` | `0.75rem` | `3px 3px 0 tinta` |
+| Botão | `2px solid tinta` | `1rem` | `3px 3px 0 tinta` |
+| Badge | `2px solid tinta` | `0.5rem` | sem sombra por padrão |
 
-### Pesos
+Sombras são sempre sólidas e sem desfoque. Superfícies claras interativas mantêm borda escura.
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--font-weight-normal` | `400` | Corpo |
-| `--font-weight-medium` | `500` | Destaques |
-| `--font-weight-semibold` | `600` | Títulos e labels |
-| `--font-weight-bold` | `700` | Título principal, números |
+## 4. Espaçamento e layout
 
-### Altura da Linha
+- Escala principal: `0.5rem`, `0.75rem`, `1rem`, `1.5rem`, `2rem`, `3rem`.
+- Contêiner da professora e entrada: máximo de `72rem`.
+- Área do aluno: até `72rem`, com listas em uma coluna no celular e duas no desktop.
+- Padding lateral: `1rem`, crescendo para `1.5rem` a partir de 640 px.
+- Alvos interativos: mínimo de `44 × 44px`.
+- A navegação da professora mantém quatro destinos visíveis, em quatro colunas no celular.
 
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--line-height-tight` | `1.25` | Títulos |
-| `--line-height-normal` | `1.5` | Corpo |
-| `--line-height-relaxed` | `1.75` | Blocos maiores de texto |
+## 5. Movimento e acessibilidade
 
-## 3. Espaçamento
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--space-1` | `0.25rem` (4px) | Espaçamento mínimo |
-| `--space-2` | `0.5rem` (8px) | Ícones pequenos, gaps |
-| `--space-3` | `0.75rem` (12px) | Margens internas pequenas |
-| `--space-4` | `1rem` (16px) | Padrão de padding e margin |
-| `--space-5` | `1.25rem` (20px) | Cards internos |
-| `--space-6` | `1.5rem` (24px) | Seções |
-| `--space-8` | `2rem` (32px) | Espaçamento entre seções |
-| `--space-10` | `2.5rem` (40px) | Espaçamento de página |
-| `--space-12` | `3rem` (48px) | Containers largos |
-
-## 4. Bordas
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--border-radius-sm` | `0.25rem` (4px) | Tags, badges |
-| `--border-radius-md` | `0.5rem` (8px) | Botões, inputs, cards |
-| `--border-radius-lg` | `0.75rem` (12px) | Cards maiores |
-| `--border-radius-xl` | `1rem` (16px) | Modais, containers |
-| `--border-width` | `1px` | Bordas padrão |
-| `--border-color` | `#E5E0D6` | Bordas de inputs e cards |
-
-## 5. Sombras
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--shadow-sm` | `2px 2px 0 rgba(28, 26, 22, 0.12)` | Inputs, elementos pequenos |
-| `--shadow-md` | `4px 4px 0 rgba(28, 26, 22, 0.14)` | Cards, botões elevados |
-| `--shadow-lg` | `6px 6px 0 rgba(28, 26, 22, 0.16)` | Modais, dropdowns |
-
-## 6. Transições
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--transition-fast` | `150ms ease` | Hover de botões |
-| `--transition-base` | `200ms ease` | Mudanças de estado |
-| `--transition-slow` | `300ms ease` | Modais, expansões |
-
-## 7. Breakpoints
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--breakpoint-sm` | `640px` | Celulares |
-| `--breakpoint-md` | `768px` | Tablets |
-| `--breakpoint-lg` | `1024px` | Notebooks |
-| `--breakpoint-xl` | `1280px` | Telas grandes |
-
-## 8. Z-Index
-
-| Token | Valor | Uso |
-|-------|-------|-----|
-| `--z-base` | `0` | Elementos normais |
-| `--z-dropdown` | `10` | Dropdowns |
-| `--z-sticky` | `20` | Cabeçalhos fixos |
-| `--z-modal` | `30` | Modais |
-| `--z-tooltip` | `40` | Tooltips |
-
-## 9. Exemplo de Aplicação
-
-### Card de Atividade (Professor)
-```
-background: --color-white
-border: 1px solid --border-color
-border-radius: --border-radius-md
-padding: --space-4
-box-shadow: --shadow-sm
-```
-
-### Botão Primário
-```
-background: --color-primary
-color: --color-white
-border-radius: --border-radius-md
-padding: --space-3 --space-5
-font-weight: --font-weight-medium
-transition: --transition-fast
-hover: background --color-primary-dark
-```
-
-### Botão do Aluno
-```
-background: --color-student
-color: --color-white
-border-radius: --border-radius-md
-padding: --space-4 --space-6
-font-size: --font-size-lg
-font-weight: --font-weight-semibold
-hover: background --color-student-dark
-```
-
-## 10. Acessibilidade
-
-- Contraste mínimo 4.5:1 para textos.
-- Botões com área de toque mínima de 44x44px.
-- Foco visível com `outline: 2px solid --color-primary`.
-- Evitar comunicação apenas por cor; usar ícones e textos.
+- Hover pode elevar o elemento entre 1 e 4 px; `active` volta ao plano.
+- Foco visível: `3px solid amarelo`, com offset de 3 px.
+- Contraste mínimo de 4.5:1 para textos.
+- Estados nunca dependem apenas de cor.
+- `prefers-reduced-motion` desativa animações e transições não essenciais.

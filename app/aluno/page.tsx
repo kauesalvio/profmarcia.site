@@ -41,18 +41,27 @@ export default function StudentHomePage() {
   return (
     <div className="ambient-aluno flex flex-1 flex-col">
       <Header variant="aluno" />
-      <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-8 px-4 py-8 sm:py-10">
-        <div className="flex animate-rise flex-col gap-2">
-          <span className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-student-dark">
+      <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col gap-9 px-4 py-8 sm:px-6 sm:py-12">
+        <div className="grid animate-rise gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div className="min-w-0">
+          <span className="inline-flex rotate-1 items-center gap-2 rounded-xl bg-lima px-3 py-1 text-xs font-black uppercase tracking-widest text-marinho adesivo-sm">
             <IconBackpack size={16} />
-            Sem senha, só escolher e responder
+            Área do aluno
           </span>
-          <h1 className="heading-poster text-4xl text-gray-900">
-            Atividades de Informática
+          <h1 className="mt-4 titulo-caixa text-4xl text-creme sm:text-5xl">
+            Minhas atividades
           </h1>
-          <p className="text-base font-medium text-gray-600">
-            Escolha o seu ano para ver as atividades disponíveis.
+          <p className="mt-3 max-w-lg text-base text-creme/75">
+            Escolha sua turma para ver o que a Professora Márcia preparou.
           </p>
+          </div>
+          {current && (
+            <div className="rounded-3xl bg-creme px-5 py-4 text-marinho adesivo">
+              <p className="text-xs font-black uppercase tracking-widest text-marinho/60">Turma atual</p>
+              <p className="titulo-caixa text-2xl">{current.name}</p>
+              <p className="text-sm font-semibold text-marinho/70">{yearLabel(current.year)}</p>
+            </div>
+          )}
         </div>
 
         {classes.loading && <Spinner label="Carregando anos..." />}
@@ -78,46 +87,28 @@ export default function StudentHomePage() {
         )}
 
         {classList.length > 0 && (
-          <section className="flex flex-col gap-3">
-            <h2 className="text-sm font-extrabold uppercase tracking-widest text-gray-500">
-              Escolher ano
+          <section className="flex flex-col gap-4">
+            <h2 className="titulo-caixa text-2xl text-creme">
+              Escolha a turma
             </h2>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {classList.map((schoolClass) => {
+            <div role="radiogroup" aria-label="Escolha a turma" className="flex flex-wrap gap-3">
+              {classList.map((schoolClass, index) => {
                 const active = schoolClass._id === classId;
+                const activeColor = ["bg-eletrico text-creme", "bg-coral text-marinho", "bg-lima text-marinho", "bg-amarelo text-marinho"][index % 4];
                 return (
                   <button
                     key={schoolClass._id}
                     type="button"
-                    aria-pressed={active}
+                    role="radio"
+                    aria-checked={active}
                     onClick={() => choose(schoolClass._id)}
-                    className={`flex min-h-28 flex-col items-center justify-center gap-1 rounded-2xl border-4 px-4 py-4 text-center shadow-sm transition-all duration-150 ${
+                    className={`min-h-12 rounded-2xl px-5 py-3 text-sm uppercase tracking-wide transition-all duration-150 ${
                       active
-                        ? "border-student bg-student text-white shadow-md"
-                        : "border-gray-900 bg-white shadow-sm hover:-translate-y-1 hover:shadow-md"
+                        ? `${activeColor} font-black adesivo`
+                        : "border-2 border-creme/30 font-bold text-creme/80 hover:bg-marinho-2 hover:text-creme"
                     }`}
                   >
-                    <span
-                      className={`text-3xl font-extrabold ${
-                        active ? "text-white" : "text-gray-900"
-                      }`}
-                    >
-                      {schoolClass.year}º
-                    </span>
-                    <span
-                      className={`text-sm font-bold ${
-                        active ? "text-white/90" : "text-gray-700"
-                      }`}
-                    >
-                      {schoolClass.name}
-                    </span>
-                    <span
-                      className={`text-xs font-semibold ${
-                        active ? "text-white/80" : "text-gray-500"
-                      }`}
-                    >
-                      {yearLabel(schoolClass.year)}
-                    </span>
+                    {schoolClass.name}
                   </button>
                 );
               })}
@@ -126,9 +117,9 @@ export default function StudentHomePage() {
         )}
 
         {current && (
-          <section className="flex animate-rise flex-col gap-3">
-            <h2 className="text-sm font-extrabold uppercase tracking-widest text-gray-500">
-              Atividades de {current.name}
+          <section className="flex animate-rise flex-col gap-4">
+            <h2 className="titulo-caixa text-2xl text-creme">
+              Para fazer — {current.name}
             </h2>
 
             {activities.loading && <Spinner label="Carregando atividades..." />}
@@ -153,16 +144,16 @@ export default function StudentHomePage() {
               />
             )}
 
-            <ul className="flex flex-col gap-3">
-              {list.map((activity) => {
+            <ul className="grid gap-5 md:grid-cols-2">
+              {list.map((activity, index) => {
                 const types = activityQuestionTypes(activity);
                 const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
                 return (
                   <li key={activity._id}>
-                    <InteractiveCard className="flex flex-wrap items-center gap-4 border-2 border-student p-5">
+                    <InteractiveCard className={`flex h-full flex-col items-start gap-4 p-6 ${index % 2 === 1 ? "md:translate-y-4" : ""}`}>
                       <span
                         aria-hidden
-                        className="grid size-14 shrink-0 place-items-center rounded-xl border-2 border-gray-900 bg-student-light text-student-dark"
+                        className="grid size-12 shrink-0 place-items-center rounded-xl bg-lima text-marinho adesivo-sm"
                       >
                         <TypeIcon size={26} />
                       </span>
@@ -184,7 +175,7 @@ export default function StudentHomePage() {
                         </div>
                       </div>
                       <ButtonLink
-                        className="ml-auto"
+                        className="mt-auto w-full"
                         variant="student"
                         size="lg"
                         href={`/atividade/${activity._id}`}

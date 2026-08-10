@@ -12,6 +12,7 @@ import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Field, Input, Textarea } from "@/components/ui/Field";
 import { Alert, Spinner } from "@/components/ui/Feedback";
+import { IconCheck } from "@/components/ui/Icons";
 import { activitiesApi, classesApi } from "@/lib/api";
 import { normalizeWord } from "@/lib/puzzle";
 import { useResource } from "@/lib/useResource";
@@ -113,7 +114,15 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
     return null;
   }
 
-  function goToNext() {
+  function goToStep(nextStep: number) {
+    setStep(nextStep);
+    requestAnimationFrame(() =>
+      document.getElementById(`activity-step-${nextStep}`)?.scrollIntoView({ block: "start" }),
+    );
+  }
+
+  function goToNext(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
     const validationError = validateStep(step);
     if (validationError) {
       setError(validationError);
@@ -122,7 +131,7 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
     }
     setError(null);
     setShowValidation(false);
-    setStep((s) => Math.min(s + 1, 4));
+    goToStep(Math.min(step + 1, 4));
   }
 
   async function handleSubmit(event: React.FormEvent) {
@@ -169,30 +178,26 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       {error && <Alert tone="error">{error}</Alert>}
 
       <nav aria-label="Progresso da atividade">
-        <ol className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="flex flex-wrap gap-3">
           {[1, 2, 3, 4].map((s) => (
             <li
               key={s}
               aria-current={s === step ? "step" : undefined}
-              className={`flex min-w-0 items-center gap-2 rounded-xl border-2 px-3 py-2 transition-colors duration-150 ${
+              className={`flex min-h-11 min-w-0 items-center gap-2 rounded-2xl px-4 py-2 text-sm uppercase tracking-wide transition-colors duration-150 ${
                 s === step
-                  ? "border-primary bg-primary-light"
+                  ? "bg-amarelo font-black text-marinho adesivo-sm"
                   : s < step
-                    ? "border-primary/40 bg-white"
-                    : "border-gray-200 bg-white"
+                    ? "bg-lima font-bold text-marinho adesivo-sm"
+                    : "border-2 border-creme/30 font-bold text-creme/70"
               }`}
             >
               <span
                 aria-hidden
-                className={`grid size-8 shrink-0 place-items-center rounded-full border-2 text-sm font-extrabold ${
-                  s <= step
-                    ? "border-gray-900 bg-primary text-white"
-                    : "border-gray-400 bg-white text-gray-500"
-                }`}
+                className="font-black"
               >
-                {s}
+                {s < step ? <IconCheck size={16} strokeWidth={3} /> : s}
               </span>
-              <span className="text-sm font-extrabold uppercase tracking-wide text-gray-900">
+              <span>
                 {s === 1
                   ? "Informações"
                   : s === 2
@@ -206,10 +211,12 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
         </ol>
       </nav>
 
+      <div className="grid gap-8 lg:grid-cols-[minmax(0,1.5fr)_minmax(16rem,1fr)] lg:items-start">
+        <div className="min-w-0">
       {step === 1 && (
-        <section className="animate-rise flex flex-col gap-3">
+        <section id="activity-step-1" className="animate-rise scroll-mt-6 flex flex-col gap-3">
           <StepHeading step={1} title="Informações básicas" />
-          <p className="text-sm font-semibold text-gray-600">
+          <p className="text-sm font-bold text-cream/70">
             Comece com um título claro e uma breve explicação do que o aluno deve
             fazer nesta atividade.
           </p>
@@ -246,9 +253,9 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       )}
 
       {step === 2 && (
-        <section className="animate-rise flex flex-col gap-3">
+        <section id="activity-step-2" className="animate-rise scroll-mt-6 flex flex-col gap-3">
           <StepHeading step={2} title="Distribuição" />
-          <p className="text-sm font-semibold text-gray-600">
+          <p className="text-sm font-bold text-cream/70">
             Escolha quais turmas terão acesso à atividade. Você pode selecionar
             várias ao mesmo tempo.
           </p>
@@ -278,9 +285,9 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       )}
 
       {step === 3 && (
-        <section className="animate-rise flex flex-col gap-3">
+        <section id="activity-step-3" className="animate-rise scroll-mt-6 flex flex-col gap-3">
           <StepHeading step={3} title="Perguntas" />
-          <p className="text-sm font-semibold text-gray-600">
+          <p className="text-sm font-bold text-cream/70">
             Monte as perguntas da atividade. Você pode misturar quiz, resposta
             curta, resposta longa, cruzadinha e caça-palavra na mesma atividade.
           </p>
@@ -293,9 +300,9 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
       )}
 
       {step === 4 && (
-        <section className="animate-rise flex flex-col gap-3">
+        <section id="activity-step-4" className="animate-rise scroll-mt-6 flex flex-col gap-3">
           <StepHeading step={4} title="Finalização" />
-          <p className="text-sm font-semibold text-gray-600">
+          <p className="text-sm font-bold text-cream/70">
             Se quiser terminar com uma dinâmica no Kahoot, cole o link abaixo.
             O aluno verá o endereço depois de enviar a atividade.
           </p>
@@ -336,14 +343,43 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
         </section>
       )}
 
-      <div className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-gray-200 pt-6">
+        </div>
+        <aside className="min-w-0 space-y-5 lg:translate-y-4">
+          <div className="rotate-1 rounded-3xl bg-marinho-2 p-5 adesivo">
+            <h2 className="titulo-caixa text-xl text-creme">Prévia</h2>
+            <div className="mt-4 rounded-2xl bg-creme p-4 text-marinho">
+              <span className="inline-block rounded-lg bg-eletrico px-2 py-1 text-[11px] font-black uppercase tracking-widest text-creme">
+                {questions.length} {questions.length === 1 ? "pergunta" : "perguntas"}
+              </span>
+              <p className="mt-2 text-lg font-extrabold leading-tight">
+                {title.trim() || "Título da atividade"}
+              </p>
+              <p className="text-sm font-semibold text-marinho/70">
+                {classIds.length} turma(s) selecionada(s)
+              </p>
+            </div>
+          </div>
+          <div className="rounded-3xl border-2 border-creme/25 p-5">
+            <h2 className="titulo-caixa text-lg text-creme">Etapas</h2>
+            <ol className="mt-3 space-y-2 text-sm text-creme/70">
+              {["Informações básicas", "Distribuição", "Perguntas", "Finalização"].map((label, index) => (
+                <li key={label} className={index + 1 === step ? "font-extrabold text-amarelo" : ""}>
+                  {index + 1}. {label}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </aside>
+      </div>
+
+      <div className="flex flex-wrap items-center justify-between gap-3 border-t-2 border-cream/20 pt-6">
         <div className="flex flex-wrap gap-3">
           {step > 1 && (
             <Button
               type="button"
               variant="secondary"
               size="lg"
-              onClick={() => setStep((s) => s - 1)}
+              onClick={() => goToStep(step - 1)}
             >
               Voltar
             </Button>
@@ -358,7 +394,7 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
             </Button>
           )}
         </div>
-        <ButtonLink href="/professor/atividades" variant="ghost" size="lg">
+        <ButtonLink className="text-cream hover:bg-cream/10 hover:text-cream" href="/professor/atividades" variant="ghost" size="lg">
           Cancelar
         </ButtonLink>
       </div>
@@ -368,10 +404,10 @@ export function ActivityForm({ activity }: { activity?: Activity }) {
 
 function StepHeading({ step, title }: { step: number; title: string }) {
   return (
-    <h2 className="flex items-center gap-3 text-xl font-extrabold uppercase tracking-wide text-gray-900">
+    <h2 className="flex items-center gap-3 titulo-caixa text-2xl text-creme">
       <span
         aria-hidden
-        className="grid size-9 shrink-0 place-items-center rounded-full border-2 border-gray-900 bg-primary text-sm font-extrabold text-white shadow-sm"
+        className="grid size-9 shrink-0 place-items-center rounded-xl bg-amarelo text-sm font-black text-marinho adesivo-sm"
       >
         {step}
       </span>

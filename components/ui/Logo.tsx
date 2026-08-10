@@ -1,65 +1,52 @@
-import Image from "next/image";
-
 type LogoProps = {
   theme?: "dark" | "light";
-  area?: "professor" | "aluno";
   size?: "sm" | "lg";
 };
 
-export function Logo({ theme = "dark", area, size = "sm" }: LogoProps) {
-  const baseColor = theme === "light" ? "text-white" : "text-gray-900";
-  const mutedColor = theme === "light" ? "text-white/75" : "text-gray-700/80";
-  const areaColor =
-    theme === "light"
-      ? "text-white/75"
-      : area === "aluno"
-        ? "text-student-dark"
-        : "text-primary";
-  const markSize = size === "lg" ? "size-24 sm:size-28" : "size-10";
-  const markFrame =
-    size === "lg"
-      ? "rounded-2xl border-4 border-gray-900 p-2 shadow-hard"
-      : "rounded-xl border-2 border-gray-900 p-1 shadow-sm";
+export function Logo({ theme = "dark", size = "sm" }: LogoProps) {
+  const light = theme === "light";
+  const markSize = size === "lg" ? "size-20 sm:size-24" : "size-11";
 
   return (
     <span
-      className={`inline-flex items-center ${size === "lg" ? "gap-4" : "gap-3"} ${baseColor}`}
+      className={`inline-flex items-center ${size === "lg" ? "gap-4" : "gap-3"} ${
+        light ? "text-cream" : "text-gray-900"
+      }`}
     >
       <span
         aria-hidden
-        className={`relative block shrink-0 overflow-hidden bg-white ${markSize} ${markFrame}`}
+        className={`brand-mark grid shrink-0 place-items-center rounded-2xl bg-primary text-cream ${markSize}`}
       >
-        <Image
-          src="/logo-mark.png"
-          alt=""
-          fill
-          priority={size === "lg"}
-          unoptimized
-          sizes={size === "lg" ? "7rem" : "2.5rem"}
-          className="object-contain"
-        />
+        <BrandMarkIcon size={size === "lg" ? 46 : 26} />
       </span>
-      <span className="flex flex-col leading-tight">
-        <span
-          className={`block font-extrabold uppercase tracking-[0.18em] ${
-            size === "lg" ? "text-sm" : "text-[0.625rem]"
-          } ${mutedColor}`}
-        >
-          Professora
+      <span className="flex flex-col leading-none">
+        <span className={`titulo-caixa block ${size === "lg" ? "text-2xl" : "text-base sm:text-lg"}`}>
+          Professora Márcia
         </span>
-        <span
-          className={`heading-poster block ${size === "lg" ? "text-4xl sm:text-5xl" : "text-lg"}`}
-        >
-          Márcia
-        </span>
-        {area && (
-          <span
-            className={`${size === "lg" ? "text-sm" : "text-[0.625rem]"} font-extrabold uppercase tracking-widest ${areaColor}`}
-          >
-            Área d{area === "professor" ? "a professora" : "o aluno"}
-          </span>
-        )}
       </span>
     </span>
+  );
+}
+
+function BrandMarkIcon({ size }: { size: number }) {
+  return (
+    <svg
+      aria-hidden
+      width={size}
+      height={size}
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M10 34V14l9.5 11L30 12v22"
+        stroke="currentColor"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path d="M30 34h8" stroke="currentColor" strokeWidth="4" strokeLinecap="round" />
+      <circle cx="37" cy="12" r="3.5" fill="var(--color-amarelo)" />
+    </svg>
   );
 }

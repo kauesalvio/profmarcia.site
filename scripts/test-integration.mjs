@@ -37,7 +37,7 @@ async function main() {
   console.log("Login...");
   const login = await fetchJson("/api/login", {
     method: "POST",
-    body: { email: "professora@escola.com", password: "senha123" },
+    body: { username: "marcia", password: "Meleka@2430" },
   });
   console.log("status", login.status, login.body);
   const cookie = login.cookie;

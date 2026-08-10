@@ -14,7 +14,7 @@ Todas as rotas estão em `app/api/`.
 
 ### `/api/auth/[...nextauth]` - Autenticação
 - Provider `credentials`.
-- Busca professor(a) no MongoDB pelo e-mail.
+- Busca professor(a) no MongoDB pelo usuário ou e-mail.
 - Compara senha com `bcrypt.compare`.
 - Cria sessão JWT em cookie.
 - Protege rotas de professor.

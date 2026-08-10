@@ -20,6 +20,7 @@ Armazena dados de login da professora.
 ```json
 {
   "_id": "ObjectId",
+  "username": "marcia",
   "email": "professora@escola.com",
   "passwordHash": "$2b$10$...",
   "name": "Professora Márcia",
@@ -29,6 +30,7 @@ Armazena dados de login da professora.
 
 **Índices:**
 - `email` (unique)
+- `username` (unique, quando preenchido)
 
 **Observação:** a senha deve ser armazenada com hash bcrypt.
 
@@ -171,9 +173,9 @@ db.activities.find({ classIds: { $in: [ObjectId("...")] } }).sort({ createdAt: -
 db.responses.find({ activityId: ObjectId("...") }).sort({ submittedAt: -1 })
 ```
 
-### Buscar professor por e-mail
+### Buscar professor por usuário ou e-mail
 ```javascript
-db.teachers.findOne({ email: "professora@escola.com" })
+db.teachers.findOne({ $or: [{ username: "marcia" }, { email: "professora@escola.com" }] })
 ```
 
 ### Listar classes ordenadas por ano

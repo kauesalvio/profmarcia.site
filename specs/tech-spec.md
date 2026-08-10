@@ -22,7 +22,7 @@ Site para apoio às aulas de informática de uma professora.
 ## 3. Funcionalidades
 
 ### 3.1 Área da Professora
-- Login com e-mail e senha armazenados no MongoDB (senha com hash).
+- Login com usuário ou e-mail e senha armazenados no MongoDB (senha com hash).
 - Painel para criar/editar/excluir classes do 1º ao 9º ano.
 - Criar atividades com título, descrição, perguntas de tipos mistos (quiz, formulário, cruzadinha, caça-palavra) e seleção dos anos/classes de distribuição.
 - Adicionar uma imagem decorativa opcional por pergunta, pesquisada no Openverse sem persistir o arquivo.
@@ -173,7 +173,7 @@ Cada pergunta dentro de `config.questions` possui seu próprio `type`, permitind
 
 ## 6. Fluxo de Uso
 
-1. Professora acessa o site e faz login com e-mail e senha.
+1. Professora acessa o site e faz login com usuário e senha.
 2. Cria as classes do 1º ao 9º ano.
 3. Cria atividades vinculadas às classes/anos.
 4. Configura as perguntas da atividade, podendo misturar quiz, formulário, cruzadinha e caça-palavra.

@@ -102,9 +102,9 @@ export default function StudentActivityPage() {
               </span>
             )}
             <div className="flex flex-col gap-1.5">
-              <h1 className="heading-poster text-3xl text-gray-900">{activity.title}</h1>
+              <h1 className="titulo-caixa break-words text-3xl text-creme sm:text-4xl">{activity.title}</h1>
               {activity.description && (
-                <p className="text-base font-semibold leading-relaxed text-gray-700">
+                <p className="text-base font-bold leading-relaxed text-cream/70">
                   {activity.description}
                 </p>
               )}
@@ -139,7 +139,7 @@ export default function StudentActivityPage() {
               >
                 <IconCheck size={36} strokeWidth={3} />
               </span>
-              <h1 className="heading-poster text-3xl text-gray-900">
+              <h1 className="titulo-caixa text-3xl text-marinho">
                 Resposta enviada!
               </h1>
               <p className="max-w-sm text-base font-semibold text-gray-700">

@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import Image from "next/image";
 import { Header } from "@/components/layout/Header";
 import { Button } from "@/components/ui/Button";
 import { Spinner } from "@/components/ui/Feedback";
@@ -27,7 +28,7 @@ export function LayoutProfessor({ children }: { children: React.ReactNode }) {
   if (!session) {
     return (
       <div className="mx-auto w-full max-w-5xl px-4">
-        <Spinner label="Verificando acesso..." />
+        <Spinner label="Preparando a bancada..." />
       </div>
     );
   }
@@ -38,22 +39,26 @@ export function LayoutProfessor({ children }: { children: React.ReactNode }) {
         variant="professor"
         action={
           <>
-            <span className="hidden items-center gap-2 text-sm font-bold text-gray-700 sm:flex">
-              <span
-                aria-hidden
-                className="grid size-9 place-items-center rounded-full border-2 border-gray-900 bg-primary text-xs font-extrabold text-white shadow-sm"
-              >
-                {session.name.trim().charAt(0).toUpperCase()}
-              </span>
-              {session.name}
+            <span
+              className="grid size-10 shrink-0 overflow-hidden rounded-full border-2 border-lab-deep bg-primary shadow-sm"
+              title="Professora Márcia"
+            >
+              <Image
+                src="/professora-marcia.png"
+                alt="Foto de perfil da Professora Márcia"
+                width={40}
+                height={40}
+                priority
+                className="size-full object-cover"
+              />
             </span>
-            <Button variant="ghost" onClick={handleSignOut}>
+            <Button className="text-cream hover:bg-cream/10 hover:text-cream" variant="ghost" onClick={handleSignOut}>
               Sair
             </Button>
           </>
         }
       />
-      <main className="mx-auto flex w-full max-w-5xl flex-1 flex-col gap-6 px-4 py-8 sm:py-10">
+      <main className="relative z-10 mx-auto flex w-full max-w-6xl flex-1 flex-col gap-8 px-4 py-8 sm:px-6 sm:py-12">
         {children}
       </main>
     </div>

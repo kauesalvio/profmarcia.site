@@ -1,7 +1,7 @@
 import type { ComponentProps, ReactNode } from "react";
 
 const CONTROL =
-  "w-full min-h-12 rounded-lg border-2 border-gray-900 bg-white px-4 py-2.5 text-base text-gray-900 shadow-sm transition-all duration-150 placeholder:text-gray-500 hover:-translate-y-px hover:shadow-md focus-visible:translate-y-0 focus-visible:shadow-sm focus-visible:border-primary disabled:bg-gray-100 disabled:text-gray-500";
+  "w-full min-h-12 rounded-xl border-2 border-tinta bg-creme px-4 py-2.5 text-base font-bold text-marinho shadow-sm transition-all duration-150 placeholder:font-semibold placeholder:text-gray-500 hover:-translate-y-px focus-visible:translate-y-0 focus-visible:border-eletrico disabled:bg-creme-2 disabled:text-gray-500";
 
 export function Field({
   label,
@@ -22,7 +22,7 @@ export function Field({
 }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label htmlFor={htmlFor} className="text-sm font-extrabold uppercase tracking-wide text-gray-900">
+      <label htmlFor={htmlFor} className="text-sm font-black text-gray-900">
         {label}
         {required && <span className="text-error"> *</span>}
       </label>

@@ -33,13 +33,13 @@ export function useTeacherSession(): TeacherSession | null | undefined {
   }
 }
 
-export async function signIn(email: string, password: string): Promise<TeacherSession> {
+export async function signIn(username: string, password: string): Promise<TeacherSession> {
   let res: Response;
   try {
     res = await fetch("/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
     });
   } catch {
     throw new ApiError("Não foi possível conectar ao servidor.", 0);
@@ -51,7 +51,7 @@ export async function signIn(email: string, password: string): Promise<TeacherSe
   const body = (await res.json()) as Partial<TeacherSession>;
   const session: TeacherSession = {
     name: body.name ?? "Professora",
-    email: body.email ?? email,
+    email: body.email ?? username,
   };
   writeStored("session", SESSION_KEY, JSON.stringify(session));
   return session;

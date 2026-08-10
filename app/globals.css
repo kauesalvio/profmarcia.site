@@ -1,210 +1,193 @@
 @import "tailwindcss";
 
-/* Design tokens — direção visual "Cartazes de Informática" (Saul Bass).
-   Cores planas, formas recortadas, sombras duras e tipografia em caps fortes.
-   Área da professora: azul cobalto. Área do aluno: laranja queimado. */
+/* Professora Márcia — sistema visual da plataforma. */
 @theme {
-  --font-sans: var(--font-inter), Inter, system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-nunito), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
 
-  /* Professor — azul cobalto */
-  --color-primary: #0047ab;
-  --color-primary-dark: #003380;
-  --color-primary-light: #cce0f5;
+  --color-marinho: oklch(0.24 0.075 262);
+  --color-marinho-2: oklch(0.31 0.078 262);
+  --color-creme: oklch(0.968 0.021 92);
+  --color-creme-2: oklch(0.925 0.032 92);
+  --color-tinta: oklch(0.19 0.055 262);
+  --color-eletrico: oklch(0.62 0.21 258);
+  --color-amarelo: oklch(0.88 0.17 92);
+  --color-coral: oklch(0.7 0.18 25);
+  --color-lima: oklch(0.85 0.19 130);
 
-  /* Aluno — laranja queimado */
-  --color-student: #e85d04;
-  --color-student-dark: #b94a00;
-  --color-student-light: #ffe8d6;
+  /* Aliases mantêm o contrato visual dos componentes existentes. */
+  --color-primary: var(--color-eletrico);
+  --color-primary-dark: var(--color-marinho);
+  --color-primary-light: oklch(0.9 0.055 258);
+  --color-student: var(--color-lima);
+  --color-student-dark: oklch(0.38 0.11 132);
+  --color-student-light: oklch(0.93 0.09 130);
+  --color-sun: var(--color-amarelo);
+  --color-sun-light: oklch(0.93 0.12 92);
+  --color-lab: var(--color-marinho);
+  --color-lab-deep: var(--color-tinta);
+  --color-cream: var(--color-creme);
 
-  /* Feedback */
-  --color-success: #2d6a4f;
-  --color-success-bg: #d8f3dc;
-  --color-warning: #d00000;
-  --color-warning-bg: #ffccd5;
-  --color-error: #9d0208;
-  --color-error-bg: #ffccd5;
-  --color-info: #0077b6;
-  --color-info-bg: #caf0f8;
+  --color-success: oklch(0.35 0.1 140);
+  --color-success-bg: oklch(0.9 0.09 130);
+  --color-warning: oklch(0.4 0.11 60);
+  --color-warning-bg: oklch(0.91 0.1 92);
+  --color-error: oklch(0.4 0.15 25);
+  --color-error-bg: oklch(0.91 0.07 25);
+  --color-info: oklch(0.42 0.16 258);
+  --color-info-bg: oklch(0.9 0.055 258);
 
-  /* Neutros quentes — papel/cartaz */
-  --color-white: #ffffff;
-  --color-gray-50: #f7f5f0;
-  --color-gray-100: #f0ebe3;
-  --color-gray-200: #e5e0d6;
-  --color-gray-300: #cfc9bc;
-  --color-gray-500: #6b655a;
-  --color-gray-700: #3d3932;
-  --color-gray-900: #1c1a16;
+  --color-white: var(--color-creme);
+  --color-gray-50: var(--color-creme);
+  --color-gray-100: var(--color-creme-2);
+  --color-gray-200: oklch(0.84 0.035 92);
+  --color-gray-300: oklch(0.74 0.032 92);
+  --color-gray-400: oklch(0.57 0.026 92);
+  --color-gray-500: oklch(0.46 0.025 92);
+  --color-gray-600: oklch(0.38 0.025 92);
+  --color-gray-700: oklch(0.29 0.035 262);
+  --color-gray-900: var(--color-tinta);
 
-  /* Tipografia */
-  --text-3xl: 2rem;
-  --text-3xl--line-height: 1.1;
-  --text-4xl: 2.5rem;
-  --text-4xl--line-height: 1.05;
-  --text-5xl: 3.25rem;
-  --text-5xl--line-height: 1;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.25rem;
 
-  /* Bordas */
-  --radius-sm: 0.25rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-
-  /* Sombras duras, estilo cartaz */
-  --shadow-sm: 2px 2px 0 rgba(28, 26, 22, 0.12);
-  --shadow-md: 4px 4px 0 rgba(28, 26, 22, 0.14);
-  --shadow-lg: 6px 6px 0 rgba(28, 26, 22, 0.16);
-  --shadow-hard: 8px 8px 0 rgba(28, 26, 22, 0.18);
-
-  /* Z-index */
-  --z-index-dropdown: 10;
-  --z-index-sticky: 20;
-  --z-index-modal: 30;
-  --z-index-tooltip: 40;
+  --shadow-sm: 3px 3px 0 var(--color-tinta);
+  --shadow-md: 6px 6px 0 var(--color-tinta);
+  --shadow-lg: 8px 8px 0 var(--color-tinta);
+  --shadow-hard: 9px 9px 0 var(--color-tinta);
 
   --animate-rise: rise 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-  --animate-pop: pop 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 
   @keyframes rise {
-    from {
-      opacity: 0;
-      transform: translateY(12px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pop {
-    from {
-      opacity: 0;
-      transform: scale(0.96);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
-  background: var(--color-gray-50);
-  color: var(--color-gray-900);
+  background: var(--color-marinho);
+  color: var(--color-creme);
   font-family: var(--font-sans);
+  font-weight: 600;
   line-height: 1.5;
 }
 
-::selection {
-  background: var(--color-primary);
-  color: var(--color-white);
+::selection { background: var(--color-amarelo); color: var(--color-marinho); }
+
+h1, h2, h3, .heading-poster, .heading-poster-sm, .titulo-caixa {
+  font-family: var(--font-display);
 }
 
-/* Títulos no registro cartaz */
-.heading-poster {
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.05;
+.heading-poster,
+.heading-poster-sm,
+.titulo-caixa {
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 0.95;
   text-transform: uppercase;
 }
 
-.heading-poster-sm {
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  line-height: 1.1;
-  text-transform: uppercase;
-}
-
-/* Fundos ambientais por área */
-.ambient-professor {
-  background-color: var(--color-gray-50);
-  background-image:
-    radial-gradient(
-      48rem 32rem at 100% 0%,
-      color-mix(in srgb, var(--color-primary) 12%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      40rem 24rem at 0% 100%,
-      color-mix(in srgb, var(--color-primary-light) 45%, transparent),
-      transparent 70%
-    );
-}
-
+.ambient-professor,
 .ambient-aluno {
-  background-color: var(--color-gray-50);
-  background-image:
-    radial-gradient(
-      48rem 32rem at 100% 0%,
-      color-mix(in srgb, var(--color-student) 14%, transparent),
-      transparent 70%
-    ),
-    radial-gradient(
-      40rem 24rem at 0% 100%,
-      color-mix(in srgb, var(--color-student-light) 55%, transparent),
-      transparent 70%
-    );
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--color-marinho);
 }
 
-/* Padrão de pontos sutil para destaques */
-.dot-grid {
-  background-image: radial-gradient(
-    color-mix(in srgb, currentColor 18%, transparent) 1.5px,
-    transparent 1.5px
-  );
-  background-size: 1.25rem 1.25rem;
+.ambient-professor::before,
+.ambient-aluno::before {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image: radial-gradient(var(--color-creme) 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+  content: "";
+  opacity: 0.12;
+  pointer-events: none;
 }
 
-/* Cartão com sombra dura */
-.poster-card {
-  background: var(--color-white);
-  border: 2px solid var(--color-gray-900);
-  border-radius: var(--radius-xl);
+.ambient-professor::after,
+.ambient-aluno::after {
+  position: absolute;
+  top: 10rem;
+  left: -6rem;
+  z-index: -1;
+  width: 16rem;
+  height: 16rem;
+  border-radius: 3rem;
+  background: color-mix(in oklch, var(--color-eletrico) 25%, transparent);
+  content: "";
+  rotate: 12deg;
+  pointer-events: none;
+}
+
+.ambient-aluno::after {
+  top: auto;
+  right: -5rem;
+  bottom: 5rem;
+  left: auto;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--color-lima) 18%, transparent);
+}
+
+.dot-grid,
+.quadro-pontos {
+  background-image: radial-gradient(currentColor 1.2px, transparent 1.2px);
+  background-size: 22px 22px;
+}
+
+.poster-card,
+.adesivo {
+  border: 3px solid var(--color-tinta);
   box-shadow: var(--shadow-md);
 }
 
-.poster-card-student {
-  border-color: var(--color-student);
-  box-shadow: 4px 4px 0 var(--color-student);
+.adesivo-sm {
+  border: 2px solid var(--color-tinta);
+  box-shadow: var(--shadow-sm);
 }
 
-.poster-card-primary {
-  border-color: var(--color-primary);
-  box-shadow: 4px 4px 0 var(--color-primary);
+.brand-mark {
+  border: 2px solid color-mix(in oklch, var(--color-creme) 20%, transparent);
+  box-shadow: 3px 3px 0 var(--color-tinta);
 }
 
-/* Etiqueta/tag no estilo cartaz */
+.poster-card-student { box-shadow: 6px 6px 0 var(--color-student-dark); }
+.poster-card-primary { box-shadow: 6px 6px 0 var(--color-eletrico); }
+
 .poster-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
-  border: 2px solid var(--color-gray-900);
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
+  gap: 0.5rem;
+  border: 2px solid var(--color-tinta);
+  border-radius: 0.75rem;
+  padding: 0.3rem 0.8rem;
+  background: var(--color-amarelo);
+  color: var(--color-marinho);
+  box-shadow: var(--shadow-sm);
   font-size: 0.75rem;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-weight: 900;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
-/* Foco visível em todos os elementos interativos */
 @layer base {
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: 3px solid var(--color-primary);
+    outline: 3px solid var(--color-amarelo);
     outline-offset: 3px;
     border-radius: var(--radius-sm);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  *, *::before, *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;

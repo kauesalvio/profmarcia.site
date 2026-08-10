@@ -173,7 +173,7 @@ export default function AnalysisPage() {
                                 )}
                                 {isCorrect !== null && (
                                   <Badge tone={isCorrect ? "student" : "warning"}>
-                                    {isCorrect ? "✓ correta" : `✗ esperado: ${displayedExpected}`}
+                                    {isCorrect ? "Correta" : `Esperado: ${displayedExpected}`}
                                   </Badge>
                                 )}
                               </dd>

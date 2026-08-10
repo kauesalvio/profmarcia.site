@@ -75,7 +75,7 @@ export default function ActivitiesPage() {
       <div className="flex max-w-sm items-center gap-3">
         <label
           htmlFor="filter-class"
-          className="shrink-0 text-sm font-extrabold uppercase tracking-wide text-gray-900"
+          className="shrink-0 text-sm font-black text-cream"
         >
           Filtrar
         </label>
@@ -128,7 +128,7 @@ export default function ActivitiesPage() {
             const TypeIcon = QUESTION_TYPE_ICONS[types[0] ?? "text"];
             return (
               <li key={activity._id}>
-                <InteractiveCard className="flex flex-col gap-4 border-2 border-primary p-5">
+                <InteractiveCard className="flex flex-col gap-4 border-[3px] border-tinta p-5">
                   <div className="flex flex-wrap items-start gap-4">
                     <span
                       aria-hidden
